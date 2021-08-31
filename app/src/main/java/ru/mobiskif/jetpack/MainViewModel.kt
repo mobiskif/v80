@@ -1,6 +1,7 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,8 @@ class MainViewModel : ViewModel() {
     val docs = repository.docs
     val talons = repository.talons
     val history = repository.history
+    val historyall = repository.historyall
+    val idtalon = repository.idtalon
 
 
     fun setState(state: String) {
@@ -83,8 +86,20 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch { repository.readTalons(idLpu, idDoc, idPat) }
     }
 
-    fun readHists(idLpu: String, idPat: String) {
-        viewModelScope.launch { repository.readHists(idLpu, idPat) }
+    fun readHists(user: User) {
+        viewModelScope.launch { repository.readHists(user) }
+    }
+
+    fun readHistsAll(user: User) {
+        viewModelScope.launch { repository.readHistsAll(user) }
+    }
+
+    fun getTalon(idLpu: String, idAppointment: String, idPat: String) {
+        viewModelScope.launch { repository.getTalon(idLpu, idAppointment, idPat) }
+    }
+
+    fun delTalon(idLpu: String, idAppointment: String, idPat: String) {
+        viewModelScope.launch { repository.delTalon(idLpu, idAppointment, idPat) }
     }
 
 }

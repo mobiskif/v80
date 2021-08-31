@@ -35,14 +35,23 @@ class MainActivity : ComponentActivity() {
         model.state.observe(this) { title = it; setContent { MainView(model) } }
         model.users.observe(this) { if (it.isEmpty()) model.setState("Инструкция"); setContent { MainView(model) } }
         model.cuser.observe(this) {
-            if (it.idPat!!.isNotEmpty()) model.readHists(it.iL.toString(),it.idPat.toString())
+            if (it.idPat!!.isNotEmpty()) model.readHists(it)
             setContent { MainView(model) } }
-        model.lpus.observe(this) { setContent { MainView(model) } }
+        model.lpus.observe(this) {
+            model.readHistsAll(model.cuser.value!!)
+            setContent { MainView(model) }
+        }
         model.specs.observe(this) { setContent { MainView(model) } }
         model.wait.observe(this) { setContent { MainView(model) } }
         model.docs.observe(this) { setContent { MainView(model) } }
         model.talons.observe(this) { setContent { MainView(model) } }
         model.history.observe(this) { setContent { MainView(model) } }
+        model.idtalon.observe(this) {
+            model.readHists(model.cuser.value!!)
+            model.readHistsAll(model.cuser.value!!)
+            model.setState("Выбрать специальность")
+            setContent { MainView(model) }
+        }
     }
 
     override fun onBackPressed() {
@@ -56,6 +65,7 @@ class MainActivity : ComponentActivity() {
             "Выбрать врача" -> state = "Выбрать специальность"
             "Выбрать талон" -> state = "Выбрать врача"
             "Отменить талон" -> state = "Выбрать специальность"
+            "Взять талон" -> state = "Выбрать специальность"
         }
         model.setState(state)
     }
@@ -69,8 +79,9 @@ fun MainView(model: MainViewModel) {
     val docs = model.docs.value ?: listOf()
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
+    val histsall = model.historyall.value ?: listOf()
 
-    myTheme {
+    MainTheme {
         fixModes()
         Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(model) }) {
             Column(Modifier.padding(space)) {
@@ -81,7 +92,11 @@ fun MainView(model: MainViewModel) {
                     when (model.getState()) {
                         "Изменить пациента" -> LazyColumn { items(1) { UsrItemsEdit(model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItems(users[it], model) } }
-                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
+                        "Выбрать клинику" -> {
+                            LazyRow { items(histsall.size) { HistItems(histsall[it], model) } }
+                            Spacer(Modifier.size(space))
+                            LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
+                        }
                         "Выбрать специальность" -> {
                             LazyRow { items(hists.size) { HistItems(hists[it], model) } }
                             Spacer(Modifier.size(space))
@@ -89,6 +104,8 @@ fun MainView(model: MainViewModel) {
                         }
                         "Выбрать врача" -> LazyColumn { items(docs.size) { DocItems(docs[it], model) } }
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
+                        "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
+                        "Отменить талон" -> LazyColumn { items(1) { TalonBrake(model) } }
                     }
                 }
             }

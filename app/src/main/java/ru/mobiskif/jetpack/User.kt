@@ -19,18 +19,19 @@ import androidx.room.*
 @Entity
 data class User(
     @PrimaryKey val id: Int
-    , var F: String?
-    , var I: String?
-    , var O: String?
-    , var D: String?
-    , var iR: String?
-    , var iL: String?
-    , var idPat: String?
-    , var Distr: String?
-    , var Lpu: String?
-    , var Spec: String?
-    , var Doc: String?
-    , var Err: String?
+    , var F: String?=""
+    , var I: String?=""
+    , var O: String?=""
+    , var D: String?=""
+    , var iR: String?="1"
+    , var iL: String?=""
+    , var idPat: String?=""
+    , var Distr: String?=""
+    , var Lpu: String?=""
+    , var Spec: String?=""
+    , var Doc: String?=""
+    , var Err: String?=""
+    , var idAppointment: String?=""
 )
 
 @Dao

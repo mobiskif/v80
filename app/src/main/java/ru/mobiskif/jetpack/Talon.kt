@@ -23,9 +23,10 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
     var result = listOf<Talon>()
     map.forEach {
         if (!it["IdAppointment"].isNullOrEmpty()) {
-            val d = it["VisitStart"]!!.split("T")[0]
-            val t = it["VisitStart"]!!.split("T")[1].split(":")[0] +":" + it["VisitStart"]!!.split("T")[1].split(":")[1]
-            val element = Talon(t, d, "")
+            //val d = it["VisitStart"]!!.split("T")[0]
+            //val t = it["VisitStart"]!!.split("T")[1].split(":")[0] +":" + it["VisitStart"]!!.split("T")[1].split(":")[1]
+            //val element = Talon(t, d, "")
+            val element = Talon(it["IdAppointment"]!!, it["VisitStart"], "")
             result=result.plusElement(element)
         }
         else if (!it["ErrorList"].isNullOrEmpty()) {
@@ -44,14 +45,47 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
 fun TalonItems(talon: Talon, model: MainViewModel) {
     Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
-            //model.cuser.value?.S=talon.name
-            //model.readTalons(model.cuser.value?.iL.toString(), talon.id, model.cuser.value?.idPat.toString())
-            model.setState("Выбрать талон")}
+            model.cuser.value?.idAppointment = talon.id
+            model.setState("Взять талон")}
         ) {
             Text("${talon.id}",fontWeight = FontWeight.Bold)
-            Text("${talon.name} ${talon.free}")
+            Text("${talon.name}")
+            Text("${talon.free}")
         }
     }
     Spacer(Modifier.height(space))
 }
 
+@Composable
+fun TalonTake(model: MainViewModel) {
+    val idPat = model.cuser.value?.idPat.toString()
+    val idLpu = model.cuser.value?.iL.toString()
+    val idAppointment = model.cuser.value?.idAppointment.toString()
+    Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(Modifier.clickable {
+            model.getTalon(idLpu, idAppointment, idPat)}
+        ) {
+            Text("$idAppointment",fontWeight = FontWeight.Bold)
+            Text("$idLpu")
+            Text("$idPat")
+        }
+    }
+    Spacer(Modifier.height(space))
+}
+
+@Composable
+fun TalonBrake(model: MainViewModel) {
+    val idPat = model.cuser.value?.idPat.toString()
+    val idLpu = model.cuser.value?.iL.toString()
+    val idAppointment = model.cuser.value?.idAppointment.toString()
+    Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
+        Column(Modifier.clickable {
+            model.delTalon(idLpu, idAppointment, idPat)}
+        ) {
+            Text("$idAppointment",fontWeight = FontWeight.Bold)
+            Text("$idLpu")
+            Text("$idPat")
+        }
+    }
+    Spacer(Modifier.height(space))
+}

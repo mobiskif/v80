@@ -30,8 +30,12 @@ class MainRepository {
     val talons: LiveData<List<Talon>> = _talons
     private val _history = MutableLiveData<List<Hist>>()
     val history: LiveData<List<Hist>> = _history
+    private val _historyall = MutableLiveData<List<Hist>>()
+    val historyall: LiveData<List<Hist>> = _historyall
+    private val _idtalon = MutableLiveData<String>()
+    val idtalon: LiveData<String> = _idtalon
 
-    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 9)
+    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 5)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
         abstract fun lpuDao(): LpuDao
@@ -178,37 +182,64 @@ class MainRepository {
         _wait.postValue(false)
     }
 
-    suspend fun readHists(idLpu: String, idPat: String) {
-        val args = arrayOf(idLpu, idPat)
-        _wait.postValue(true)
-        withContext(Dispatchers.IO) {
-            /*
-            var hlist = db.histDao().readByUid("1")
-            if (hlist.isEmpty()) {
-                hlist = fromHistMap(idLpu, idPat, Hub2().getHistList("GetPatientHistory", args))
-                hlist.forEach { db.histDao().create(it) }
-            }
-            */
-            val res = fromHistMap(idLpu, idPat, Hub2().getHistList("GetPatientHistory", args))
-            _history.postValue(res)
-        }
-        _wait.postValue(false)
-        /*
-            var llist = db.lpuDao().readByDid(did)
-            if (llist.isEmpty()) {
-                val args = arrayOf(did)
-                llist = fromLpuMap(did, Hub2().getLpuList("GetLPUList", args))
-                llist.forEach { db.lpuDao().create(it) }
-            }
-            _lpus.postValue(llist)
-
-         */
-    }
-
     suspend fun setCurrentUser(it: User) {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             _cuser.postValue(it)
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun readHists(user: User) {
+        val args = arrayOf(user.iL.toString(), user.idPat.toString())
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            var hlist = listOf<Hist>()//db.histDao().readByUidLid(uid, idLpu)
+            if (hlist.isEmpty()) {
+                hlist = fromHistMap(user, Hub2().getHistList("GetPatientHistory", args))
+                hlist.forEach { db.histDao().delete(it) }
+                hlist.forEach { db.histDao().create(it) }
+            }
+            _history.postValue(hlist)
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun readHistsAll(user: User) {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            var hlist = db.histDao().readByUid(user.id.toString())
+            _historyall.postValue(hlist)
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun getTalon(idLpu: String, idAppointment: String, idPat: String) {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            val args = arrayOf(idLpu, idAppointment, idPat)
+            val res = Hub2().getTalon("SetAppointment", args)
+            Log.d("jop","$res")
+            if (res[0]["Success"] == "true") {
+                _idtalon.postValue("Талон $idAppointment отложен успешно!")
+            } else {
+                _idtalon.postValue("ВНИМАНИЕ: в записи отказано!")
+            }
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun delTalon(idLpu: String, idAppointment: String, idPat: String) {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            val args = arrayOf(idLpu, idPat, idAppointment)
+            val res = Hub2().deleteTalon("CreateClaimForRefusal", args)
+            Log.d("jop","$res")
+            if (res[0]["Success"] == "true") {
+                _idtalon.postValue("Талон $idAppointment отменен успешно!")
+            } else {
+                _idtalon.postValue("ВНИМАНИЕ: отмена НЕ удалась!")
+            }
         }
         _wait.postValue(false)
     }
