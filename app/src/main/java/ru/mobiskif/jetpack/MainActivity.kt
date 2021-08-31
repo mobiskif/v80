@@ -1,6 +1,7 @@
 package ru.mobiskif.jetpack
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -47,10 +48,11 @@ class MainActivity : ComponentActivity() {
         model.talons.observe(this) { setContent { MainView(model) } }
         model.history.observe(this) { setContent { MainView(model) } }
         model.idtalon.observe(this) {
-            model.readHists(model.cuser.value!!)
-            model.readHistsAll(model.cuser.value!!)
-            model.setState("Выбрать специальность")
-            setContent { MainView(model) }
+            //model.readHists(model.cuser.value!!)
+            //model.readHistsAll(model.cuser.value!!)
+            //model.setState("Выбрать специальность")
+            //setContent { MainView(model) }
+            Toast.makeText(this,it,Toast.LENGTH_LONG).show()
         }
     }
 
@@ -65,7 +67,7 @@ class MainActivity : ComponentActivity() {
             "Выбрать врача" -> state = "Выбрать специальность"
             "Выбрать талон" -> state = "Выбрать врача"
             "Отменить талон" -> state = "Выбрать специальность"
-            "Взять талон" -> state = "Выбрать специальность"
+            "Взять талон" -> state = "Выбрать талон"
         }
         model.setState(state)
     }
@@ -93,8 +95,8 @@ fun MainView(model: MainViewModel) {
                         "Изменить пациента" -> LazyColumn { items(1) { UsrItemsEdit(model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItems(users[it], model) } }
                         "Выбрать клинику" -> {
-                            LazyRow { items(histsall.size) { HistItems(histsall[it], model) } }
-                            Spacer(Modifier.size(space))
+                            //LazyRow { items(histsall.size) { HistItems(histsall[it], model) } }
+                            //Spacer(Modifier.size(space))
                             LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         }
                         "Выбрать специальность" -> {

@@ -70,6 +70,8 @@ fun HistItems(hist: Hist, model: MainViewModel) {
             model.cuser.value?.idAppointment = hist.idAppointment
             model.cuser.value?.iL = hist.idLpu
             model.cuser.value?.idPat = hist.idPat
+            model.cuser.value?.Err = hist.date
+            model.cuser.value?.Spec = hist.spec
             model.setState("Отменить талон")}
         ) {
             Text("${hist.date!!.split("T")[0]}")
