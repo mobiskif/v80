@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CurrentInfo(model: MainViewModel) {
-    val user = model.cuser.value ?: User(0, "", "", "", "", "1", "", "", "", "","","","")
+    val user = model.cuser.value ?: User(0, "", "", "", "", "1", "", "", "", "", "", "", "")
     val mod0 = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
@@ -38,10 +39,11 @@ fun CurrentInfo(model: MainViewModel) {
         .padding(space)
 
     when (model.getState()) {
-        "Изменить пациента" -> {}
+        "Изменить пациента" -> {
+        }
         "Инструкция" -> {
-            //if (model.users.value?.size==0) {
-                Column () {
+            LazyColumn {
+                items(1) {
                     Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.", modifier = mod0)
                     Spacer(Modifier.size(space))
                     Text("Нажав на символ \"Карандаш\", отредактируйте персональные данные.", modifier = mod1)
@@ -55,14 +57,17 @@ fun CurrentInfo(model: MainViewModel) {
                     Text("Приложение транслирует ответы регистратур \"как есть\". Прикреплением, расписанием и доступностью талонов разработчик не управляет.", modifier = mod1)
                     Spacer(Modifier.size(space))
                     Text("Отменяйте ненужные талоны: Выбрать клинику -> Выбрать специальность - увидите отложенные талоны (если есть). Нажатие на талон - отмена.", modifier = mod0)
+                    Spacer(Modifier.size(space))
+                    Text("Приложение транслирует ответы регистратур \"как есть\". Прикреплением, расписанием и доступностью талонов разработчик не управляет.", modifier = mod1)
+                    Spacer(Modifier.size(space))
+                    Text("Приложение транслирует ответы регистратур \"как есть\". Прикреплением, расписанием и доступностью талонов разработчик не управляет.", modifier = mod1)
                 }
-                Spacer(Modifier.height(space))
-            //}
+            }
         }
         "Выбрать клинику" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.D} \n${user.Distr} район",)
+                Text("\n${user.D} \n${user.Distr} район")
             }
             Spacer(Modifier.height(space))
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
@@ -71,21 +76,21 @@ fun CurrentInfo(model: MainViewModel) {
         "Выбрать специальность" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \nКарточка: ${user.idPat}",)
+                Text("\n${user.Lpu} \nКарточка: ${user.idPat}")
             }
             Spacer(Modifier.height(space))
         }
         "Выбрать врача" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \n${user.Spec}",)
+                Text("\n${user.Lpu} \n${user.Spec}")
             }
             Spacer(Modifier.height(space))
         }
         "Выбрать талон" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \n${user.Spec} \n${user.Doc}",)
+                Text("\n${user.Lpu} \n${user.Spec} \n${user.Doc}")
             }
             Spacer(Modifier.height(space))
         }
@@ -95,7 +100,7 @@ fun CurrentInfo(model: MainViewModel) {
 @Composable
 fun Fab(model: MainViewModel) {
     if (model.getState() == "Выбрать пациента" || model.getState() == "Инструкция")
-        FloatingActionButton(onClick = { model.createUser(); model.setState("Выбрать пациента") }) { Icon(Icons.Filled.Add,"") }
+        FloatingActionButton(onClick = { model.createUser(); model.setState("Выбрать пациента") }) { Icon(Icons.Filled.Add, "") }
 }
 
 @Composable
@@ -109,7 +114,7 @@ fun Topbar(model: MainViewModel) {
     )
 }
 
-@Preview( showBackground = true, backgroundColor = 0xFFFFFF, uiMode = Configuration.UI_MODE_NIGHT_NO, showSystemUi = false)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF, uiMode = Configuration.UI_MODE_NIGHT_NO, showSystemUi = false)
 @Composable
 fun UsrItemsPreview() {
 
@@ -124,7 +129,7 @@ fun UsrItemsPreview() {
         Button({}) { Text("Button") }
         Switch(checked = true, onCheckedChange = {})
         RadioButton(selected = true, onClick = { })
-        FloatingActionButton (onClick = {}) { Icon(Icons.Filled.Edit,"",tint = MaterialTheme.colors.error)}
+        FloatingActionButton(onClick = {}) { Icon(Icons.Filled.Edit, "", tint = MaterialTheme.colors.error) }
         Spacer(Modifier.height(space))
         for (i in 0..3) {
             Row(mod0) {
