@@ -56,7 +56,7 @@ fun TalonItems(talon: Talon, model: MainViewModel) {
             Text("$tim", fontWeight = FontWeight.Bold)
             Text("$dat")
             //Spacer(Modifier.size(space))
-            //Button(onClick = { /*TODO*/ }) { Text("Взять")  }
+            //Button(onClick = {  }) { Text("Взять")  }
         }
     }
     Spacer(Modifier.height(space))
