@@ -65,7 +65,7 @@ fun LpuItems(lpu: Lpu, model: MainViewModel) {
             model.setState("Выбрать специальность")
         }) {
             Text("${lpu.name}\n")
-            Text("${lpu.fullname}", fontSize = 12.sp)
+            Text("${lpu.fullname}", fontSize = small)
         }
         Column(Modifier.align(Alignment.Bottom)) {
             Icon(

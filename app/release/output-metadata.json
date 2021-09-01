@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "ru.mobiskif.jetpack",
+  "applicationId": "ru.healthy",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 1,
-      "versionName": "1.0",
+      "versionCode": 72,
+      "versionName": "72.0",
       "outputFile": "app-release.apk"
     }
   ],

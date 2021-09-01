@@ -97,11 +97,14 @@ fun TalonTake(model: MainViewModel) {
             Text("$tim", fontWeight = FontWeight.Bold)
             Text("$dat")
             Spacer(Modifier.size(space))
-            Button(onClick = { model.getTalon(idLpu, idAppointment, idPat) }) { Text("Взять") }
+            Button(onClick = {
+                model.getTalon(idLpu, idAppointment, idPat)
+                model.setState("Выбрать клинику")
+            }) { Text("Взять") }
         }
     }
     Spacer(Modifier.size(space))
-    TextButton(onClick = { model.setState("Выбрать талон") }) { Text("Нет") }
+    TextButton(onClick = { model.setState("Выбрать клинику") }) { Text("Нет") }
 }
 
 
@@ -140,9 +143,12 @@ fun TalonBrake(model: MainViewModel) {
             Text("$tim", fontWeight = FontWeight.Bold)
             Text("$dat")
             Spacer(Modifier.size(space))
-            Button(onClick = { model.delTalon(idLpu, idAppointment, idPat) }) { Text("Отменить") }
+            Button(onClick = {
+                model.delTalon(idLpu, idAppointment, idPat)
+                model.setState("Выбрать клинику")
+            }) { Text("Отменить") }
         }
     }
     Spacer(Modifier.size(space))
-    TextButton(onClick = { model.setState("Выбрать специальность") }) { Text("Нет") }
+    TextButton(onClick = { model.setState("Выбрать клинику") }) { Text("Нет") }
 }

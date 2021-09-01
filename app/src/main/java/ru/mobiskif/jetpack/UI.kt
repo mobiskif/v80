@@ -52,7 +52,9 @@ fun CurrentInfo(model: MainViewModel) {
                     Spacer(Modifier.size(space))
                     Text("Ненужные клиники удалите нажав на символ \"Корзина\". Список заново восстановится, если удалить всё.", modifier = mod0)
                     Spacer(Modifier.size(space))
-                    Text("Приложение транслирует ответы регистратур клиник без изменений. Прикреплением, расписанием и доступностью талонов разработчик не управляет.", modifier = mod1)
+                    Text("Приложение транслирует ответы регистратур \"как есть\". Прикреплением, расписанием и доступностью талонов разработчик не управляет.", modifier = mod1)
+                    Spacer(Modifier.size(space))
+                    Text("Отменяйте ненужные талоны: Выбрать клинику -> Выбрать специальность - увидите отложенные талоны (если есть). Нажатие на талон - отмена.", modifier = mod0)
                 }
                 Spacer(Modifier.height(space))
             //}
@@ -62,6 +64,8 @@ fun CurrentInfo(model: MainViewModel) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
                 Text("\n${user.D} \n${user.Distr} район",)
             }
+            Spacer(Modifier.height(space))
+            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
