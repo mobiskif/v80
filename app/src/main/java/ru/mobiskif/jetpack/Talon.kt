@@ -41,8 +41,13 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
 
 @Composable
 fun TalonItems(talon: Talon, model: MainViewModel) {
-    val dat = talon.name.toString().split("T")[0]
-    val tim = talon.name.toString().split("T")[1].subSequence(0, 5)
+    val ar = talon.name.toString().split("T")
+    var dat = ""
+    var tim = ""
+    if (ar.size>1) {
+        dat = ar[0]
+        tim = ar[1].subSequence(0, 5).toString()
+    }
     Row(modBord.clickable {
         model.cuser.value?.idAppointment = talon.id
         model.cuser.value?.Err = talon.name
@@ -68,8 +73,13 @@ fun TalonTake(model: MainViewModel) {
     val idPat = model.cuser.value?.idPat.toString()
     val idLpu = model.cuser.value?.iL.toString()
     val idAppointment = model.cuser.value?.idAppointment.toString()
-    val dat = model.cuser.value?.Err.toString().split("T")[0]
-    val tim = model.cuser.value?.Err.toString().split("T")[1].subSequence(0, 5)
+    val ar = model.cuser.value?.idAppointment.toString().split("T")
+    var dat = ""
+    var tim = ""
+    if (ar.size>1) {
+        dat = ar[0]
+        tim = ar[1].subSequence(0, 5).toString()
+    }
     Row(modBord) {
         Column(Modifier.fillMaxWidth(.3f)) {
             Text("Пациент:")
