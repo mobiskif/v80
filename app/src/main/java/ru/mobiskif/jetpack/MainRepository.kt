@@ -197,8 +197,8 @@ class MainRepository {
             var hlist = listOf<Hist>()//db.histDao().readByUidLid(uid, idLpu)
             if (hlist.isEmpty()) {
                 hlist = fromHistMap(user, Hub2().getHistList("GetPatientHistory", args))
-                hlist.forEach { db.histDao().delete(it) }
-                hlist.forEach { db.histDao().create(it) }
+                //hlist.forEach { db.histDao().delete(it) }
+                //hlist.forEach { db.histDao().create(it) }
             }
             _history.postValue(hlist)
         }
