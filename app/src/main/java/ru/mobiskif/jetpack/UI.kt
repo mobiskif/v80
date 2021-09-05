@@ -1,10 +1,10 @@
 package ru.mobiskif.jetpack
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -72,11 +72,11 @@ fun Fab(model: MainViewModel) {
 }
 
 @Composable
-fun Topbar(model: MainViewModel) {
+fun Topbar(context: Context, model: MainViewModel) {
     TopAppBar(
         title = { Text(model.getState(), maxLines = 1, color = MaterialTheme.colors.error) },
         backgroundColor = MaterialTheme.colors.background,
         //navigationIcon = {  },
-        actions = { MainMenu(model) }
+        actions = { MainMenu(context, model) }
     )
 }

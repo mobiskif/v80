@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val repository = MainRepository()
-    private lateinit var contxt: Context
     val state = MutableLiveData("Выбрать пациента")
 
     val wait= repository.wait
@@ -30,14 +29,12 @@ class MainViewModel : ViewModel() {
     fun getState(): String {
         return "${state.value}"
     }
-    fun setLightPalette(theme: String) {
-        LightPalette = fixPalette(contxt, theme)
+    fun setPalette(context: Context, theme: String) {
+        LightPalette = setLightPalette(context, theme)
     }
 
-    fun setContext(ac: Context) {
-        contxt = ac
-        setLightPalette("Фиолетовая")
-        viewModelScope.launch { repository.setDBContext(ac) }
+    fun setDBContext(context: Context) {
+        viewModelScope.launch { repository.setDBContext(context) }
     }
 
     fun createUser() {

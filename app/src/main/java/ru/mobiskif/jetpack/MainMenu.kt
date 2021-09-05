@@ -1,5 +1,6 @@
 package ru.mobiskif.jetpack
 
+import android.content.Context
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -8,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
 @Composable
-fun MainMenu(model: MainViewModel) {
+fun MainMenu(context: Context, model: MainViewModel) {
     val expanded = remember { mutableStateOf(false) }
     IconButton(
         onClick = { expanded.value = true },
@@ -28,11 +29,11 @@ fun MainMenu(model: MainViewModel) {
         )
         Divider()
         DropdownMenuItem(
-            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setLightPalette("Фиолетовая"); expanded.value = false; model.setState(st) },
+            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Фиолетовая"); expanded.value = false; model.setState(st) },
             content = { Text("Фиолетовая") }
         )
         DropdownMenuItem(
-            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setLightPalette("Зеленая"); expanded.value = false; model.setState(st) },
+            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Зеленая"); expanded.value = false; model.setState(st) },
             content = { Text("Зеленая") }
         )
     }

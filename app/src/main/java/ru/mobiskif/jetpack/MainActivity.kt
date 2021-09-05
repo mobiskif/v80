@@ -1,9 +1,7 @@
 package ru.mobiskif.jetpack
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.core.view.forEach
 
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp,0.dp)
@@ -33,21 +30,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
 
-        model.setContext(applicationContext)
+        model.setDBContext(applicationContext)
+        model.setPalette(this, "Фиолетовая")
         model.readDistrs()
         model.readUsers()
 
-        model.state.observe(this) { title = it; setContent { MainView(model) } }
-        model.users.observe(this) { if (it.isEmpty()) model.setState("Инструкция"); setContent { MainView(model) } }
+        model.state.observe(this) { title = it; setContent { MainView(this, model) } }
+        model.users.observe(this) { if (it.isEmpty()) model.setState("Инструкция"); setContent { MainView(this, model) } }
         model.cuser.observe(this) {
             if (it.idPat!!.isNotEmpty()) model.readHists(it)
-            setContent { MainView(model) } }
-        model.lpus.observe(this) { setContent { MainView(model) } }
-        model.specs.observe(this) { setContent { MainView(model) } }
-        model.wait.observe(this) { setContent { MainView(model) } }
-        model.docs.observe(this) { setContent { MainView(model) } }
-        model.talons.observe(this) { setContent { MainView(model) } }
-        model.history.observe(this) { setContent { MainView(model) } }
+            setContent { MainView(this, model) } }
+        model.lpus.observe(this) { setContent { MainView(this, model) } }
+        model.specs.observe(this) { setContent { MainView(this, model) } }
+        model.wait.observe(this) { setContent { MainView(this, model) } }
+        model.docs.observe(this) { setContent { MainView(this, model) } }
+        model.talons.observe(this) { setContent { MainView(this, model) } }
+        model.history.observe(this) { setContent { MainView(this, model) } }
         model.idtalon.observe(this) { Toast.makeText(this,it,Toast.LENGTH_LONG).show() }
     }
 
@@ -69,7 +67,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView(model: MainViewModel) {
+fun MainView(context: Context, model: MainViewModel) {
     val users = model.users.value ?: listOf()
     val lpus = model.lpus.value ?: listOf()
     val specs = model.specs.value ?: listOf()
@@ -80,7 +78,7 @@ fun MainView(model: MainViewModel) {
 
     MainTheme {
         FixModes()
-        Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(model) }) {
+        Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(context, model) }) {
             Column(Modifier.padding(space)) {
                 CurrentInfo(model)
                 if (model.wait.value == true)

@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:theme="@style/Model"
-        android:roundIcon="@drawable/redcross_small"
-        android:banner="@drawable/redcross_small"
-        android:icon="@drawable/redcross_small">
+        android:roundIcon="@drawable/ic_baseline_medical_services_24"
+        android:banner="@drawable/ic_baseline_medical_services_24"
+        android:icon="@drawable/ic_baseline_medical_services_24">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"

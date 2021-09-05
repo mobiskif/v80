@@ -1,8 +1,6 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
-import android.hardware.lights.Light
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -40,15 +38,16 @@ val DarkPalette = darkColors(
     error = Color.White,
 )
 
-fun fixPalette(ac: Context, theme: String): Colors {
+fun setLightPalette(context: Context, theme: String): Colors {
     when (theme) {
         "Фиолетовая" -> {
             LightPalette = lightColors(
-                primary = Color(ContextCompat.getColor(ac, R.color.primaryColor)), //цвет Button и подписей
-                primaryVariant = Color(ContextCompat.getColor(ac,R.color.primaryDarkColor)), //цвет StatusBar
-                secondary = Color(ContextCompat.getColor(ac,R.color.secondaryColor)), //цвет FAB и RadioButton
-                secondaryVariant = Color(ContextCompat.getColor(ac,R.color.secondaryDarkColor)), //цвет Switch
-                error = Color(ContextCompat.getColor(ac, R.color.secondaryTextColor)),
+                primary = Color(ContextCompat.getColor(context, R.color.primaryColor)), //цвет Button и подписей
+                primaryVariant = Color(ContextCompat.getColor(context,R.color.primaryDarkColor)), //цвет StatusBar
+                secondary = Color(ContextCompat.getColor(context,R.color.secondaryColor)), //цвет FAB и RadioButton
+                secondaryVariant = Color(ContextCompat.getColor(context,R.color.secondaryDarkColor)), //цвет Switch
+                surface = Color(ContextCompat.getColor(context,R.color.secondaryLightColor)), //цвет Switch
+                error = Color(ContextCompat.getColor(context, R.color.secondaryTextColor)),
             )
         }
         "Зеленая" -> {

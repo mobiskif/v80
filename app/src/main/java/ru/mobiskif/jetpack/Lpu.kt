@@ -10,9 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.unit.sp
 import androidx.room.*
-import org.ksoap2.serialization.SoapObject
 
 @Entity(primaryKeys = ["did", "lid"])
 data class Lpu(
