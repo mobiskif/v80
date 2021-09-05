@@ -94,11 +94,7 @@ fun MainView(model: MainViewModel) {
                     when (model.getState()) {
                         "Изменить пациента" -> LazyColumn { items(1) { UsrItemsEdit(model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItems(users[it], model) } }
-                        "Выбрать клинику" -> {
-                            //LazyRow { items(histsall.size) { HistItems(histsall[it], model) } }
-                            //Spacer(Modifier.size(space))
-                            LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
-                        }
+                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             LazyRow { items(hists.size) { HistItems(hists[it], model) } }
                             Spacer(Modifier.size(space))

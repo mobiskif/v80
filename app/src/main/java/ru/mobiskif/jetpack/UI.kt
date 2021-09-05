@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CurrentInfo(model: MainViewModel) {
-    val user = model.cuser.value ?: User(0, "", "", "", "", "1", "", "", "", "","","","")
+    val user = model.cuser.value ?: User(0)
     val mod0 = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
@@ -63,14 +63,6 @@ fun CurrentInfo(model: MainViewModel) {
         }
         "Выбрать клинику" -> {
             UsrItems(user = model.cuser.value!!, model = model)
-            /*
-            Column(mod0) {
-                Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.D} \n${user.Distr} район",)
-            }
-            Spacer(Modifier.height(space))
-
-             */
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
