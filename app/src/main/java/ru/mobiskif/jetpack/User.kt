@@ -70,7 +70,7 @@ fun UsrItems(user: User, model: MainViewModel) {
             Text("${user.F} \n${user.I} ${user.O}",fontWeight = FontWeight.Bold)
             Text("\n${user.D} \n${user.Distr} район")
         }
-        Column (Modifier.align(Alignment.Bottom)) {
+        Column (Modifier.align(Alignment.Top)) {
             Icon(
                 Icons.Filled.Edit, "Edit",
                 Modifier
