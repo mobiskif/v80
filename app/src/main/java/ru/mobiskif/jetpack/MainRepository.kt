@@ -30,12 +30,12 @@ class MainRepository {
     val talons: LiveData<List<Talon>> = _talons
     private val _history = MutableLiveData<List<Hist>>()
     val history: LiveData<List<Hist>> = _history
-    private val _historyall = MutableLiveData<List<Hist>>()
-    val historyall: LiveData<List<Hist>> = _historyall
+    //private val _historyall = MutableLiveData<List<Hist>>()
+    //val historyall: LiveData<List<Hist>> = _historyall
     private val _idtalon = MutableLiveData<String>()
     val idtalon: LiveData<String> = _idtalon
 
-    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 5)
+    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 5, exportSchema = false)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
         abstract fun lpuDao(): LpuDao

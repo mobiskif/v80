@@ -74,7 +74,7 @@ fun MainView(context: Context, model: MainViewModel) {
     val docs = model.docs.value ?: listOf()
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
-    val histsall = model.historyall.value ?: listOf()
+    //val histsall = model.historyall.value ?: listOf()
 
     MainTheme {
         FixModes()
