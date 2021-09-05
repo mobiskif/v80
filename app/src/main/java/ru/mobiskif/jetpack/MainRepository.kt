@@ -205,15 +205,6 @@ class MainRepository {
         _wait.postValue(false)
     }
 
-    suspend fun readHistsAll(user: User) {
-        _wait.postValue(true)
-        withContext(Dispatchers.IO) {
-            var hlist = db.histDao().readByUid(user.id.toString())
-            _historyall.postValue(hlist)
-        }
-        _wait.postValue(false)
-    }
-
     suspend fun getTalon(idLpu: String, idAppointment: String, idPat: String) {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {

@@ -69,21 +69,21 @@ fun CurrentInfo(model: MainViewModel) {
         "Выбрать специальность" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \nКарточка: ${user.idPat}",)
+                Text("\n${user.Lpu} \nКарточка: ${user.idPat}")
             }
             Spacer(Modifier.height(space))
         }
         "Выбрать врача" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \n${user.Spec}",)
+                Text("\n${user.Lpu} \n${user.Spec}")
             }
             Spacer(Modifier.height(space))
         }
         "Выбрать талон" -> {
             Column(mod0) {
                 Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-                Text("\n${user.Lpu} \n${user.Spec} \n${user.Doc}",)
+                Text("\n${user.Lpu} \n${user.Spec} \n${user.Doc}")
             }
             Spacer(Modifier.height(space))
         }

@@ -38,22 +38,13 @@ class MainActivity : ComponentActivity() {
         model.cuser.observe(this) {
             if (it.idPat!!.isNotEmpty()) model.readHists(it)
             setContent { MainView(model) } }
-        model.lpus.observe(this) {
-            model.readHistsAll(model.cuser.value!!)
-            setContent { MainView(model) }
-        }
+        model.lpus.observe(this) { setContent { MainView(model) } }
         model.specs.observe(this) { setContent { MainView(model) } }
         model.wait.observe(this) { setContent { MainView(model) } }
         model.docs.observe(this) { setContent { MainView(model) } }
         model.talons.observe(this) { setContent { MainView(model) } }
         model.history.observe(this) { setContent { MainView(model) } }
-        model.idtalon.observe(this) {
-            //model.readHists(model.cuser.value!!)
-            //model.readHistsAll(model.cuser.value!!)
-            //model.setState("Выбрать специальность")
-            //setContent { MainView(model) }
-            Toast.makeText(this,it,Toast.LENGTH_LONG).show()
-        }
+        model.idtalon.observe(this) { Toast.makeText(this,it,Toast.LENGTH_LONG).show() }
     }
 
     override fun onBackPressed() {
@@ -84,7 +75,7 @@ fun MainView(model: MainViewModel) {
     val histsall = model.historyall.value ?: listOf()
 
     MainTheme {
-        fixModes()
+        FixModes()
         Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(model) }) {
             Column(Modifier.padding(space)) {
                 CurrentInfo(model)

@@ -1,12 +1,10 @@
 package ru.mobiskif.jetpack
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.room.*
 
@@ -51,14 +49,6 @@ fun fromHistMap(user: User, map: MutableList<Map<String, String>>): List<Hist> {
             val element = Hist(user.id.toString(), user.Lpu.toString(), it["NameSpesiality"]!!, it["Name"], it["VisitStart"],user.iL,user.idPat,it["IdAppointment"] )
             result=result.plusElement(element)
         }
-        else if (!it["ErrorList"].isNullOrEmpty()) {
-            //val element = Hist(uid, idLpu, it["ErrorDescription"],"VisitStart", "NameSpesiality")
-            //result=result.plusElement(element)
-        }
-        else if (it["Success"] == "false") {
-            //val element = Hist(uid, idLpu, it["ErrorDescription"],"VisitStart", "IdSpesiality")
-            //result=result.plusElement(element)
-        }
     }
     return result
 }
@@ -74,9 +64,9 @@ fun HistItems(hist: Hist, model: MainViewModel) {
             model.cuser.value?.Spec = hist.spec
             model.setState("Отменить талон")}
         ) {
-            Text("${hist.date!!.split("T")[0]}")
-            Text("${hist.lpu}")
-            Text("${hist.spec}")
+            Text(hist.date!!.split("T")[0])
+            Text(hist.lpu)
+            Text(hist.spec)
         }
         Spacer(Modifier.size(space))
         Column(modBord){

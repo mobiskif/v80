@@ -65,7 +65,7 @@ fun fixPalette(ac: Context, theme: String): Colors {
 }
 
 @Composable
-fun fixModes() {
+fun FixModes() {
     modFill = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))

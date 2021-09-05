@@ -115,13 +115,13 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         return getSoap(action, request)
     }
 
-    fun s_Date(): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
+    private fun sDate(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
         return sdf.format(Date())
     }
 
-    fun s_Year(): String {
-        val sdf = SimpleDateFormat("yyyy-12-31")
+    private fun sYear(): String {
+        val sdf = SimpleDateFormat("yyyy-12-31", Locale.ROOT)
         return sdf.format(Date())
     }
 
@@ -131,8 +131,8 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         request.addProperty("idDoc", args[1])
         request.addProperty("idLpu", args[0])
         request.addProperty("idPat", args[2])
-        request.addProperty("visitStart", s_Date())
-        request.addProperty("visitEnd", s_Year())
+        request.addProperty("visitStart", sDate())
+        request.addProperty("visitEnd", sYear())
         return getSoap(action, request)
     }
 

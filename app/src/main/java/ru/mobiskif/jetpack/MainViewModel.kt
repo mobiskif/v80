@@ -1,7 +1,6 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,6 +37,7 @@ class MainViewModel : ViewModel() {
     fun setContext(ac: Context) {
         contxt = ac
         setLightPalette("Фиолетовая")
+        //LightPalette = fixPalette(ac, "Фиолетовая")
         viewModelScope.launch { repository.setDBContext(ac) }
     }
 
@@ -88,10 +88,6 @@ class MainViewModel : ViewModel() {
 
     fun readHists(user: User) {
         viewModelScope.launch { repository.readHists(user) }
-    }
-
-    fun readHistsAll(user: User) {
-        viewModelScope.launch { repository.readHistsAll(user) }
     }
 
     fun getTalon(idLpu: String, idAppointment: String, idPat: String) {

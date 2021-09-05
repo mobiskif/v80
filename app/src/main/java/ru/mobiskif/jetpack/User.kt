@@ -63,10 +63,13 @@ interface UserDao {
 fun UsrItems(user: User, model: MainViewModel) {
     Row(modFill,horizontalArrangement = Arrangement.SpaceBetween) {
         Column(mod09.clickable {
-            model.setCurrentUser(user)
-            model.readLpus(user.iR.toString())
-            model.setState("Выбрать клинику")}
-        ) {
+            if (model.getState()!="Выбрать клинику") {
+                user.idPat=""
+                model.setCurrentUser(user)
+                model.readLpus(user.iR.toString())
+                model.setState("Выбрать клинику")
+            }
+        }) {
             Text("${user.F} \n${user.I} ${user.O}",fontWeight = FontWeight.Bold)
             Text("\n${user.D} \n${user.Distr} район")
         }

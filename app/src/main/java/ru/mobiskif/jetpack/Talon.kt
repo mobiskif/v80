@@ -58,8 +58,8 @@ fun TalonItems(talon: Talon, model: MainViewModel) {
             Text("Талон:")
         }
         Column {
-            Text("$tim", fontWeight = FontWeight.Bold)
-            Text("$dat")
+            Text(tim, fontWeight = FontWeight.Bold)
+            Text(dat)
             //Spacer(Modifier.size(space))
             //Button(onClick = {  }) { Text("Взять")  }
         }
@@ -73,12 +73,12 @@ fun TalonTake(model: MainViewModel) {
     val idPat = model.cuser.value?.idPat.toString()
     val idLpu = model.cuser.value?.iL.toString()
     val idAppointment = model.cuser.value?.idAppointment.toString()
-    val ar = model.cuser.value?.idAppointment.toString().split("T")
+    val ar = model.cuser.value?.Err.toString().split("T")
     var dat = ""
     var tim = ""
     if (ar.size>1) {
-        dat = ar[0]
-        tim = ar[1].subSequence(0, 5).toString()
+        dat = model.cuser.value?.Err.toString().split("T")[0]
+        tim = model.cuser.value?.Err.toString().split("T")[1].subSequence(0, 5).toString()
     }
     Row(modBord) {
         Column(Modifier.fillMaxWidth(.3f)) {
@@ -104,8 +104,8 @@ fun TalonTake(model: MainViewModel) {
             Text("Талон:")
         }
         Column {
-            Text("$tim", fontWeight = FontWeight.Bold)
-            Text("$dat")
+            Text(tim, fontWeight = FontWeight.Bold)
+            Text(dat)
             Spacer(Modifier.size(space))
             Button(onClick = {
                 model.getTalon(idLpu, idAppointment, idPat)
@@ -151,7 +151,7 @@ fun TalonBrake(model: MainViewModel) {
         }
         Column {
             Text("$tim", fontWeight = FontWeight.Bold)
-            Text("$dat")
+            Text(dat)
             Spacer(Modifier.size(space))
             Button(onClick = {
                 model.delTalon(idLpu, idAppointment, idPat)
