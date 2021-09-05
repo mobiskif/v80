@@ -1,6 +1,9 @@
 package ru.mobiskif.jetpack
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.view.forEach
 
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp,0.dp)
@@ -83,6 +87,7 @@ fun MainView(model: MainViewModel) {
                     CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
                 else {
                     when (model.getState()) {
+                        "Инструкция" -> LazyColumn { items(1) { Help() } }
                         "Изменить пациента" -> LazyColumn { items(1) { UsrItemsEdit(model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItems(users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }

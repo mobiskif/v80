@@ -37,7 +37,6 @@ class MainViewModel : ViewModel() {
     fun setContext(ac: Context) {
         contxt = ac
         setLightPalette("Фиолетовая")
-        //LightPalette = fixPalette(ac, "Фиолетовая")
         viewModelScope.launch { repository.setDBContext(ac) }
     }
 

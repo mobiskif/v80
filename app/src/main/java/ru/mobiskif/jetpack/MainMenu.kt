@@ -27,18 +27,12 @@ fun MainMenu(model: MainViewModel) {
             content = { Text("Выбрать пациента") }
         )
         Divider()
-        /*
         DropdownMenuItem(
-            onClick = { dark=!dark; expanded.value = false },
-            content = { Text("Dark Theme") }
-        )
-        */
-        DropdownMenuItem(
-            onClick = { model.setLightPalette("Фиолетовая"); expanded.value = false },
+            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setLightPalette("Фиолетовая"); expanded.value = false; model.setState(st) },
             content = { Text("Фиолетовая") }
         )
         DropdownMenuItem(
-            onClick = { model.setLightPalette("Зеленая"); expanded.value = false },
+            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setLightPalette("Зеленая"); expanded.value = false; model.setState(st) },
             content = { Text("Зеленая") }
         )
     }
