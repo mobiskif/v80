@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
     private val repository = MainRepository()
     val state = MutableLiveData("Выбрать пациента")
-
     val wait= repository.wait
     val lpus = repository.lpus
     val distrs = repository.distrs
