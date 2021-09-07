@@ -19,7 +19,6 @@ class MainViewModel : ViewModel() {
     val docs = repository.docs
     val talons = repository.talons
     val history = repository.history
-    //val historyall = repository.historyall
     val idtalon = repository.idtalon
 
 
