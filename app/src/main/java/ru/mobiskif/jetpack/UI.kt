@@ -114,7 +114,7 @@ fun DialogComponent(context: Context, model: Model) { //path: String = Environme
     //val path: String = Environment.getExternalStorageDirectory().path
     val path: String = model.cuser.value?.Photo.toString()
     val flist = File(path).listFiles()
-    Log.d("jop","== $path")
+    Log.d("jop","=== $path")
 
     if (flist.isNotEmpty()) {
         flist.forEach {
