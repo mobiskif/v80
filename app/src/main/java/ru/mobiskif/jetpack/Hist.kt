@@ -55,7 +55,7 @@ fun fromHistMap(user: User, map: MutableList<Map<String, String>>): List<Hist> {
 }
 
 @Composable
-fun HistItems(hist: Hist, model: MainViewModel) {
+fun HistItems(hist: Hist, model: Model) {
     Row(modFillVar, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(mod09.clickable {
             model.cuser.value?.idAppointment = hist.idAppointment

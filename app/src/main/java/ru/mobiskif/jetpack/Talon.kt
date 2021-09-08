@@ -37,7 +37,7 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
 }
 
 @Composable
-fun TalonItems(talon: Talon, model: MainViewModel) {
+fun TalonItems(talon: Talon, model: Model) {
     val ar = talon.name.toString().split("T")
     var dat = ""
     var tim = ""
@@ -65,7 +65,7 @@ fun TalonItems(talon: Talon, model: MainViewModel) {
 }
 
 @Composable
-fun TalonTake(model: MainViewModel) {
+fun TalonTake(model: Model) {
     val user = model.cuser.value!!
     val idPat = model.cuser.value?.idPat.toString()
     val idLpu = model.cuser.value?.iL.toString()
@@ -116,7 +116,7 @@ fun TalonTake(model: MainViewModel) {
 
 
 @Composable
-fun TalonBrake(model: MainViewModel) {
+fun TalonBrake(model: Model) {
     val user = model.cuser.value!!
     val idPat = model.cuser.value?.idPat.toString()
     val idLpu = model.cuser.value?.iL.toString()

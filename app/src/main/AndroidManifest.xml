@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.mobiskif.jetpack">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -11,9 +12,9 @@
         android:supportsRtl="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:theme="@style/Model"
-        android:roundIcon="@drawable/ic_baseline_medical_services_24"
-        android:banner="@drawable/ic_baseline_medical_services_24"
-        android:icon="@drawable/ic_baseline_medical_services_24">
+        android:roundIcon="@drawable/main_icon"
+        android:banner="@drawable/main_icon"
+        android:icon="@drawable/main_icon">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"

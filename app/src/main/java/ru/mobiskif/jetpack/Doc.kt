@@ -35,7 +35,7 @@ fun fromDocMap(map: MutableList<Map<String, String>>): List<Doc> {
 }
 
 @Composable
-fun DocItems(doc: Doc, model: MainViewModel) {
+fun DocItems(doc: Doc, model: Model) {
     Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             model.cuser.value?.Doc=doc.name

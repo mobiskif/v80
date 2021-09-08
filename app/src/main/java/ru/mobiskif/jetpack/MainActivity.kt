@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -16,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.os.Environment
+import java.io.File
+
 
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp,0.dp)
@@ -24,7 +28,7 @@ var mod09 = Modifier.offset(0.dp,0.dp)
 var modFillVar = Modifier.offset(0.dp,0.dp)
 
 class MainActivity : ComponentActivity() {
-    private val model: MainViewModel by viewModels()
+    private val model: Model by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +71,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainView(context: Context, model: MainViewModel) {
+fun MainView(context: Context, model: Model) {
     val users = model.users.value ?: listOf()
     val lpus = model.lpus.value ?: listOf()
     val specs = model.specs.value ?: listOf()
@@ -75,7 +79,7 @@ fun MainView(context: Context, model: MainViewModel) {
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
 
-    MainTheme {
+    Theme {
         FixModes()
         Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(context, model) }) {
             Column(Modifier.padding(space)) {
@@ -97,6 +101,7 @@ fun MainView(context: Context, model: MainViewModel) {
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonBrake(model) } }
+                        "Выбрать фото" -> LazyColumn { items(1) { DialogComponent(context, model) } }
                     }
                 }
             }

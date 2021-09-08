@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 
 @Composable
-fun DistrictSpinner(model: MainViewModel, rR: MutableState<TextFieldValue>, irR: MutableState<TextFieldValue>) {
+fun DistrictSpinner(model: Model, rR: MutableState<TextFieldValue>, irR: MutableState<TextFieldValue>) {
     val dlist = model.distrs.value
     val expanded = remember { mutableStateOf(false) }
 

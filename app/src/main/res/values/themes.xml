@@ -1,5 +1,5 @@
 <resources>
-    <style name="Model" >
+    <style name="Model"> <!-- parent="Theme.AppCompat"> -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>

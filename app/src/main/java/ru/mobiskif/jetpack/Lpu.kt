@@ -51,7 +51,7 @@ fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
 }
 
 @Composable
-fun LpuItems(lpu: Lpu, model: MainViewModel) {
+fun LpuItems(lpu: Lpu, model: Model) {
 
     Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(mod09.clickable {

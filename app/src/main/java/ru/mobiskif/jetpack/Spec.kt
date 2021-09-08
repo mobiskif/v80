@@ -35,7 +35,7 @@ fun fromSpecMap(map: MutableList<Map<String, String>>): List<Spec> {
 }
 
 @Composable
-fun SpecItems(spec: Spec, model: MainViewModel) {
+fun SpecItems(spec: Spec, model: Model) {
     Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             model.cuser.value?.Spec=spec.name
