@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import android.os.Environment
 import java.io.File
 
-
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp,0.dp)
 var modBord = Modifier.offset(0.dp,0.dp)
@@ -101,7 +100,7 @@ fun MainView(context: Context, model: Model) {
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonBrake(model) } }
-                        "Выбрать фото" -> LazyColumn { items(1) { DialogComponent(context, model) } }
+                        //"Выбрать фото" -> LazyColumn { items(1) { DialogComponent(context, model) } }
                     }
                 }
             }

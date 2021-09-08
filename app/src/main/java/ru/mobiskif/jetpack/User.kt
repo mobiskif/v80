@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.room.*
 
-//@SuppressLint("NewApi")
+@SuppressLint("NewApi")
 @Entity
 data class User(
     @PrimaryKey val id: Int,
@@ -39,7 +39,7 @@ data class User(
     var Doc: String? = "",
     var Err: String? = "",
     var idAppointment: String? = "",
-    var Photo: String? = Environment.getExternalStorageDirectory().path //"/storage/emulated/0"
+    var Photo: String? = "/storage/emulated/0"
 )
 
 @Dao
@@ -71,12 +71,12 @@ interface UserDao {
 fun UsrPhoto(user: User, model: Model) {
     Column(Modifier.clickable {
             model.setCurrentUser(user)
-            model.setState("Выбрать фото")
+            model.setState("Изменить пациента")
         },
     ) {
         Image(
             painterResource(R.drawable.round_face),
-            contentDescription = "Выбрать фото",
+            contentDescription = "Изменить пациента",
             //contentScale = ContentScale.Crop,
             //modifier = Modifier.border(1.dp, Color.Gray)
         )

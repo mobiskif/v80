@@ -1,6 +1,8 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Environment
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -35,6 +37,10 @@ fun Menu(context: Context, model: Model) {
         DropdownMenuItem(
             onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Зеленая"); expanded.value = false; model.setState(st) },
             content = { Text("Зеленая") }
+        )
+        DropdownMenuItem(
+            onClick = { },
+            content = { Text("v ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
         )
     }
 }
