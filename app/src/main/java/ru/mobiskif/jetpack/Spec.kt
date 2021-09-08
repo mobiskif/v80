@@ -11,15 +11,16 @@ import androidx.room.*
 @Entity
 data class Spec(
     @PrimaryKey val id: String
-    ,val name: String?
-    ,val free: String?
+    , var name: String?=""
+    , var free: String?=""
+    , var lpu: String?=""
 )
 
 fun fromSpecMap(map: MutableList<Map<String, String>>): List<Spec> {
     var result = listOf<Spec>()
     map.forEach {
         if (!it["IdSpesiality"].isNullOrEmpty()) {
-            val element = Spec(it["IdSpesiality"]!!, it["NameSpesiality"], it["CountFreeParticipantIE"])
+            val element = Spec(it["IdSpesiality"]!!, it["NameSpesiality"], it["CountFreeParticipantIE"],"")
             result=result.plusElement(element)
         }
         else if (!it["ErrorDescription"].isNullOrEmpty()) {
@@ -36,14 +37,19 @@ fun fromSpecMap(map: MutableList<Map<String, String>>): List<Spec> {
 
 @Composable
 fun SpecItems(spec: Spec, model: Model) {
-    Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
+    val mod = if (model.getState() == "Выбрать специальность") modBord else modFill
+    Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             model.cuser.value?.Spec=spec.name
+            model.cuser.value?.FreeSpec=spec.free
             model.readDoctors(model.cuser.value?.iL.toString(), spec.id, model.cuser.value?.idPat.toString())
             model.setState("Выбрать врача")}
         ) {
-            Text("${spec.name}",fontWeight = FontWeight.Bold)
-            Text("${spec.free} талонов")
+            //Text("${spec.name}",fontWeight = FontWeight.Bold)
+            Text("${spec.name}")
+            //Text("${spec.lpu}")
+            //Text("${model.cuser.value?.Lpu}")
+            if (model.getState()=="Выбрать специальность") Text("Талонов ${spec.free}")
         }
     }
     Spacer(Modifier.height(space))

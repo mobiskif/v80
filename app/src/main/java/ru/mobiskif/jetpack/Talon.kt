@@ -13,7 +13,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Talon(
-    @PrimaryKey val id: String, val name: String?, val free: String?
+    @PrimaryKey var id: String,
+    var name: String? = "",
+    val free: String? = ""
 )
 
 fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
@@ -38,6 +40,11 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
 
 @Composable
 fun TalonItems(talon: Talon, model: Model) {
+    val user = model.cuser.value!!
+    val idPat = user.idPat.toString()
+    val idLpu = user.iL.toString()
+    val idAppointment = user.idAppointment.toString()
+
     val ar = talon.name.toString().split("T")
     var dat = ""
     var tim = ""
@@ -45,20 +52,34 @@ fun TalonItems(talon: Talon, model: Model) {
         dat = ar[0]
         tim = ar[1].subSequence(0, 5).toString()
     }
-    Row(modBord.clickable {
+
+    val mod = if (model.getState() == "Выбрать талон") modBord else modFill
+    Row(mod.clickable {
         model.cuser.value?.idAppointment = talon.id
         model.cuser.value?.Err = talon.name
         model.setState("Взять талон")
     }
     ) {
         Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Талон:")
+            Text("Время")
         }
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
             Text(dat)
-            //Spacer(Modifier.size(space))
-            //Button(onClick = {  }) { Text("Взять")  }
+            if (model.getState() == "Взять талон") {
+                Spacer(Modifier.size(space))
+                Button(onClick = {
+                    model.getTalon(idLpu, idAppointment, idPat)
+                    model.setState("Выбрать клинику")
+                }) { Text("Взять") }
+            }
+            else if (model.getState() == "Отменить талон") {
+                Spacer(Modifier.size(space))
+                Button(onClick = {
+                    model.delTalon(idLpu, idAppointment, idPat)
+                    model.setState("Выбрать клинику")
+                }) { Text("Отменить") }
+            }
         }
     }
     Spacer(Modifier.height(space))
@@ -67,95 +88,10 @@ fun TalonItems(talon: Talon, model: Model) {
 @Composable
 fun TalonTake(model: Model) {
     val user = model.cuser.value!!
-    val idPat = model.cuser.value?.idPat.toString()
-    val idLpu = model.cuser.value?.iL.toString()
-    val idAppointment = model.cuser.value?.idAppointment.toString()
-    val ar = model.cuser.value?.Err.toString().split("T")
-    var dat = ""
-    var tim = ""
-    if (ar.size>1) {
-        dat = model.cuser.value?.Err.toString().split("T")[0]
-        tim = model.cuser.value?.Err.toString().split("T")[1].subSequence(0, 5).toString()
-    }
-    Row(modBord) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Пациент:")
-        }
-        Column {
-            Text("${user.F} \n${user.I} ${user.O}")
-        }
-    }
-    Spacer(Modifier.size(space))
-    Row(modBord) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Врач:")
-        }
-        Column {
-            Text("${user.Lpu} \n${user.Spec}")
-            Text("${user.Doc}")
-        }
-    }
-    Spacer(Modifier.size(space))
-    Row(modFill) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Талон:")
-        }
-        Column {
-            Text(tim, fontWeight = FontWeight.Bold)
-            Text(dat)
-            Spacer(Modifier.size(space))
-            Button(onClick = {
-                model.getTalon(idLpu, idAppointment, idPat)
-                model.setState("Выбрать клинику")
-            }) { Text("Взять") }
-        }
-    }
-    Spacer(Modifier.size(space))
-    TextButton(onClick = { model.setState("Выбрать клинику") }) { Text("Нет") }
-}
+    var talon = Talon("0")
+    talon.name = user.Err
+    talon.id = user.idAppointment.toString()
+    TalonItems(talon = talon, model = model)
 
-
-@Composable
-fun TalonBrake(model: Model) {
-    val user = model.cuser.value!!
-    val idPat = model.cuser.value?.idPat.toString()
-    val idLpu = model.cuser.value?.iL.toString()
-    val idAppointment = model.cuser.value?.idAppointment.toString()
-    val dat = model.cuser.value?.Err.toString().split("T")[0]
-    val tim = model.cuser.value?.Err.toString().split("T")[1].subSequence(0, 5)
-    Row(modBord) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Пациент:")
-        }
-        Column {
-            Text("${user.F} \n${user.I} ${user.O}")
-        }
-    }
-    Spacer(Modifier.size(space))
-    Row(modBord) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Врач:")
-        }
-        Column {
-            Text("${user.Lpu} \n${user.Spec}")
-            Text("${user.Doc}")
-        }
-    }
-    Spacer(Modifier.size(space))
-    Row(modFill) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Талон:")
-        }
-        Column {
-            Text("$tim", fontWeight = FontWeight.Bold)
-            Text(dat)
-            Spacer(Modifier.size(space))
-            Button(onClick = {
-                model.delTalon(idLpu, idAppointment, idPat)
-                model.setState("Выбрать клинику")
-            }) { Text("Отменить") }
-        }
-    }
-    Spacer(Modifier.size(space))
     TextButton(onClick = { model.setState("Выбрать клинику") }) { Text("Нет") }
 }

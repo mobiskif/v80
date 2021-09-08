@@ -31,23 +31,76 @@ fun CurrentInfo(model: Model) {
     when (model.getState()) {
         "Выбрать клинику" -> {
             UsrItems(user, model)
-            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
+            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.")
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
             UsrItems(user, model)
-            Text("${user.Lpu} \nКарточка: ${user.idPat}", fontSize = small)
-            Spacer(Modifier.height(space))
+
+            val lpu = Lpu("0")
+            lpu.name = user.Lpu
+            lpu.lid = user.iL.toString()
+            lpu.did = user.iR.toString()
+            LpuItems(lpu, model)
         }
         "Выбрать врача" -> {
             UsrItems(user, model)
-            Text("${user.Lpu} \n${user.Spec}", fontSize = small)
-            Spacer(Modifier.height(space))
+
+            val lpu = Lpu("0")
+            lpu.name = user.Lpu
+            lpu.lid = user.iL.toString()
+            lpu.did = user.iR.toString()
+            LpuItems(lpu, model)
+
+            val spec = Spec("0")
+            spec.name = user.Spec
+            spec.free = user.FreeSpec
+            spec.lpu = user.Lpu
+            SpecItems(spec = spec, model = model)
+
         }
         "Выбрать талон" -> {
             UsrItems(user, model)
-            Text("${user.Lpu} \n${user.Spec} \n${user.Doc}", fontSize = small)
-            Spacer(Modifier.height(space))
+
+            val lpu = Lpu("0")
+            lpu.name = user.Lpu
+            lpu.lid = user.iL.toString()
+            lpu.did = user.iR.toString()
+            LpuItems(lpu, model)
+
+            val spec = Spec("0")
+            spec.name = user.Spec
+            spec.free = user.FreeSpec
+            spec.lpu = user.Lpu
+            SpecItems(spec = spec, model = model)
+
+            val doc = Doc("0")
+            doc.name= user.Doc
+            doc.free=user.FreeDoc
+            DocItems(doc = doc, model = model)
+
+        }
+
+        "Взять талон", "Отменить талон" -> {
+            UsrItems(user, model)
+
+            val lpu = Lpu("0")
+            lpu.name = user.Lpu
+            lpu.lid = user.iL.toString()
+            lpu.did = user.iR.toString()
+            LpuItems(lpu, model)
+
+            val spec = Spec("0")
+            spec.name = user.Spec
+            spec.free = user.FreeSpec
+            spec.lpu = user.Lpu
+            SpecItems(spec = spec, model = model)
+
+            val doc = Doc("0")
+            doc.name= user.Doc
+            doc.free=user.FreeDoc
+            DocItems(doc = doc, model = model)
+
         }
         else -> {}
     }

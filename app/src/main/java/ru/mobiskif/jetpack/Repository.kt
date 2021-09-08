@@ -33,7 +33,7 @@ class Repository {
     private val _idtalon = MutableLiveData<String>()
     val idtalon: LiveData<String> = _idtalon
 
-    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 5, exportSchema = false)
+    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 2, exportSchema = false)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
         abstract fun lpuDao(): LpuDao

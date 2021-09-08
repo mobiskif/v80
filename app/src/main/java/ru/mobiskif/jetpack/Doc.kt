@@ -11,8 +11,8 @@ import androidx.room.*
 @Entity
 data class Doc(
     @PrimaryKey val id: String
-    ,val name: String?
-    ,val free: String?
+    , var name: String?=""
+    , var free: String?=""
 )
 
 fun fromDocMap(map: MutableList<Map<String, String>>): List<Doc> {
@@ -36,14 +36,17 @@ fun fromDocMap(map: MutableList<Map<String, String>>): List<Doc> {
 
 @Composable
 fun DocItems(doc: Doc, model: Model) {
-    Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
+    val mod = if (model.getState() == "Выбрать врача") modBord else modFill
+    Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             model.cuser.value?.Doc=doc.name
+            model.cuser.value?.FreeDoc=doc.free
             model.readTalons(model.cuser.value?.iL.toString(), doc.id, model.cuser.value?.idPat.toString())
             model.setState("Выбрать талон")}
         ) {
-            Text("${doc.name}",fontWeight = FontWeight.Bold)
-            Text("талонов ${doc.free}")
+            //Text("${doc.name}",fontWeight = FontWeight.Bold)
+            Text("${doc.name}")
+            if (model.getState()=="Выбрать врача") Text("Талонов ${doc.free}")
         }
     }
     Spacer(Modifier.height(space))

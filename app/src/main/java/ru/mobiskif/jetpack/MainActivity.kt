@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import android.os.Environment
+import androidx.compose.material.Text
 import java.io.File
 
 var LightPalette = lightColors()
@@ -92,14 +93,17 @@ fun MainView(context: Context, model: Model) {
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItems(users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
-                            LazyRow { items(hists.size) { HistItems(hists[it], model) } }
-                            Spacer(Modifier.size(space))
+                            if (hists.isNotEmpty()) {
+                                Text("Отложенные талоны:")
+                                LazyRow { items(hists.size) { HistItems(hists[it], model) } }
+                                Spacer(Modifier.size(space))
+                            }
                             LazyColumn { items(specs.size) { SpecItems(specs[it], model) } }
                         }
                         "Выбрать врача" -> LazyColumn { items(docs.size) { DocItems(docs[it], model) } }
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
-                        "Отменить талон" -> LazyColumn { items(1) { TalonBrake(model) } }
+                        "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         //"Выбрать фото" -> LazyColumn { items(1) { DialogComponent(context, model) } }
                     }
                 }

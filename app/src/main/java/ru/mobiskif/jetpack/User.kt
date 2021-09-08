@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,8 @@ data class User(
     var Spec: String? = "",
     var Doc: String? = "",
     var Err: String? = "",
+    var FreeSpec: String? = "",
+    var FreeDoc: String? = "",
     var idAppointment: String? = "",
     var Photo: String? = "/storage/emulated/0"
 )
@@ -69,7 +72,8 @@ interface UserDao {
 
 @Composable
 fun UsrPhoto(user: User, model: Model) {
-    Column(Modifier.clickable {
+    Column(
+        Modifier.clickable {
             model.setCurrentUser(user)
             model.setState("Изменить пациента")
         },
@@ -87,18 +91,32 @@ fun UsrPhoto(user: User, model: Model) {
 @Composable
 fun UsrItems(user: User, model: Model) {
     Row(modFill) {
-        UsrPhoto(user, model)
-        Spacer(Modifier.width(space))
+        if (model.getState() == "Выбрать пациента") {
+            UsrPhoto(user, model)
+            Spacer(Modifier.width(space))
+        }
         Column(Modifier.clickable {
-            if (model.getState() != "Выбрать клинику") {
-                user.idPat = ""
-                model.setCurrentUser(user)
-                model.readLpus(user.iR.toString())
-                model.setState("Выбрать клинику")
-            }
+            user.idPat = ""
+            model.setCurrentUser(user)
+            model.readLpus(user.iR.toString())
+            model.setState("Выбрать клинику")
         }) {
-            Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
-            Text("\n${user.D} \n${user.Distr} район")
+            //Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
+            Text("${user.F} \n${user.I} ${user.O}")
+            if (model.getState() == "Выбрать пациента") {
+                Text("\n${user.D}", fontSize = small)
+                Text("${user.Distr} район", fontSize = small)
+            }
+/*
+            if (model.getState() == "Выбрать пациента") {
+                Text("${user.D}")
+                Text("${user.Distr} район")
+            } else if (model.getState() != "Выбрать клинику") {
+                Text("${user.Lpu}")
+                Text("карточка ${user.idPat}")
+            }
+
+ */
         }
     }
     Spacer(Modifier.height(space))

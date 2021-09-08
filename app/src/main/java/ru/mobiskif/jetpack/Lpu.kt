@@ -10,15 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.font.FontWeight
 import androidx.room.*
 
 @Entity(primaryKeys = ["did", "lid"])
 data class Lpu(
-    val did: String
-    ,val lid: String
-    ,val name: String?
-    ,val description: String?
-    ,val fullname: String?
+    var did: String = "", var lid: String = "", var name: String? = "", val description: String? = "", val fullname: String? = ""
 )
 
 @Dao
@@ -43,8 +40,8 @@ fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
     var result = listOf<Lpu>()
     map.forEach {
         if (!it["IdLPU"].isNullOrEmpty()) {
-            val element = Lpu(did, it["IdLPU"]!!, it["LPUShortName"], it["Description"],it["LPUFullName"])
-            result=result.plusElement(element)
+            val element = Lpu(did, it["IdLPU"]!!, it["LPUShortName"], it["Description"], it["LPUFullName"])
+            result = result.plusElement(element)
         }
     }
     return result
@@ -52,27 +49,30 @@ fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
 
 @Composable
 fun LpuItems(lpu: Lpu, model: Model) {
-
-    Row(modBord, horizontalArrangement = Arrangement.SpaceBetween) {
+    val mod = if (model.getState() == "Выбрать клинику") modBord else modFill
+    Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(mod09.clickable {
-            model.cuser.value?.iL=lpu.lid
-            model.cuser.value?.Lpu=lpu.name
+            model.cuser.value?.iL = lpu.lid
+            model.cuser.value?.Lpu = lpu.name
             //model.setCurrentUserLpu(lpu.lid, lpu.name)
             model.checkPatient(model.cuser.value!!)
             model.readSpecs(lpu.lid)
             model.setState("Выбрать специальность")
         }) {
-            Text("${lpu.name}\n")
-            Text("${lpu.fullname}", fontSize = small)
+            //Text("${lpu.name}", fontWeight = FontWeight.Bold)
+            Text("${lpu.name}")
+            if (model.getState() == "Выбрать клинику") Text("${lpu.fullname}", fontSize = small)
+            if (model.getState() != "Выбрать клинику") Text("Карточка ${model.cuser.value?.idPat}")
         }
-        Column(Modifier.align(Alignment.Bottom)) {
-            Icon(
-                Icons.Filled.Delete, "Удалить",
-                Modifier
-                    .clickable { model.deleteLpu(lpu) }
-                    .alpha(.33f)
-            )
-        }
+        if (model.getState() == "Выбрать клинику")
+            Column(Modifier.align(Alignment.Bottom)) {
+                Icon(
+                    Icons.Filled.Delete, "Удалить",
+                    Modifier
+                        .clickable { model.deleteLpu(lpu) }
+                        .alpha(.33f)
+                )
+            }
     }
     Spacer(Modifier.height(space))
 }
