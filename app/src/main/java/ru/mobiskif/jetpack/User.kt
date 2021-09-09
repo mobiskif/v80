@@ -1,26 +1,17 @@
 package ru.mobiskif.jetpack
 
 import android.annotation.SuppressLint
-import android.os.Environment
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.room.*
 
 @SuppressLint("NewApi")
@@ -31,17 +22,20 @@ data class User(
     var I: String? = "",
     var O: String? = "",
     var D: String? = "",
-    var iR: String? = "1",
-    var iL: String? = "",
     var idPat: String? = "",
     var Distr: String? = "",
+    var iDistr: String? = "1",
     var Lpu: String? = "",
+    var iLpu: String? = "",
     var Spec: String? = "",
+    var iSpec: String? = "",
     var Doc: String? = "",
-    var Err: String? = "",
+    var iDoc: String? = "",
+    var Dat: String? = "",
     var FreeSpec: String? = "",
     var FreeDoc: String? = "",
     var idAppointment: String? = "",
+    var Palette: String? = "Фиолетовая",
     var Photo: String? = "/storage/emulated/0"
 )
 
@@ -98,7 +92,7 @@ fun UsrItems(user: User, model: Model) {
         Column(Modifier.clickable {
             user.idPat = ""
             model.setCurrentUser(user)
-            model.readLpus(user.iR.toString())
+            model.readLpus(user.iDistr.toString())
             model.setState("Выбрать клинику")
         }) {
             //Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
@@ -129,7 +123,7 @@ fun UsrItemsEdit(user: User, model: Model) {
     val oO = remember { mutableStateOf(TextFieldValue("${user.O}")) }
     val dD = remember { mutableStateOf(TextFieldValue("${user.D}")) }
     val rR = remember { mutableStateOf(TextFieldValue("${user.Distr}")) }
-    val irR = remember { mutableStateOf(TextFieldValue("${user.iR}")) }
+    val irR = remember { mutableStateOf(TextFieldValue("${user.iDistr}")) }
     Column(modFill) {
         //Row {
         UsrPhoto(user, model)
@@ -169,7 +163,7 @@ fun UsrItemsEdit(user: User, model: Model) {
                 it.O = oO.value.text
                 it.D = dD.value.text
                 it.Distr = rR.value.text
-                it.iR = irR.value.text
+                it.iDistr = irR.value.text
             }
             TextButton(onClick = {
                 model.deleteUser(user)
@@ -179,7 +173,7 @@ fun UsrItemsEdit(user: User, model: Model) {
             Button(onClick = {
                 fieldstouser(user)
                 model.updateUser(user)
-                model.readLpus(user.iR.toString())
+                model.readLpus(user.iDistr.toString())
                 model.setState("Выбрать клинику")
             }) { Text("Сохранить") }
         }

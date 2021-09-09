@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 class Model : ViewModel() {
     private val repository = Repository()
     val state = MutableLiveData("Выбрать пациента")
-    val wait= repository.wait
+    val wait = repository.wait
     val lpus = repository.lpus
     val distrs = repository.distrs
     val users = repository.users
@@ -24,10 +24,16 @@ class Model : ViewModel() {
     fun setState(state: String) {
         this.state.postValue(state)
     }
+
     fun getState(): String {
         return "${state.value}"
     }
-    fun setPalette(context: Context, theme: String) {
+
+    fun setPalette(context: Context, theme: String, user: User? = cuser.value) {
+        if (user!=null) {
+            user.Palette = theme
+            updateUser(user)
+        }
         LightPalette = setLightPalette(context, theme)
     }
 
@@ -38,12 +44,15 @@ class Model : ViewModel() {
     fun createUser() {
         viewModelScope.launch { repository.createUser() }
     }
+
     fun readUsers() {
         viewModelScope.launch { repository.readUsers() }
     }
+
     fun updateUser(it: User) {
         viewModelScope.launch { repository.updateUser(it) }
     }
+
     fun deleteUser(it: User) {
         viewModelScope.launch { repository.deleteUser(it) }
     }

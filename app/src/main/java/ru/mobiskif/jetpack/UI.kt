@@ -4,11 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -16,13 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.lifecycle.LiveData
 import java.io.File
 
 @Composable
@@ -31,7 +22,7 @@ fun CurrentInfo(model: Model) {
     when (model.getState()) {
         "Выбрать клинику" -> {
             UsrItems(user, model)
-            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.")
+            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
@@ -39,23 +30,24 @@ fun CurrentInfo(model: Model) {
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
-            lpu.lid = user.iL.toString()
-            lpu.did = user.iR.toString()
-            LpuItems(lpu, model)
+            lpu.lid = user.iLpu.toString()
+            lpu.did = user.iDistr.toString()
+            LpuItems(lpu = lpu, model = model)
         }
         "Выбрать врача" -> {
             UsrItems(user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
-            lpu.lid = user.iL.toString()
-            lpu.did = user.iR.toString()
-            LpuItems(lpu, model)
+            lpu.lid = user.iLpu.toString()
+            lpu.did = user.iDistr.toString()
+            LpuItems(lpu = lpu, model = model)
 
             val spec = Spec("0")
             spec.name = user.Spec
             spec.free = user.FreeSpec
             spec.lpu = user.Lpu
+            spec.id = user.iSpec.toString()
             SpecItems(spec = spec, model = model)
 
         }
@@ -64,19 +56,14 @@ fun CurrentInfo(model: Model) {
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
-            lpu.lid = user.iL.toString()
-            lpu.did = user.iR.toString()
-            LpuItems(lpu, model)
-
-            val spec = Spec("0")
-            spec.name = user.Spec
-            spec.free = user.FreeSpec
-            spec.lpu = user.Lpu
-            SpecItems(spec = spec, model = model)
+            lpu.lid = user.iLpu.toString()
+            lpu.did = user.iDistr.toString()
+            LpuItems(lpu = lpu, model = model)
 
             val doc = Doc("0")
             doc.name= user.Doc
             doc.free=user.FreeDoc
+            doc.id= user.iDoc.toString()
             DocItems(doc = doc, model = model)
 
         }
@@ -86,21 +73,9 @@ fun CurrentInfo(model: Model) {
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
-            lpu.lid = user.iL.toString()
-            lpu.did = user.iR.toString()
-            LpuItems(lpu, model)
-
-            val spec = Spec("0")
-            spec.name = user.Spec
-            spec.free = user.FreeSpec
-            spec.lpu = user.Lpu
-            SpecItems(spec = spec, model = model)
-
-            val doc = Doc("0")
-            doc.name= user.Doc
-            doc.free=user.FreeDoc
-            DocItems(doc = doc, model = model)
-
+            lpu.lid = user.iLpu.toString()
+            lpu.did = user.iDistr.toString()
+            LpuItems(lpu = lpu, model = model)
         }
         else -> {}
     }

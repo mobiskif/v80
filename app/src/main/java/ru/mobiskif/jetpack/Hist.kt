@@ -10,14 +10,14 @@ import androidx.room.*
 
 @Entity(primaryKeys = ["uid", "lpu", "spec"])
 data class Hist(
-    val uid: String
-    ,val lpu: String
-    ,val spec: String
-    ,val name: String?=""
-    ,val date: String?=""
-    ,val idLpu: String?=""
-    ,val idPat: String?=""
-    ,val idAppointment: String?=""
+    val uid: String,
+    val lpu: String,
+    val spec: String,
+    val name: String? = "",
+    val date: String? = "",
+    val idLpu: String? = "",
+    val idPat: String? = "",
+    val idAppointment: String? = ""
 )
 
 @Dao
@@ -46,9 +46,9 @@ fun fromHistMap(user: User, map: MutableList<Map<String, String>>): List<Hist> {
     var result = listOf<Hist>()
     map.forEach {
         if (!it["IdAppointment"].isNullOrEmpty()) {
-        //if (!it["HistoryVisit"].isNullOrEmpty()) {
-            val element = Hist(user.id.toString(), user.Lpu.toString(), it["NameSpesiality"]!!, it["Name"], it["VisitStart"],user.iL,user.idPat,it["IdAppointment"] )
-            result=result.plusElement(element)
+            //if (!it["HistoryVisit"].isNullOrEmpty()) {
+            val element = Hist(user.id.toString(), user.Lpu.toString(), it["NameSpesiality"]!!, it["Name"], it["VisitStart"], user.iLpu, user.idPat, it["IdAppointment"])
+            result = result.plusElement(element)
         }
     }
     return result
@@ -56,22 +56,32 @@ fun fromHistMap(user: User, map: MutableList<Map<String, String>>): List<Hist> {
 
 @Composable
 fun HistItems(hist: Hist, model: Model) {
-    Row(modFillVar, horizontalArrangement = Arrangement.SpaceBetween) {
-        Column(mod09.clickable {
-            model.cuser.value?.idAppointment = hist.idAppointment
-            model.cuser.value?.iL = hist.idLpu
-            model.cuser.value?.idPat = hist.idPat
-            model.cuser.value?.Err = hist.date
-            model.cuser.value?.Spec = hist.spec
-            model.setState("Отменить талон")}
-        ) {
-            Text(hist.date!!.split("T")[0])
-            Text(hist.lpu)
-            Text(hist.spec)
-        }
+    val ar = hist.date.toString().split("T")
+    var dat = ""
+    var tim = ""
+    if (ar.size > 1) {
+        dat = ar[0]
+        tim = ar[1].subSequence(0, 5).toString()
+    }
+
+    val user = model.cuser.value!!
+    val mod = if (model.getState() == "Выбрать талон") modBord else modFill
+    Row(mod.clickable {
+        user.iLpu = hist.idLpu
+        user.idPat = hist.idPat
+        user.Spec = hist.spec
+
+        user.idAppointment = hist.idAppointment
+        user.Dat = hist.date
+        model.setState("Отменить талон")
+
+    })
+    {
+        Column { Text("${hist.spec}") }
         Spacer(Modifier.size(space))
-        Column(modBord){
-            Text("${hist.date!!.split("T")[1].subSequence(0,5)}",fontWeight = FontWeight.ExtraBold)
+        Column {
+            Text(tim, fontWeight = FontWeight.Bold)
+            Text(dat)
         }
     }
     Spacer(Modifier.size(space))

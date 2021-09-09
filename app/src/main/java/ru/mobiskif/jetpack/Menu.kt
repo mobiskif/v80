@@ -32,15 +32,15 @@ fun Menu(context: Context, model: Model) {
         Divider()
         DropdownMenuItem(
             onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Фиолетовая"); expanded.value = false; model.setState(st) },
-            content = { Text("Фиолетовая") }
+            content = { Text("Фиолетовая тема") }
         )
         DropdownMenuItem(
             onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Зеленая"); expanded.value = false; model.setState(st) },
-            content = { Text("Зеленая") }
+            content = { Text("Зеленая тема") }
         )
         DropdownMenuItem(
             onClick = { },
-            content = { Text("v ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
+            content = { Text("Версия ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
         )
     }
 }

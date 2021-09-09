@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.font.FontWeight
 import androidx.room.*
 
 @Entity(primaryKeys = ["did", "lid"])
@@ -49,20 +48,20 @@ fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
 
 @Composable
 fun LpuItems(lpu: Lpu, model: Model) {
+    val user = model.cuser.value!!
     val mod = if (model.getState() == "Выбрать клинику") modBord else modFill
     Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(mod09.clickable {
-            model.cuser.value?.iL = lpu.lid
-            model.cuser.value?.Lpu = lpu.name
-            //model.setCurrentUserLpu(lpu.lid, lpu.name)
-            model.checkPatient(model.cuser.value!!)
+            user.iLpu = lpu.lid
+            user.Lpu = lpu.name
+            model.checkPatient(user)
             model.readSpecs(lpu.lid)
             model.setState("Выбрать специальность")
-        }) {
-            //Text("${lpu.name}", fontWeight = FontWeight.Bold)
+        })
+        {
             Text("${lpu.name}")
             if (model.getState() == "Выбрать клинику") Text("${lpu.fullname}", fontSize = small)
-            if (model.getState() != "Выбрать клинику") Text("Карточка ${model.cuser.value?.idPat}")
+            else Text("Карточка ${user.idPat}")
         }
         if (model.getState() == "Выбрать клинику")
             Column(Modifier.align(Alignment.Bottom)) {

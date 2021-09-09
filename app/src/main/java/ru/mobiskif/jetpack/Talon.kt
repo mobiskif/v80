@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Talon(
     @PrimaryKey var id: String,
-    var name: String? = "",
+    var date: String? = "",
     val free: String? = ""
 )
 
@@ -40,43 +40,38 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
 
 @Composable
 fun TalonItems(talon: Talon, model: Model) {
-    val user = model.cuser.value!!
-    val idPat = user.idPat.toString()
-    val idLpu = user.iL.toString()
-    val idAppointment = user.idAppointment.toString()
-
-    val ar = talon.name.toString().split("T")
+    val ar = talon.date.toString().split("T")
     var dat = ""
     var tim = ""
-    if (ar.size>1) {
+    if (ar.size > 1) {
         dat = ar[0]
         tim = ar[1].subSequence(0, 5).toString()
     }
 
+    val user = model.cuser.value!!
     val mod = if (model.getState() == "Выбрать талон") modBord else modFill
     Row(mod.clickable {
-        model.cuser.value?.idAppointment = talon.id
-        model.cuser.value?.Err = talon.name
+        user.idAppointment = talon.id
+        user.Dat = talon.date
         model.setState("Взять талон")
-    }
-    ) {
-        Column(Modifier.fillMaxWidth(.3f)) {
-            Text("Время")
-        }
+    })
+    {
+        Column { Text("${user.Spec}") }
+        Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
             Text(dat)
             if (model.getState() == "Взять талон") {
                 Spacer(Modifier.size(space))
                 Button(onClick = {
-                    model.getTalon(idLpu, idAppointment, idPat)
+                    model.getTalon(user.iLpu.toString(), user.idAppointment.toString(), user.idPat.toString())
                     model.setState("Выбрать клинику")
                 }) { Text("Взять") }
             }
             else if (model.getState() == "Отменить талон") {
                 Spacer(Modifier.size(space))
                 Button(onClick = {
-                    model.delTalon(idLpu, idAppointment, idPat)
+                    model.delTalon(user.iLpu.toString(), user.idAppointment.toString(), user.idPat.toString())
                     model.setState("Выбрать клинику")
                 }) { Text("Отменить") }
             }
@@ -89,7 +84,7 @@ fun TalonItems(talon: Talon, model: Model) {
 fun TalonTake(model: Model) {
     val user = model.cuser.value!!
     var talon = Talon("0")
-    talon.name = user.Err
+    talon.date = user.Dat
     talon.id = user.idAppointment.toString()
     TalonItems(talon = talon, model = model)
 

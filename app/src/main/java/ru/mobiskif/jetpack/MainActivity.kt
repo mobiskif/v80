@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
         model.state.observe(this) { title = it; setContent { MainView(this, model) } }
         model.users.observe(this) { if (it.isEmpty()) model.setState("Инструкция"); setContent { MainView(this, model) } }
         model.cuser.observe(this) {
+            model.setPalette(this, it.Palette.toString(), it)
             if (it.idPat!!.isNotEmpty()) model.readHists(it)
             setContent { MainView(this, model) } }
         model.lpus.observe(this) { setContent { MainView(this, model) } }
@@ -94,7 +95,7 @@ fun MainView(context: Context, model: Model) {
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {
-                                Text("Отложенные талоны:")
+                                Text("Отложено:")
                                 LazyRow { items(hists.size) { HistItems(hists[it], model) } }
                                 Spacer(Modifier.size(space))
                             }

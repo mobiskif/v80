@@ -33,7 +33,7 @@ class Repository {
     private val _idtalon = MutableLiveData<String>()
     val idtalon: LiveData<String> = _idtalon
 
-    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 2, exportSchema = false)
+    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 6, exportSchema = false)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
         abstract fun lpuDao(): LpuDao
@@ -118,7 +118,7 @@ class Repository {
             it.I.toString(),
             it.O.toString(),
             it.D.toString(),
-            it.iL.toString(),
+            it.iLpu.toString(),
         )
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
@@ -138,7 +138,7 @@ class Repository {
         }
         _wait.postValue(false)
         it.idPat = result["IdPat"]
-        it.Err = result["Success"]
+        it.Dat = result["Success"]
         _cuser.postValue(it)
     }
 
@@ -189,7 +189,7 @@ class Repository {
     }
 
     suspend fun readHists(user: User) {
-        val args = arrayOf(user.iL.toString(), user.idPat.toString())
+        val args = arrayOf(user.iLpu.toString(), user.idPat.toString())
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var hlist = listOf<Hist>()//db.histDao().readByUidLid(uid, idLpu)
