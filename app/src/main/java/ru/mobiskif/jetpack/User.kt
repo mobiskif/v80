@@ -119,7 +119,7 @@ fun UsrItemsEdit(user: User, model: Model) {
     val irR = remember { mutableStateOf(TextFieldValue("${user.iDistr}")) }
     Column(modFill) {
         //Row {
-        UsrPhoto(user, model)
+        //UsrPhoto(user, model)
         Column {
 
             DistrictSpinner(model, rR, irR)
