@@ -1,11 +1,6 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
-import android.os.Build
-import android.os.Environment
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -14,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import java.io.File
 
 @Composable
 fun CurrentInfo(model: Model) {
@@ -118,48 +112,3 @@ fun Topbar(context: Context, model: Model) {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.R)
-@Composable
-fun DialogComponent(context: Context, model: Model) { //path: String = Environment.getExternalStorageDirectory().path) {
-    val path: String = Environment.getStorageDirectory().path
-    //path = "/storage/emulated/0"
-    //val path: String = model.cuser.value?.Photo.toString()
-    val flist = File(path).listFiles()
-    Log.d("jop","=== $path")
-
-    if (!flist.isNullOrEmpty()) {
-        flist.forEach {
-            Text("${it.name}", Modifier.clickable {
-                val u = model.cuser.value!!
-                u.Photo = it.path
-                model.setCurrentUser(u)
-            })
-            Log.d("jop","$it")
-        }
-    }
-
-    /*
-    val openDialog = remember { mutableStateOf(true) }
-    if (openDialog.value) {
-        AlertDialog(
-            onDismissRequest = { openDialog.value = false },
-            title = { Text("Выбери файл") },
-            text = {
-                Column {
-                    flist.forEach {
-                        TextButton(onClick = {
-                            Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
-                        })
-                        { Text("${it.canonicalPath}") }
-                    }
-                }
-            },
-            confirmButton = { },
-            dismissButton = {
-                TextButton(onClick = { openDialog.value = false })
-                { Text("Отмена") }
-            }
-        )
-    }
-     */
-}

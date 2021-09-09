@@ -6,20 +6,17 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import android.os.Environment
-import androidx.compose.material.Text
-import java.io.File
 
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp,0.dp)

@@ -1,8 +1,6 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Environment
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert

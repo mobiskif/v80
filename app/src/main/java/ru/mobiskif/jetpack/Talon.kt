@@ -83,7 +83,7 @@ fun TalonItems(talon: Talon, model: Model) {
 @Composable
 fun TalonTake(model: Model) {
     val user = model.cuser.value!!
-    var talon = Talon("0")
+    val talon = Talon("0")
     talon.date = user.Dat
     talon.id = user.idAppointment.toString()
     TalonItems(talon = talon, model = model)

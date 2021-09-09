@@ -46,7 +46,6 @@ fun fromHistMap(user: User, map: MutableList<Map<String, String>>): List<Hist> {
     var result = listOf<Hist>()
     map.forEach {
         if (!it["IdAppointment"].isNullOrEmpty()) {
-            //if (!it["HistoryVisit"].isNullOrEmpty()) {
             val element = Hist(user.id.toString(), user.Lpu.toString(), it["NameSpesiality"]!!, it["Name"], it["VisitStart"], user.iLpu, user.idPat, it["IdAppointment"])
             result = result.plusElement(element)
         }
@@ -74,10 +73,9 @@ fun HistItems(hist: Hist, model: Model) {
         user.idAppointment = hist.idAppointment
         user.Dat = hist.date
         model.setState("Отменить талон")
-
     })
     {
-        Column { Text("${hist.spec}") }
+        Column { Text(hist.spec) }
         Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
