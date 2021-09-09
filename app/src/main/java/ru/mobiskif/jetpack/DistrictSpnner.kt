@@ -24,7 +24,7 @@ fun DistrictSpinner(model: Model, rR: MutableState<TextFieldValue>, irR: Mutable
         Row {
             Text(
                 "Район: " + rR.value.text,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                modifier = Modifier.align(Alignment.CenterVertically).clickable { expanded.value = true }
             )
             IconButton(onClick = { expanded.value = true }) {
                 Icon(Icons.Default.ArrowDropDown, "District")

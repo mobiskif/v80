@@ -85,9 +85,11 @@ fun UsrPhoto(user: User, model: Model) {
 @Composable
 fun UsrItems(user: User, model: Model) {
     Row(modFill) {
-        if (model.getState() == "Выбрать пациента") {
-            UsrPhoto(user, model)
-            Spacer(Modifier.width(space))
+        when (model.getState()) {
+            "Выбрать пациента", "Выбрать клинику" -> {
+                UsrPhoto(user, model)
+                Spacer(Modifier.width(space))
+            }
         }
         Column(Modifier.clickable {
             user.idPat = ""
@@ -95,22 +97,13 @@ fun UsrItems(user: User, model: Model) {
             model.readLpus(user.iDistr.toString())
             model.setState("Выбрать клинику")
         }) {
-            //Text("${user.F} \n${user.I} ${user.O}", fontWeight = FontWeight.Bold)
             Text("${user.F} \n${user.I} ${user.O}")
-            if (model.getState() == "Выбрать пациента") {
-                Text("\n${user.D}", fontSize = small)
-                Text("${user.Distr} район", fontSize = small)
+            when (model.getState()) {
+                "Выбрать пациента", "Выбрать клинику" -> {
+                    Text("\n${user.D}", fontSize = small)
+                    Text("${user.Distr} район", fontSize = small)
+                }
             }
-/*
-            if (model.getState() == "Выбрать пациента") {
-                Text("${user.D}")
-                Text("${user.Distr} район")
-            } else if (model.getState() != "Выбрать клинику") {
-                Text("${user.Lpu}")
-                Text("карточка ${user.idPat}")
-            }
-
- */
         }
     }
     Spacer(Modifier.height(space))
