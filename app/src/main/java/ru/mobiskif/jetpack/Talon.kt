@@ -22,9 +22,6 @@ fun fromTalonMap(map: MutableList<Map<String, String>>): List<Talon> {
     var result = listOf<Talon>()
     map.forEach {
         if (!it["IdAppointment"].isNullOrEmpty()) {
-            //val d = it["VisitStart"]!!.split("T")[0]
-            //val t = it["VisitStart"]!!.split("T")[1].split(":")[0] +":" + it["VisitStart"]!!.split("T")[1].split(":")[1]
-            //val element = Talon(t, d, "")
             val element = Talon(it["IdAppointment"]!!, it["VisitStart"], "")
             result = result.plusElement(element)
         } else if (!it["ErrorList"].isNullOrEmpty()) {
@@ -56,7 +53,7 @@ fun TalonItems(talon: Talon, model: Model) {
         model.setState("Взять талон")
     })
     {
-        Column { Text("${user.Spec}") }
+        Column (Modifier.fillMaxWidth(0.6f)) { Text("${user.Spec}") }
         Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
