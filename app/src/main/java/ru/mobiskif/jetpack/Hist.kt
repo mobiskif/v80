@@ -75,7 +75,7 @@ fun HistItems(hist: Hist, model: Model) {
         model.setState("Отменить талон")
     })
     {
-        Column { Text(hist.spec) }
+        Column (Modifier.fillMaxWidth(0.6f)) { Text("${user.Spec}") }
         Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
