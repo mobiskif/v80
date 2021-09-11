@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.room.*
 
 @Entity(primaryKeys = ["uid", "lpu", "spec"])
@@ -75,7 +76,7 @@ fun HistItems(hist: Hist, model: Model) {
         model.setState("Отменить талон")
     })
     {
-        Column (Modifier.fillMaxWidth(0.6f)) { Text("${hist.spec}") }
+        Column (Modifier.widthIn(56.dp, 128.dp)) { Text("${hist.spec}" ) }
         Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)
