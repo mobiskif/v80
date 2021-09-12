@@ -1,12 +1,15 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.core.app.ActivityCompat
 
 @Composable
 fun Menu(context: Context, model: Model) {
@@ -39,6 +42,10 @@ fun Menu(context: Context, model: Model) {
         DropdownMenuItem(
             onClick = { },
             content = { Text("Версия ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
+        )
+        DropdownMenuItem(
+            onClick = { model.setState("Выбрать фото"); expanded.value = false },
+            content = { Text("Выбрать фото") }
         )
     }
 }

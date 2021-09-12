@@ -1,5 +1,6 @@
 package ru.mobiskif.jetpack
 
+import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,16 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun CurrentInfo(model: Model) {
+fun CurrentInfo(activity: Activity, model: Model) {
     val user = model.cuser.value ?: User(0)
     when (model.getState()) {
         "Выбрать клинику" -> {
-            UsrItems(user, model)
+            UsrItemsEdit(activity, user, model)
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
-            UsrItems(user, model)
+            UsrItemsEdit(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -29,7 +30,7 @@ fun CurrentInfo(model: Model) {
             LpuItems(lpu = lpu, model = model)
         }
         "Выбрать врача" -> {
-            UsrItems(user, model)
+            UsrItemsEdit(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -46,7 +47,7 @@ fun CurrentInfo(model: Model) {
 
         }
         "Выбрать талон" -> {
-            UsrItems(user, model)
+            UsrItemsEdit(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -63,7 +64,7 @@ fun CurrentInfo(model: Model) {
         }
 
         "Взять талон", "Отменить талон" -> {
-            UsrItems(user, model)
+            UsrItemsEdit(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu

@@ -1,25 +1,35 @@
 package ru.mobiskif.jetpack
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 
 @SuppressLint("NewApi")
 @Entity
 data class User(
-    @PrimaryKey val id: Int,
+    @PrimaryKey var id: Int,
     var F: String? = "",
     var I: String? = "",
     var O: String? = "",
@@ -67,7 +77,8 @@ interface UserDao {
 }
 
 @Composable
-fun UsrPhoto(user: User, model: Model) {
+fun UsrPhotoView(activity: Activity, user: User, model: Model) {
+    val bitmap = loadFromInternalFolder(activity, "${user.id}.png")
     Column(
         Modifier.clickable {
             model.setCurrentUser(user)
@@ -75,22 +86,40 @@ fun UsrPhoto(user: User, model: Model) {
         }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painterResource(R.drawable.round_face),
-            contentDescription = "Изменить пациента",
-            //contentScale = ContentScale.Crop,
-            //modifier = Modifier.border(1.dp, Color.Gray)
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(56.dp)
+                .clip(RoundedCornerShape(28.dp))
+                //.border(1.dp, Color.Blue))
         )
-        Text(text="Изменить", fontSize = small, modifier = Modifier.alpha(0.7f))
+        Text(text = "Изменить", fontSize = small, modifier = Modifier.alpha(0.7f))
+    }
+}
+
+@Composable
+fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
+    val bitmap = loadFromInternalFolder(activity, "${user.id}.png")
+    Column(
+        Modifier.clickable {
+            model.setCurrentUser(user)
+            var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            //intent.putExtra("fname", "${user.id}.png")
+            startActivityForResult(activity, intent, 1, null)
+        }
+    ) {
+        Image(bitmap.asImageBitmap(), "", Modifier.size(56.dp))
     }
 }
 
 
 @Composable
-fun UsrItems(user: User, model: Model) {
+fun UsrItemsEdit(activity: Activity, user: User, model: Model) {
     Row(modFill) {
         when (model.getState()) {
             "Выбрать пациента", "Выбрать клинику" -> {
-                UsrPhoto(user, model)
+                UsrPhotoEdit(activity, user, model)
                 Spacer(Modifier.width(space))
             }
         }
@@ -113,7 +142,34 @@ fun UsrItems(user: User, model: Model) {
 }
 
 @Composable
-fun UsrItemsEdit(user: User, model: Model) {
+fun UsrItemsView(activity: Activity, user: User, model: Model) {
+    Row(modFill) {
+        when (model.getState()) {
+            "Выбрать пациента", "Выбрать клинику" -> {
+                UsrPhotoView(activity, user, model)
+                Spacer(Modifier.width(space))
+            }
+        }
+        Column(Modifier.clickable {
+            user.idPat = ""
+            model.setCurrentUser(user)
+            model.readLpus(user.iDistr.toString())
+            model.setState("Выбрать клинику")
+        }) {
+            Text("${user.F} \n${user.I} ${user.O}")
+            when (model.getState()) {
+                "Выбрать пациента", "Выбрать клинику" -> {
+                    Text("\n${user.D}", fontSize = small)
+                    Text("${user.Distr} район", fontSize = small)
+                }
+            }
+        }
+    }
+    Spacer(Modifier.height(space))
+}
+
+@Composable
+fun UsrDataEdit(activity: Activity, user: User, model: Model) {
     val fF = remember { mutableStateOf(TextFieldValue("${user.F}")) }
     val iI = remember { mutableStateOf(TextFieldValue("${user.I}")) }
     val oO = remember { mutableStateOf(TextFieldValue("${user.O}")) }
@@ -122,7 +178,7 @@ fun UsrItemsEdit(user: User, model: Model) {
     val irR = remember { mutableStateOf(TextFieldValue("${user.iDistr}")) }
     Column(modFill) {
         //Row {
-        //UsrPhoto(user, model)
+        UsrPhotoEdit(activity, user, model)
         Column {
 
             DistrictSpinner(model, rR, irR)
