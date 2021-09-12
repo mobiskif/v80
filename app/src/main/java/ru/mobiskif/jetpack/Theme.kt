@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-val space = 12.dp
-val small = 12.sp
+val space = 14.dp
+val small = 14.sp
 
 val shapes = Shapes(
     small = RoundedCornerShape(space/2),

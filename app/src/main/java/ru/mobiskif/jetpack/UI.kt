@@ -16,12 +16,12 @@ fun CurrentInfo(activity: Activity, model: Model) {
     val user = model.cuser.value ?: User(0)
     when (model.getState()) {
         "Выбрать клинику" -> {
-            UsrItemsEdit(activity, user, model)
+            UsrItemsView(activity, user, model)
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
-            UsrItemsEdit(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -30,7 +30,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
             LpuItems(lpu = lpu, model = model)
         }
         "Выбрать врача" -> {
-            UsrItemsEdit(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -47,7 +47,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
 
         }
         "Выбрать талон" -> {
-            UsrItemsEdit(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -64,7 +64,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
         }
 
         "Взять талон", "Отменить талон" -> {
-            UsrItemsEdit(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
