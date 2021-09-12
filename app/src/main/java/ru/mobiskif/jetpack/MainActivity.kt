@@ -82,13 +82,14 @@ class MainActivity : ComponentActivity() {
             //val fname = data.extras?.get("fname") as String
             val fname = "${model.cuser.value?.id}.png"
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 if (checkPermissionForReadWrite(this)) {
                     saveToInternalFolder(this, bm, fname)
                 } else {
                     requestPermissionForReadWrite(this)
+                    saveToInternalFolder(this, bm, fname)
                 }
-            } else { saveToInternalFolder(this, bm, fname)  }
+            //} else { saveToInternalFolder(this, bm, fname)  }
             //saveToInternalFolder(this, bm, fname)
         }
     }
