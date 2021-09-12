@@ -1,12 +1,18 @@
 package ru.mobiskif.jetpack
 
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+
+private const val PERMISSION_READ_EXTERNAL_STORAGE = 5
 
 fun saveToInternalFolder(context: Context, bitmap: Bitmap, fname: String) {
     try {
@@ -34,3 +40,27 @@ fun loadFromInternalFolder(context: Context, fname: String): Bitmap {
     }
     return bitmap
 }
+
+//Check if you already have read storage permission
+fun checkPermissionForReadWrite(context: Context): Boolean {
+    val result: Int =
+        ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+    Log.d("jop","=== check permission $result")
+    return result == PackageManager.PERMISSION_GRANTED
+}
+
+//Request Permission For Read Storage
+fun requestPermissionForReadWrite(context: Context) {
+    Log.d("jop","--- request permission")
+    ActivityCompat.requestPermissions(
+        context as Activity,
+        arrayOf(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        ), PERMISSION_READ_EXTERNAL_STORAGE
+    )
+}
+

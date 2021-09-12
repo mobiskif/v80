@@ -3,7 +3,9 @@ package ru.mobiskif.jetpack
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -61,10 +63,8 @@ class MainActivity : ComponentActivity() {
     override fun onBackPressed() {
         var state = model.getState()
         when (state) {
-            "Инструкция", "Изменить пациента", "Выбрать клинику" -> state = "Выбрать пациента"
             "Выбрать пациента" -> state = "Инструкция"
-            //"Изменить пациента" -> state = "Выбрать пациента"
-            //"Выбрать клинику" -> state = "Выбрать пациента"
+            "Инструкция", "Изменить пациента", "Выбрать клинику" -> state = "Выбрать пациента"
             "Выбрать специальность" -> state = "Выбрать клинику"
             "Выбрать врача" -> state = "Выбрать специальность"
             "Выбрать талон" -> state = "Выбрать врача"
@@ -76,11 +76,20 @@ class MainActivity : ComponentActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == 777 && data != null) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
+            //Log.d("jop","###########")
             val bm = data.extras?.get("data") as Bitmap
             //val fname = data.extras?.get("fname") as String
             val fname = "${model.cuser.value?.id}.png"
-            saveToInternalFolder(this, bm, fname)
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                if (checkPermissionForReadWrite(this)) {
+                    saveToInternalFolder(this, bm, fname)
+                } else {
+                    requestPermissionForReadWrite(this)
+                }
+            } else { saveToInternalFolder(this, bm, fname)  }
+            //saveToInternalFolder(this, bm, fname)
         }
     }
 
