@@ -2,7 +2,12 @@ package ru.mobiskif.jetpack
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.BadgeBox
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.room.*
@@ -29,6 +34,7 @@ fun fromSpecMap(map: MutableList<Map<String, String>>): List<Spec> {
     return result
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun SpecItems(spec: Spec, model: Model) {
     val user = model.cuser.value!!
@@ -43,7 +49,9 @@ fun SpecItems(spec: Spec, model: Model) {
         }
         ) {
             Text("${spec.name}")
-            if (model.getState() == "Выбрать специальность") Text("Талонов ${spec.free}")
+            if (model.getState() == "Выбрать специальность") {
+                Text("Талонов ${spec.free}")
+            }
         }
     }
     Spacer(Modifier.height(space))

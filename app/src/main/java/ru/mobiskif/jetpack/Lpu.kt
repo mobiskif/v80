@@ -2,10 +2,10 @@ package ru.mobiskif.jetpack
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +44,40 @@ fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
         }
     }
     return result
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun LpuItems2(lpu: Lpu, model: Model) {
+    val user = model.cuser.value!!
+    //BadgeBox(badgeContent = { Text("88") }) {
+
+        Card(elevation = space / 2, modifier = Modifier.clickable {
+            user.iLpu = lpu.lid
+            user.Lpu = lpu.name
+            model.checkPatient(user)
+            model.readSpecs(lpu.lid)
+            model.setState("Выбрать специальность")
+        }) {
+            ListItem(
+                //icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
+                secondaryText = { Text("${lpu.fullname}\n") },
+                trailing = {
+                    Icon(
+                        Icons.Filled.Delete, "Удалить",
+                        Modifier
+                            .clickable { model.deleteLpu(lpu) }
+                            .alpha(.33f)
+                    )
+                },
+                //overlineText = { Text("${lpu.fullname}") },
+                singleLineSecondaryText = false
+            ) {
+                Text("${lpu.name}")
+            }
+        }
+    //}
+    Spacer(Modifier.size(space))
 }
 
 @Composable

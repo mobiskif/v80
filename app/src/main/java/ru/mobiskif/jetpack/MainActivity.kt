@@ -119,7 +119,7 @@ fun MainView(activity: Activity, model: Model) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
-                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
+                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems2(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {
                                 Text("Отложено:")

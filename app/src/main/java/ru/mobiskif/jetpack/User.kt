@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
+import kotlinx.coroutines.newSingleThreadContext
 
 @SuppressLint("NewApi")
 @Entity
@@ -88,27 +89,27 @@ fun UsrImage(bitmap: Bitmap) {
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .size(space * 6)
-            .clip(RoundedCornerShape(space * 3))
+            .size(space * 8)
+            .clip(RoundedCornerShape(space * 4))
     )
 }
 
 @Composable
 fun UsrPhotoView(activity: Activity, user: User, model: Model) {
-    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
 
         TextButton(onClick = {
             model.setCurrentUser(user)
             model.setState("Изменить пациента")
         })
-        {Text(text = "Изменить", fontSize = small)}
+        { Text(text = "Изменить", fontSize = small) }
     }
 }
 
 @Composable
 fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
-    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
 
         TextButton(onClick = {
@@ -116,21 +117,19 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
             startActivityForResult(activity, intent, 1, null)
         })
-        {Text(text = "Фото", fontSize = small)}
+        { Text(text = "Фото", fontSize = small) }
 
         TextButton(onClick = {
 
         })
-        {Text(text = "х", fontSize = small)}
+        { Text(text = "х", fontSize = small) }
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
 fun UsrItemsView2(activity: Activity, user: User, model: Model) {
-    //val icon = Icon(Icons.Filled.Edit,"")
-
-    Card (elevation = space, modifier = Modifier.clickable {
+    Card(elevation = space, modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
         model.readLpus(user.iDistr.toString())
@@ -138,15 +137,21 @@ fun UsrItemsView2(activity: Activity, user: User, model: Model) {
     }) {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
-            secondaryText = { Text("${user.D}") },
-            trailing = { Icon(Icons.Filled.Edit,"", Modifier.alpha(.5f).clickable {
-                model.setCurrentUser(user)
-                model.setState("Изменить пациента")
-            }) },
             overlineText = { Text("${user.Distr} район") },
-        ) {
-            Text("${user.F} ${user.I} ${user.O}")
-        }
+            text = { Text("${user.F} ${user.I} ${user.O}") },
+            secondaryText = { Text("${user.D}\n") },
+            trailing = {
+                if (model.getState() == "Выбрать пациента") Icon(Icons.Filled.Edit, "",
+                    Modifier
+                        .alpha(.33f)
+                        .clickable {
+                            model.setCurrentUser(user)
+                            model.setState("Изменить пациента")
+                        })
+                else Text("")
+            },
+
+            )
     }
     Spacer(Modifier.size(space))
 }
@@ -169,7 +174,7 @@ fun UsrItemsView(activity: Activity, user: User, model: Model) {
             Text("${user.F} \n${user.I} ${user.O}")
             when (model.getState()) {
                 "Выбрать пациента", "Выбрать клинику" -> {
-                    if (user.Distr?.length!! <1) Text("Нажмите \"Изменить\" и заполните все данные пациента", fontSize = small)
+                    if (user.Distr?.length!! < 1) Text("Нажмите \"Изменить\" и заполните все данные пациента", fontSize = small)
                     else {
                         Text("\n${user.D}", fontSize = small)
                         Text("${user.Distr} район", fontSize = small)
