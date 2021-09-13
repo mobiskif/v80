@@ -48,7 +48,10 @@ class MainActivity : ComponentActivity() {
         }
         model.cuser.observe(this) {
             model.setPalette(this, it.Palette.toString(), it)
-            if (it.idPat!!.isNotEmpty()) model.readHists(it)
+            if (!it.idPat!!.isNullOrEmpty()) {
+                Log.d("jop", "========== ${it.idPat}")
+                model.readHists(it)
+            }
             setContent { MainView(this, model) }
         }
         model.lpus.observe(this) { setContent { MainView(this, model) } }
@@ -77,20 +80,18 @@ class MainActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
-            //Log.d("jop","###########")
             val bm = data.extras?.get("data") as Bitmap
             //val fname = data.extras?.get("fname") as String
             val fname = "${model.cuser.value?.id}.png"
 
-            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 if (checkPermissionForReadWrite(this)) {
                     saveToInternalFolder(this, bm, fname)
                 } else {
                     requestPermissionForReadWrite(this)
                     saveToInternalFolder(this, bm, fname)
                 }
-            //} else { saveToInternalFolder(this, bm, fname)  }
-            //saveToInternalFolder(this, bm, fname)
+            } else { saveToInternalFolder(this, bm, fname)  }
         }
     }
 

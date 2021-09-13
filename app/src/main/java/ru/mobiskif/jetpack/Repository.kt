@@ -87,7 +87,7 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             val maxid = db.userDao().readMaxId()
-            db.userDao().create(User(maxid + 1, "", "", "", "", "1", "", "", "", "","","",""))
+            db.userDao().create(User(maxid + 1))
             _users.postValue(db.userDao().read())
         }
         _wait.postValue(false)

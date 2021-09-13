@@ -40,7 +40,7 @@ data class User(
     var Distr: String? = "",
     var iDistr: String? = "1",
     var Lpu: String? = "",
-    var iLpu: String? = "",
+    var iLpu: String? = "174",
     var Spec: String? = "",
     var iSpec: String? = "",
     var Doc: String? = "",
@@ -210,7 +210,6 @@ fun UsrDataEdit(activity: Activity, user: User, model: Model) {
                     model.setState("Выбрать клинику")
                 }) { Text("Записать") }
             }
-
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -53,7 +54,7 @@ fun TalonItems(talon: Talon, model: Model) {
         model.setState("Взять талон")
     })
     {
-        Column (Modifier.fillMaxWidth(0.6f)) { Text("${user.Spec}") }
+        Column (Modifier.widthIn(56.dp, 156.dp)) { Text("${user.Spec}") }
         Spacer(Modifier.size(space))
         Column {
             Text(tim, fontWeight = FontWeight.Bold)

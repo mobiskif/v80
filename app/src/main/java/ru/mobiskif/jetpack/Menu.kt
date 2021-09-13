@@ -43,9 +43,5 @@ fun Menu(context: Context, model: Model) {
             onClick = { },
             content = { Text("Версия ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
         )
-        DropdownMenuItem(
-            onClick = { model.setState("Выбрать фото"); expanded.value = false },
-            content = { Text("Выбрать фото") }
-        )
     }
 }
