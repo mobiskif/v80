@@ -9,10 +9,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
@@ -92,29 +95,60 @@ fun UsrImage(bitmap: Bitmap) {
 
 @Composable
 fun UsrPhotoView(activity: Activity, user: User, model: Model) {
-    Column(
-        Modifier.clickable {
+    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+        UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
+
+        TextButton(onClick = {
             model.setCurrentUser(user)
             model.setState("Изменить пациента")
-        }, horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-        Text(text = "Изменить", fontSize = small, modifier = Modifier.alpha(0.7f))
+        })
+        {Text(text = "Изменить", fontSize = small)}
     }
 }
 
 @Composable
 fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
-    Column(
-        Modifier.clickable {
+    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+        UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
+
+        TextButton(onClick = {
             model.setCurrentUser(user)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
             startActivityForResult(activity, intent, 1, null)
-        }, horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-        Text(text = "Фото", fontSize = small, modifier = Modifier.alpha(0.7f))
+        })
+        {Text(text = "Фото", fontSize = small)}
+
+        TextButton(onClick = {
+
+        })
+        {Text(text = "х", fontSize = small)}
     }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun UsrItemsView2(activity: Activity, user: User, model: Model) {
+    //val icon = Icon(Icons.Filled.Edit,"")
+
+    Card (elevation = space, modifier = Modifier.clickable {
+        user.idPat = ""
+        model.setCurrentUser(user)
+        model.readLpus(user.iDistr.toString())
+        model.setState("Выбрать клинику")
+    }) {
+        ListItem(
+            icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
+            secondaryText = { Text("${user.D}") },
+            trailing = { Icon(Icons.Filled.Edit,"", Modifier.alpha(.5f).clickable {
+                model.setCurrentUser(user)
+                model.setState("Изменить пациента")
+            }) },
+            overlineText = { Text("${user.Distr} район") },
+        ) {
+            Text("${user.F} ${user.I} ${user.O}")
+        }
+    }
+    Spacer(Modifier.size(space))
 }
 
 @Composable

@@ -2,21 +2,27 @@ package ru.mobiskif.jetpack
 
 import android.app.Activity
 import android.content.Context
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
+@ExperimentalMaterialApi
 @Composable
 fun CurrentInfo(activity: Activity, model: Model) {
     val user = model.cuser.value ?: User(0)
     when (model.getState()) {
         "Выбрать клинику" -> {
-            UsrItemsView(activity, user, model)
+            UsrItemsView2(activity, user, model)
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
             Spacer(Modifier.height(space))
         }
@@ -78,9 +84,9 @@ fun CurrentInfo(activity: Activity, model: Model) {
 
 @Composable
 fun Help() {
-    Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.", modifier = modFill)
+    Card(shape = shapes.small, elevation = 15.dp) {Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.")}
     Spacer(Modifier.size(space))
-    Text("Нажав на символ \"Портрет\", отредактируйте персональные данные.", modifier = modBord)
+    Text("Нажав на символ \"Портрет\", отредактируйте персональные данные.")
     Spacer(Modifier.size(space))
     Text("Буквы в именах пишите так, как записано в регистратуре (\"ё\", \"-оглы\" и т.п.)", modifier = modFill)
     Spacer(Modifier.size(space))

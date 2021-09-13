@@ -29,6 +29,7 @@ var modFillVar = Modifier.offset(0.dp, 0.dp)
 class MainActivity : ComponentActivity() {
     private val model: Model by viewModels()
 
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
         model.cuser.observe(this) {
             model.setPalette(this, it.Palette.toString(), it)
             if (!it.idPat!!.isNullOrEmpty()) {
-                Log.d("jop", "========== ${it.idPat}")
+                Log.d("jop", "====cuser.observe====== ${it.idPat}")
                 model.readHists(it)
             }
             setContent { MainView(this, model) }
@@ -97,6 +98,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun MainView(activity: Activity, model: Model) {
     val users = model.users.value ?: listOf()
@@ -116,7 +118,7 @@ fun MainView(activity: Activity, model: Model) {
                     when (model.getState()) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
-                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView(activity, users[it], model) } }
+                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {
