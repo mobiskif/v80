@@ -89,8 +89,8 @@ fun UsrImage(bitmap: Bitmap) {
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .size(space * 8)
-            .clip(RoundedCornerShape(space * 4))
+            .size(space * 6)
+            .clip(RoundedCornerShape(space * 3))
     )
 }
 
