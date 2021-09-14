@@ -90,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     saveToInternalFolder(this, bm, fname)
                 } else {
                     requestPermissionForReadWrite(this)
+                    //requestPermissionForCamera(this)
                     saveToInternalFolder(this, bm, fname)
                 }
             } else { saveToInternalFolder(this, bm, fname)  }

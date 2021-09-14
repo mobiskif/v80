@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -115,7 +116,14 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
         TextButton(onClick = {
             model.setCurrentUser(user)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
-            startActivityForResult(activity, intent, 1, null)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                if (checkPermissionForCamera(activity)) {
+                    startActivityForResult(activity, intent, 1, null)
+                } else {
+                    requestPermissionForCamera(activity)
+                    //startActivityForResult(activity, intent, 1, null)
+                }
+            } else startActivityForResult(activity, intent, 1, null)
         })
         { Text(text = "Фото", fontSize = small) }
 
@@ -129,7 +137,7 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
 @ExperimentalMaterialApi
 @Composable
 fun UsrItemsView2(activity: Activity, user: User, model: Model) {
-    Card(elevation = space, modifier = Modifier.clickable {
+    Card(elevation = 4.dp, modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
         model.readLpus(user.iDistr.toString())

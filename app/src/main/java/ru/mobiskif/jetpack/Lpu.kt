@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.unit.dp
 import androidx.room.*
 
 @Entity(primaryKeys = ["did", "lid"])
@@ -52,7 +53,7 @@ fun LpuItems2(lpu: Lpu, model: Model) {
     val user = model.cuser.value!!
     //BadgeBox(badgeContent = { Text("88") }) {
 
-        Card(elevation = space / 2, modifier = Modifier.clickable {
+        Card(elevation = 3.dp, modifier = Modifier.clickable {
             user.iLpu = lpu.lid
             user.Lpu = lpu.name
             model.checkPatient(user)

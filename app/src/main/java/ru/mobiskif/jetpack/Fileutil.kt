@@ -52,6 +52,16 @@ fun checkPermissionForReadWrite(context: Context): Boolean {
     return result == PackageManager.PERMISSION_GRANTED
 }
 
+fun checkPermissionForCamera(context: Context): Boolean {
+    val result: Int =
+        ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.CAMERA
+        )
+    Log.d("jop","=== check permission $result")
+    return result == PackageManager.PERMISSION_GRANTED
+}
+
 //Request Permission For Read Storage
 fun requestPermissionForReadWrite(context: Context) {
     Log.d("jop","--- request permission")
@@ -59,7 +69,18 @@ fun requestPermissionForReadWrite(context: Context) {
         context as Activity,
         arrayOf(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ), PERMISSION_READ_EXTERNAL_STORAGE
+    )
+}
+
+//Request Permission For Read Storage
+fun requestPermissionForCamera(context: Context) {
+    Log.d("jop","--- request permission")
+    ActivityCompat.requestPermissions(
+        context as Activity,
+        arrayOf(
+            android.Manifest.permission.CAMERA
         ), PERMISSION_READ_EXTERNAL_STORAGE
     )
 }
