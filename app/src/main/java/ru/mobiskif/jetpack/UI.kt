@@ -27,7 +27,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
             Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
-            UsrItemsView(activity, user, model)
+            UsrItemsView2(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu

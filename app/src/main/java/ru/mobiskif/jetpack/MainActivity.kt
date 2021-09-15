@@ -89,6 +89,7 @@ class MainActivity : ComponentActivity() {
                 if (!checkPermissionForReadWrite(this)) requestPermissionForReadWrite(this)
             saveToInternalFolder(this, bm, fname)
         }
+        model.repaint()
     }
 
 }

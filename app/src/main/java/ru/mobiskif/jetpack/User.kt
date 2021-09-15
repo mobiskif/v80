@@ -1,6 +1,5 @@
 package ru.mobiskif.jetpack
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,10 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,16 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
-import kotlinx.coroutines.newSingleThreadContext
 
 //@SuppressLint("NewApi")
 @Entity
@@ -118,7 +110,7 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
 
         TextButton(onClick = {
-            model.setCurrentUser(user)
+            //model.setCurrentUser(user)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 if (checkPermissionForCamera(activity)) {
@@ -129,13 +121,55 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
                 }
             } else startActivityForResult(activity, intent, 1, null)
         })
-        { Text(text = "Фото", fontSize = small) }
+        { Text(text = "Сделать фото", fontSize = small) }
 
         TextButton(onClick = {
-
+            val st = model.getState()
+            //model.setState("Инструкция")
+            deleteFromInternalFolder(activity, "${user.id}.png")
+            //model.setState(st)
+            model.repaint()
         })
-        { Text(text = "х", fontSize = small) }
+        { Text(text = "Сбросить", fontSize = small) }
     }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun ListItem1(activity: Activity, user: User, model: Model) {
+    ListItem(
+        text = {
+            if (user.Distr.isNullOrEmpty()) Text("Войдите в редактор и заполните все данные пациента")
+            else Text("${user.F} ${user.I} ${user.O}\n${user.D}")
+        },
+        secondaryText = { Text("${user.Distr} район") },
+    )
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun ListItem2(activity: Activity, user: User, model: Model) {
+    ListItem(
+        icon = {
+            UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
+        },
+        //overlineText = { Text("${user.Distr}") },
+        text = {
+            if (user.Distr.isNullOrEmpty()) Text("Войдите в редактор и заполните все данные пациента")
+            else Text("${user.F} ${user.I} ${user.O}")
+        },
+        secondaryText = { Text("${user.D}") },
+        trailing = {
+            Icon(Icons.Filled.Edit, "",
+                Modifier
+                    .alpha(.33f)
+                    .clickable {
+                        model.setCurrentUser(user)
+                        model.setState("Изменить пациента")
+                    })
+        },
+
+        )
 }
 
 @ExperimentalMaterialApi
@@ -147,23 +181,10 @@ fun UsrItemsView2(activity: Activity, user: User, model: Model) {
         model.readLpus(user.iDistr.toString())
         model.setState("Выбрать клинику")
     }) {
-        ListItem(
-            icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
-            overlineText = { Text("${user.Distr} район") },
-            text = { Text("${user.F} ${user.I} ${user.O}") },
-            secondaryText = { Text("${user.D}\n") },
-            trailing = {
-                if (model.getState() == "Выбрать пациента") Icon(Icons.Filled.Edit, "",
-                    Modifier
-                        .alpha(.33f)
-                        .clickable {
-                            model.setCurrentUser(user)
-                            model.setState("Изменить пациента")
-                        })
-                else Text("")
-            },
-
-            )
+        when (model.getState()) {
+            "Выбрать пациента" -> ListItem2(activity, user, model)
+            else -> ListItem1(activity, user, model)
+        }
     }
     Spacer(Modifier.size(space))
 }

@@ -1,6 +1,7 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,13 @@ class Model : ViewModel() {
     val history = repository.history
     val idtalon = repository.idtalon
 
+    fun repaint() {
+        //wait.apply { MutableLiveData(true) }
+        //wait.apply { MutableLiveData(false) }
+        val old = getState()
+        setState("Инструкция")
+        setState(old)
+    }
 
     fun setState(state: String) {
         this.state.postValue(state)

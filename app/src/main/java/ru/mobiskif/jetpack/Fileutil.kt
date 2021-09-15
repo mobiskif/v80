@@ -42,6 +42,19 @@ fun loadFromInternalFolder(context: Context, fname: String): Bitmap {
     return bitmap
 }
 
+fun deleteFromInternalFolder(context: Context, fname: String) {
+    //var bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.group_4)
+    try {
+        val file = File(context.getExternalFilesDir(null), fname)
+        if (file.exists()) {
+            file.delete()
+            Log.d("jop", "Delete file " + file.absolutePath)
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
 //Check if you already have read storage permission
 fun checkPermissionForReadWrite(context: Context): Boolean {
     val result: Int =
