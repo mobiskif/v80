@@ -112,7 +112,7 @@ fun MainView(activity: Activity, model: Model) {
         Scaffold(
             floatingActionButton = { Fab(model) },
             topBar = { Topbar(activity, model) },
-            backgroundColor = back
+            //backgroundColor = back
         ) {
             Column(Modifier.padding(space)) {
                 CurrentInfo(activity, model)
