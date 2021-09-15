@@ -2,18 +2,14 @@ package ru.mobiskif.jetpack
 
 import android.app.Activity
 import android.content.Context
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
@@ -22,12 +18,12 @@ fun CurrentInfo(activity: Activity, model: Model) {
     val user = model.cuser.value ?: User(0)
     when (model.getState()) {
         "Выбрать клинику" -> {
-            UsrItemsView2(activity, user, model)
-            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
-            Spacer(Modifier.height(space))
+            UsrViewNew(activity, user, model)
+            //Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)
+            //Spacer(Modifier.height(space))
         }
         "Выбрать специальность" -> {
-            UsrItemsView2(activity, user, model)
+            UsrViewNew(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu

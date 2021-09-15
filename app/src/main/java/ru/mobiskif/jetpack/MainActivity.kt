@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,6 +18,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 var LightPalette = lightColors()
@@ -103,10 +105,15 @@ fun MainView(activity: Activity, model: Model) {
     val docs = model.docs.value ?: listOf()
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
+    val back = Color(android.graphics.Color.parseColor("#ffddff"))
 
     Theme {
         FixModes()
-        Scaffold(floatingActionButton = { Fab(model) }, topBar = { Topbar(activity, model) }) {
+        Scaffold(
+            floatingActionButton = { Fab(model) },
+            topBar = { Topbar(activity, model) },
+            backgroundColor = back
+        ) {
             Column(Modifier.padding(space)) {
                 CurrentInfo(activity, model)
                 if (model.wait.value == true) CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
@@ -115,7 +122,7 @@ fun MainView(activity: Activity, model: Model) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         //"Инструкция" -> myBackDrop()
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
-                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
+                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrViewNew(activity, users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems2(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {

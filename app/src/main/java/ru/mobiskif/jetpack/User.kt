@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
@@ -136,54 +138,63 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
 
 @ExperimentalMaterialApi
 @Composable
-fun ListItem1(activity: Activity, user: User, model: Model) {
+fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
+        //icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
+        overlineText = { Text("${user.Distr} район") },
         text = {
             if (user.Distr.isNullOrEmpty()) Text("Войдите в редактор и заполните все данные пациента")
-            else Text("${user.F} ${user.I} ${user.O}\n${user.D}")
+            else Text("${user.F} ${user.I} ${user.O}")
         },
-        secondaryText = { Text("${user.Distr} район") },
+        //secondaryText = { Text("${user.D}") },
+        modifier = Modifier.background(LightPalette.secondary)
+
     )
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun ListItem2(activity: Activity, user: User, model: Model) {
-    ListItem(
-        icon = {
-            UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-        },
-        //overlineText = { Text("${user.Distr}") },
-        text = {
-            if (user.Distr.isNullOrEmpty()) Text("Войдите в редактор и заполните все данные пациента")
-            else Text("${user.F} ${user.I} ${user.O}")
-        },
-        secondaryText = { Text("${user.D}") },
-        trailing = {
-            Icon(Icons.Filled.Edit, "",
-                Modifier
-                    .alpha(.33f)
-                    .clickable {
+fun WideUserList(activity: Activity, user: User, model: Model) {
+    if (user.Distr.isNullOrEmpty()) {
+        ListItem(
+            icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
+            text = { Text("Нажмите и заполните все данные пациента") },
+            modifier = Modifier.clickable {
+                model.setCurrentUser(user)
+                model.setState("Изменить пациента")
+            }
+        )
+    }
+    else {
+        ListItem(
+            icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
+            overlineText = { Text("${user.Distr} район") },
+            text = { Text("${user.F} ${user.I} ${user.O}") },
+            secondaryText = { Text("${user.D}") },
+            trailing = {
+                Icon(Icons.Filled.Edit, "",
+                    Modifier.alpha(.33f).clickable {
                         model.setCurrentUser(user)
                         model.setState("Изменить пациента")
                     })
-        },
-
+            },
+            modifier = Modifier.background(LightPalette.secondary)
         )
+    }
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun UsrItemsView2(activity: Activity, user: User, model: Model) {
-    Card(elevation = 4.dp, modifier = Modifier.clickable {
+fun UsrViewNew(activity: Activity, user: User, model: Model) {
+    Card(elevation = 4.dp,  modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
         model.readLpus(user.iDistr.toString())
         model.setState("Выбрать клинику")
     }) {
         when (model.getState()) {
-            "Выбрать пациента" -> ListItem2(activity, user, model)
-            else -> ListItem1(activity, user, model)
+            "Выбрать пациента" -> WideUserList(activity, user, model)
+            else -> ShortUserList(activity, user, model)
         }
     }
     Spacer(Modifier.size(space))
