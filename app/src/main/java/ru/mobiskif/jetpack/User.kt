@@ -140,13 +140,8 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
 @Composable
 fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
-        //icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
         overlineText = { Text("${user.Distr} район") },
-        text = {
-            if (user.Distr.isNullOrEmpty()) Text("Войдите в редактор и заполните все данные пациента")
-            else Text("${user.F} ${user.I} ${user.O}")
-        },
-        //secondaryText = { Text("${user.D}") },
+        text = { Text("${user.F} ${user.I} ${user.O}") },
         modifier = Modifier.background(LightPalette.secondary)
 
     )
