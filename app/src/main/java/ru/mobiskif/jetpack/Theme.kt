@@ -59,6 +59,13 @@ fun setLightPalette(context: Context, theme: String): Colors {
                 error = Color(android.graphics.Color.parseColor("#005005")),
             )
         }
+        "Красная" -> {
+            LightPalette = lightColors(
+                primary = Color(ContextCompat.getColor(context, R.color.primaryColor3)), //цвет Button и подписей
+                primaryVariant = Color(ContextCompat.getColor(context,R.color.primaryDarkColor3)), //цвет StatusBar
+                secondary = Color(ContextCompat.getColor(context,R.color.primaryLightColor3)), //цвет FAB и RadioButton
+            )
+        }
     }
     return LightPalette
 }

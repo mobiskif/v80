@@ -85,15 +85,9 @@ class MainActivity : ComponentActivity() {
             //val fname = data.extras?.get("fname") as String
             val fname = "${model.cuser.value?.id}.png"
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                if (checkPermissionForReadWrite(this)) {
-                    saveToInternalFolder(this, bm, fname)
-                } else {
-                    requestPermissionForReadWrite(this)
-                    //requestPermissionForCamera(this)
-                    saveToInternalFolder(this, bm, fname)
-                }
-            } else { saveToInternalFolder(this, bm, fname)  }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+                if (!checkPermissionForReadWrite(this)) requestPermissionForReadWrite(this)
+            saveToInternalFolder(this, bm, fname)
         }
     }
 
@@ -118,6 +112,7 @@ fun MainView(activity: Activity, model: Model) {
                 else {
                     when (model.getState()) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
+                        //"Инструкция" -> myBackDrop()
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems2(lpus[it], model) } }

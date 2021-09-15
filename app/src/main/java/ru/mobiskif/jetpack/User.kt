@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 import kotlinx.coroutines.newSingleThreadContext
 
-@SuppressLint("NewApi")
+//@SuppressLint("NewApi")
 @Entity
 data class User(
     @PrimaryKey var id: Int,
@@ -85,6 +86,7 @@ interface UserDao {
 
 @Composable
 fun UsrImage(bitmap: Bitmap) {
+
     Image(
         bitmap = bitmap.asImageBitmap(),
         contentDescription = "",
@@ -93,6 +95,8 @@ fun UsrImage(bitmap: Bitmap) {
             .size(space * 6)
             .clip(RoundedCornerShape(space * 3))
     )
+
+    //Image(painter = painterResource(R.drawable.round_face), contentDescription = "")
 }
 
 @Composable

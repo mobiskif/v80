@@ -40,6 +40,10 @@ fun Menu(context: Context, model: Model) {
             content = { Text("Зеленая тема") }
         )
         DropdownMenuItem(
+            onClick = { val st = model.getState(); model.setState("Инструкция"); model.setPalette(context, "Красная"); expanded.value = false; model.setState(st) },
+            content = { Text("Красная тема") }
+        )
+        DropdownMenuItem(
             onClick = { },
             content = { Text("Версия ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
         )
