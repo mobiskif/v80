@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
         model.readUsers()
 
         model.state.observe(this) {
-            title = it;
+            title = it
             setContent { MainView(this, model) }
         }
         model.users.observe(this) {
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
         }
         model.cuser.observe(this) {
             model.setPalette(this, it.Palette.toString(), it)
-            if (!it.idPat!!.isNullOrEmpty()) {
+            if (!it.idPat.isNullOrEmpty()) {
                 Log.d("jop", "====cuser.observe====== ${it.idPat}")
                 model.readHists(it)
             }

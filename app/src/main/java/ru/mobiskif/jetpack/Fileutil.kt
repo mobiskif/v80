@@ -32,7 +32,7 @@ fun saveToInternalFolder(context: Context, bitmap: Bitmap, fname: String) {
     try {
         val file = File(context.getExternalFilesDir(null), fname)
         if (!file.exists()) file.createNewFile()
-        var fileOutputStream: FileOutputStream? = FileOutputStream(file)
+        val fileOutputStream: FileOutputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         Log.d("jop", "Saved to " + file.absolutePath)
     } catch (e: Exception) {
@@ -50,7 +50,7 @@ fun loadFromInternalFolder(context: Context, fname: String): Bitmap {
     try {
         val file = File(context.getExternalFilesDir(null), fname)
         if (file.exists()) {
-            var fileInputStream: FileInputStream? = FileInputStream(file)
+            val fileInputStream: FileInputStream = FileInputStream(file)
             bitmap = BitmapFactory.decodeStream(fileInputStream)
             Log.d("jop", "Load from " + file.absolutePath)
         }

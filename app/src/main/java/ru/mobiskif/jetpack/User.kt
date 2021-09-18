@@ -1,10 +1,7 @@
 package ru.mobiskif.jetpack
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
-import android.os.Build
-import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,12 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 
 //@SuppressLint("NewApi")
@@ -235,11 +230,11 @@ fun UsrDataEdit(activity: Activity, user: User, model: Model) {
     val rR = remember { mutableStateOf(TextFieldValue("${user.Distr}")) }
     val irR = remember { mutableStateOf(TextFieldValue("${user.iDistr}")) }
     Row {
-        Column() {
+        Column {
             UsrPhotoEdit(activity, user, model)
         }
         Spacer(Modifier.size(space))
-        Column() {
+        Column {
             //Row {
             Column {
                 OutlinedTextField(
