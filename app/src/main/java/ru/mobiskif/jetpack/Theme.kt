@@ -46,7 +46,7 @@ fun setLightPalette(context: Context, theme: String): Colors {
                 primaryVariant = Color(ContextCompat.getColor(context,R.color.primaryDarkColor)), //цвет StatusBar
                 secondary = Color(ContextCompat.getColor(context,R.color.secondaryColor)), //цвет FAB и RadioButton
                 secondaryVariant = Color(ContextCompat.getColor(context,R.color.secondaryDarkColor)), //цвет Switch
-                surface = Color(ContextCompat.getColor(context,R.color.secondaryLightColor)), //цвет Switch
+                surface = Color(ContextCompat.getColor(context,R.color.secondaryLightColor)),
                 error = Color(ContextCompat.getColor(context, R.color.secondaryTextColor)),
             )
         }

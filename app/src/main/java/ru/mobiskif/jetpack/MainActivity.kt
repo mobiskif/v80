@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -122,8 +121,8 @@ fun MainView(activity: Activity, model: Model) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         //"Инструкция" -> myBackDrop()
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
-                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrViewNew(activity, users[it], model) } }
-                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems2(lpus[it], model) } }
+                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
+                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {
                                 Text("Отложено:")

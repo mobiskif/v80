@@ -110,7 +110,7 @@ fun UsrPhotoView(activity: Activity, user: User, model: Model) {
 fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-
+/*
         TextButton(onClick = {
             //model.setCurrentUser(user)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
@@ -133,6 +133,7 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
             model.repaint()
         })
         { Text(text = "Сбросить", fontSize = small) }
+*/
     }
 }
 
@@ -154,7 +155,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             text = { Text("Нажмите и заполните все данные пациента") },
-            modifier = Modifier.clickable {
+            modifier = Modifier.background(LightPalette.secondary).clickable {
                 model.setCurrentUser(user)
                 model.setState("Изменить пациента")
             }
@@ -180,7 +181,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
 
 @ExperimentalMaterialApi
 @Composable
-fun UsrViewNew(activity: Activity, user: User, model: Model) {
+fun UsrItemsView2(activity: Activity, user: User, model: Model) {
     Card(elevation = 4.dp,  modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
