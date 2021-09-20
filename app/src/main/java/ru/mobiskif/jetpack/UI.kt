@@ -83,11 +83,11 @@ fun Help() {
         Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.", modifier = modFill)
     //}
     Spacer(Modifier.size(space))
-    Text("Нажав на символ \"Портрет\", отредактируйте персональные данные.", modifier = modBord)
+    Text("Нажав на символ \"Карандаш\", отредактируйте персональные данные.", modifier = modBord)
     Spacer(Modifier.size(space))
     Text("Буквы в именах пишите так, как записано в регистратуре (\"ё\", \"-оглы\" и т.п.)", modifier = modFill)
     Spacer(Modifier.size(space))
-    Text("Дату укажите в формате \"1984-09-23\", район выберите из списка.", modifier = modBord)
+    Text("Дату укажите в формате \"1984-09-23\" ", modifier = modBord)
     Spacer(Modifier.size(space))
     Text("Нажав на \"ФИО\", получите список доступных поликлиник.", modifier = modFill)
     Spacer(Modifier.size(space))

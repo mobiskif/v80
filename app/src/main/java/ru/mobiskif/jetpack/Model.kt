@@ -1,28 +1,29 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class Model : ViewModel() {
-    private val repository = Repository()
     val state = MutableLiveData("Выбрать пациента")
+    private val repository = Repository()
     val wait = repository.wait
+    var cuser = repository.cuser
+
+    val users = repository.users
     val lpus = repository.lpus
     val distrs = repository.distrs
-    val users = repository.users
-    var cuser = repository.cuser
+    val history = repository.history
     val specs = repository.specs
     val docs = repository.docs
     val talons = repository.talons
-    val history = repository.history
     val idtalon = repository.idtalon
+    val confs = repository.conf
 
     fun repaint() {
-        //wait.apply { MutableLiveData(true) }
-        //wait.apply { MutableLiveData(false) }
         val old = getState()
         setState("Инструкция")
         setState(old)
@@ -36,16 +37,23 @@ class Model : ViewModel() {
         return "${state.value}"
     }
 
-    fun setPalette(context: Context, theme: String, user: User? = cuser.value) {
-        if (user!=null) {
-            user.Palette = theme
-            updateUser(user)
-        }
+    fun setPalette(context: Context, theme: String) {
         LightPalette = setLightPalette(context, theme)
+        val th = this.confs.value?.filter { it.name=="palette" }
+        th!![0].value=theme
+        writeConf(th[0])
     }
 
     fun setDBContext(context: Context) {
         viewModelScope.launch { repository.setDBContext(context) }
+    }
+
+    fun readConf() {
+        viewModelScope.launch { repository.readConf() }
+    }
+
+    private fun writeConf(conf: Conf) {
+        viewModelScope.launch { repository.writeConf(conf) }
     }
 
     fun createUser() {
@@ -80,6 +88,10 @@ class Model : ViewModel() {
         viewModelScope.launch { repository.readDistrs() }
     }
 
+    fun readLpusFull() {
+        viewModelScope.launch { repository.readLpusFull() }
+    }
+
     fun readLpus(it: String) {
         viewModelScope.launch { repository.readLpus(it) }
     }
@@ -107,5 +119,6 @@ class Model : ViewModel() {
     fun delTalon(idLpu: String, idAppointment: String, idPat: String) {
         viewModelScope.launch { repository.delTalon(idLpu, idAppointment, idPat) }
     }
+
 
 }

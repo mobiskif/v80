@@ -1,21 +1,30 @@
 package ru.mobiskif.jetpack
 
+import android.graphics.Paint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.room.*
 
 @Entity(primaryKeys = ["did", "lid"])
 data class Lpu(
-    var did: String = "", var lid: String = "", var name: String? = "", val description: String? = "", val fullname: String? = ""
+    var did: String = "",
+    var lid: String = "",
+    var name: String? = "",
+    var description: String? = "",
+    val fullname: String? = "",
+    var address: String? = "",
+    var phone: String? = "",
+    var email: String? = ""
 )
 
 @Dao
@@ -25,6 +34,9 @@ interface LpuDao {
 
     @Query("SELECT * FROM lpu")
     fun read(): List<Lpu>
+
+    @Query("SELECT * FROM lpu WHERE lid = :lid")
+    fun readById(lid: String): Lpu
 
     @Update
     fun update(lpu: Lpu)
@@ -95,17 +107,18 @@ fun LpuItems(lpu: Lpu, model: Model) {
         })
         {
             Text("${lpu.name}")
-            if (model.getState() == "Выбрать клинику") Text("${lpu.fullname}", fontSize = small)
+            if (model.getState() == "Выбрать клинику") Text("\n${lpu.fullname} (${lpu.description})", fontSize = small)
             else Text("Карточка ${user.idPat}")
         }
         if (model.getState() == "Выбрать клинику")
-            Column(Modifier.align(Alignment.Bottom)) {
+            Column(Modifier.align(Alignment.Top)) {
                 Icon(
                     Icons.Filled.Delete, "Удалить",
                     Modifier
                         .clickable { model.deleteLpu(lpu) }
-                        .alpha(.33f)
+                        .alpha(.33f).align(End)
                 )
+                if (!lpu.phone.isNullOrEmpty()) Text("\n${lpu.phone}", textAlign = TextAlign.End, fontSize = small)
             }
     }
     Spacer(Modifier.height(space))

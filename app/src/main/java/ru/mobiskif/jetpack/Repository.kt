@@ -12,33 +12,35 @@ import kotlinx.coroutines.withContext
 
 class Repository {
     private lateinit var db: AppDatabase
-    private val _wait = MutableLiveData(false)
-    val wait: LiveData<Boolean> = _wait
-    private val _users = MutableLiveData<List<User>>()
-    val users: LiveData<List<User>> = _users
-    private val _lpus = MutableLiveData<List<Lpu>>()
-    val lpus: LiveData<List<Lpu>> = _lpus
-    private val _distrs = MutableLiveData<List<Distr>>()
-    val distrs: LiveData<List<Distr>> = _distrs
-    private val _cuser = MutableLiveData<User>()
-    val cuser: LiveData<User> = _cuser
-    private val _specs = MutableLiveData<List<Spec>>()
-    val specs: LiveData<List<Spec>> = _specs
-    private val _docs = MutableLiveData<List<Doc>>()
-    val docs: LiveData<List<Doc>> = _docs
-    private val _talons = MutableLiveData<List<Talon>>()
-    val talons: LiveData<List<Talon>> = _talons
-    private val _history = MutableLiveData<List<Hist>>()
-    val history: LiveData<List<Hist>> = _history
-    private val _idtalon = MutableLiveData<String>()
-    val idtalon: LiveData<String> = _idtalon
+    private val _wait = MutableLiveData(false); val wait: LiveData<Boolean> = _wait
+    private val _cuser = MutableLiveData<User>(); val cuser: LiveData<User> = _cuser
 
-    @Database(entities = [User::class, Lpu::class, Distr::class, Hist::class], version = 6, exportSchema = false)
+    private val _users = MutableLiveData<List<User>>(); val users: LiveData<List<User>> = _users
+    private val _lpus = MutableLiveData<List<Lpu>>(); val lpus: LiveData<List<Lpu>> = _lpus
+    private val _distrs = MutableLiveData<List<Distr>>(); val distrs: LiveData<List<Distr>> = _distrs
+    private val _history = MutableLiveData<List<Hist>>(); val history: LiveData<List<Hist>> = _history
+    private val _specs = MutableLiveData<List<Spec>>(); val specs: LiveData<List<Spec>> = _specs
+    private val _docs = MutableLiveData<List<Doc>>(); val docs: LiveData<List<Doc>> = _docs
+    private val _talons = MutableLiveData<List<Talon>>(); val talons: LiveData<List<Talon>> = _talons
+    private val _idtalon = MutableLiveData<String>(); val idtalon: LiveData<String> = _idtalon
+    private val _confs = MutableLiveData<List<Conf>>(); val conf: LiveData<List<Conf>> = _confs
+
+    @Database(entities = [
+        User::class,
+        Lpuf::class,
+        Lpu::class,
+        Distr::class,
+        Hist::class,
+        Conf::class,
+                         ], version = 6, exportSchema = false)
+
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
+        abstract fun lpufDao(): LpufDao
         abstract fun lpuDao(): LpuDao
         abstract fun distrDao(): DistrDao
         abstract fun histDao(): HistDao
+        abstract fun confDao(): ConfDao
     }
 
     fun setDBContext(ac: Context) {
@@ -63,13 +65,35 @@ class Repository {
     suspend fun readLpus(did: String) {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
+            val args = arrayOf(did)
             var llist = db.lpuDao().readByDid(did)
-            if (llist.isEmpty()) {
-                val args = arrayOf(did)
+            if (llist.isNullOrEmpty()) {
                 llist = fromLpuMap(did, Hub2().getLpuList("GetLPUList", args))
                 llist.forEach { db.lpuDao().create(it) }
             }
+            llist.forEach {
+                val lpu = db.lpufDao().readByIdf(it.lid)
+                if (lpu != null) {
+                    it.address = lpu.address
+                    it.phone = lpu.phone
+                    it.email = lpu.email
+                }
+                db.lpuDao().update(it)
+            }
             _lpus.postValue(llist)
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun readLpusFull() {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            var llist = db.lpufDao().readf()
+            if (llist.isNullOrEmpty()) {
+                val args = arrayOf("")
+                llist = fromLpuMapF(Hub2().getLpuList("GetLpuToRFSZIList", args))
+                llist.forEach { db.lpufDao().createf(it) }
+            }
         }
         _wait.postValue(false)
     }
@@ -78,7 +102,8 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.lpuDao().delete(it)
-            _lpus.postValue(db.lpuDao().readByDid(it.did))
+            val lp = db.lpuDao().readByDid(it.did)
+            _lpus.postValue(lp)
         }
         _wait.postValue(false)
     }
@@ -229,6 +254,25 @@ class Repository {
             } else {
                 _idtalon.postValue("ВНИМАНИЕ: отмена НЕ удалась!")
             }
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun readConf() {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            var confs = db.confDao().read()
+            if (confs.isNullOrEmpty()) db.confDao().create(Conf())
+            confs = db.confDao().read()
+            _confs.postValue(confs)
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun writeConf(conf: Conf) {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+            db.confDao().update(conf)
         }
         _wait.postValue(false)
     }

@@ -82,7 +82,7 @@ fun FixModes() {
         .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(space))
         .padding(space)
 
-    mod09 = Modifier.fillMaxWidth(.8f)
+    mod09 = Modifier.fillMaxWidth(.7f)
 
     modFillVar = Modifier
         .fillMaxWidth()

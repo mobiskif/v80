@@ -17,7 +17,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 var LightPalette = lightColors()
@@ -36,8 +35,9 @@ class MainActivity : ComponentActivity() {
         actionBar?.hide()
 
         model.setDBContext(applicationContext)
-        model.setPalette(this, "Фиолетовая")
+        model.readConf()
         model.readDistrs()
+        model.readLpusFull()
         model.readUsers()
 
         model.state.observe(this) {
@@ -49,11 +49,7 @@ class MainActivity : ComponentActivity() {
             setContent { MainView(this, model) }
         }
         model.cuser.observe(this) {
-            model.setPalette(this, it.Palette.toString(), it)
-            if (!it.idPat.isNullOrEmpty()) {
-                Log.d("jop", "====cuser.observe====== ${it.idPat}")
-                model.readHists(it)
-            }
+            if (!it.idPat.isNullOrEmpty()) model.readHists(it)
             setContent { MainView(this, model) }
         }
         model.lpus.observe(this) { setContent { MainView(this, model) } }
@@ -63,6 +59,14 @@ class MainActivity : ComponentActivity() {
         model.talons.observe(this) { setContent { MainView(this, model) } }
         model.history.observe(this) { setContent { MainView(this, model) } }
         model.idtalon.observe(this) { Toast.makeText(this, it, Toast.LENGTH_LONG).show() }
+        model.confs.observe(this) { confs ->
+            confs.forEach {
+                when (it.name) {
+                    "palette" -> model.setPalette(this, it.value)
+                }
+            }
+            setContent { MainView(this, model) }
+        }
     }
 
     override fun onBackPressed() {
@@ -104,7 +108,6 @@ fun MainView(activity: Activity, model: Model) {
     val docs = model.docs.value ?: listOf()
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
-    val back = Color(android.graphics.Color.parseColor("#ffddff"))
 
     Theme {
         FixModes()
@@ -119,7 +122,6 @@ fun MainView(activity: Activity, model: Model) {
                 else {
                     when (model.getState()) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
-                        //"Инструкция" -> myBackDrop()
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
                         "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
