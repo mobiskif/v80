@@ -73,7 +73,6 @@ fun deleteFromInternalFolder(context: Context, fname: String) {
     }
 }
 
-//Check if you already have read storage permission
 fun checkPermissionForReadWrite(context: Context): Boolean {
     val result: Int =
         ContextCompat.checkSelfPermission(
@@ -84,17 +83,6 @@ fun checkPermissionForReadWrite(context: Context): Boolean {
     return result == PackageManager.PERMISSION_GRANTED
 }
 
-fun checkPermissionForCamera(context: Context): Boolean {
-    val result: Int =
-        ContextCompat.checkSelfPermission(
-            context,
-            android.Manifest.permission.CAMERA
-        )
-    Log.d("jop","=== check permission $result")
-    return result == PackageManager.PERMISSION_GRANTED
-}
-
-//Request Permission For Read Storage
 fun requestPermissionForReadWrite(context: Context) {
     Log.d("jop","--- request permission")
     ActivityCompat.requestPermissions(
@@ -106,7 +94,17 @@ fun requestPermissionForReadWrite(context: Context) {
     )
 }
 
-//Request Permission For Read Storage
+
+fun checkPermissionForCamera(context: Context): Boolean {
+    val result: Int =
+        ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.CAMERA
+        )
+    Log.d("jop","=== check permission $result")
+    return result == PackageManager.PERMISSION_GRANTED
+}
+
 fun requestPermissionForCamera(context: Context) {
     Log.d("jop","--- request permission")
     ActivityCompat.requestPermissions(

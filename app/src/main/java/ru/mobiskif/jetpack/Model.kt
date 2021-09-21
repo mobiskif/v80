@@ -39,8 +39,8 @@ class Model : ViewModel() {
 
     fun setPalette(context: Context, theme: String) {
         LightPalette = setLightPalette(context, theme)
-        val th = this.confs.value?.filter { it.name=="palette" }
-        th!![0].value=theme
+        val th = this.confs.value?.filter { it.name == "palette" }
+        th!![0].value = theme
         writeConf(th[0])
     }
 

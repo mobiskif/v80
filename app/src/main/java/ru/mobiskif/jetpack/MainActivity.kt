@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
             val bm = data.extras?.get("data") as Bitmap
-            //val fname = data.extras?.get("fname") as String
+            //val fname = data.extras?.get("fname") as String - не работает
             val fname = "${model.cuser.value?.id}.png"
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
@@ -96,7 +96,6 @@ class MainActivity : ComponentActivity() {
         }
         model.repaint()
     }
-
 }
 
 @ExperimentalMaterialApi
@@ -114,7 +113,6 @@ fun MainView(activity: Activity, model: Model) {
         Scaffold(
             floatingActionButton = { Fab(model) },
             topBar = { Topbar(activity, model) },
-            //backgroundColor = back
         ) {
             Column(Modifier.padding(space)) {
                 CurrentInfo(activity, model)
