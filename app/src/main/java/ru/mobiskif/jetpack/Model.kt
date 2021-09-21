@@ -92,8 +92,8 @@ class Model : ViewModel() {
         viewModelScope.launch { repository.readLpusFull() }
     }
 
-    fun readLpus(it: String) {
-        viewModelScope.launch { repository.readLpus(it) }
+    fun readLpus(did: String, uid: String) {
+        viewModelScope.launch { repository.readLpus(did, uid) }
     }
 
     fun readSpecs(idLpu: String) {

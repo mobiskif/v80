@@ -32,7 +32,7 @@ class Repository {
         Distr::class,
         Hist::class,
         Conf::class,
-                         ], version = 6, exportSchema = false)
+                         ], version = 1, exportSchema = false)
 
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
@@ -62,14 +62,17 @@ class Repository {
         _wait.postValue(false)
     }
 
-    suspend fun readLpus(did: String) {
+    suspend fun readLpus(did: String, uid: String) {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             val args = arrayOf(did)
-            var llist = db.lpuDao().readByDid(did)
-            if (llist.isNullOrEmpty()) {
-                llist = fromLpuMap(did, Hub2().getLpuList("GetLPUList", args))
-                llist.forEach { db.lpuDao().create(it) }
+            var llist = db.lpuDao().readByDid(did, uid)
+            if (llist.isEmpty()) {
+                llist = fromLpuMap(did, uid, Hub2().getLpuList("GetLPUList", args))
+                llist.forEach {
+                    //Log.d("jop", "$it")
+                    db.lpuDao().create(it)
+                }
             }
             llist.forEach {
                 val lpu = db.lpufDao().readByIdf(it.lid)
@@ -102,7 +105,7 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.lpuDao().delete(it)
-            val lp = db.lpuDao().readByDid(it.did)
+            val lp = db.lpuDao().readByDid(it.did, it.uid)
             _lpus.postValue(lp)
         }
         _wait.postValue(false)

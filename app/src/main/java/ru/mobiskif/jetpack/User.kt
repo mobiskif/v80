@@ -180,7 +180,7 @@ fun UsrItemsView2(activity: Activity, user: User, model: Model) {
     Card(elevation = 4.dp,  modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
-        model.readLpus(user.iDistr.toString())
+        model.readLpus(user.iDistr.toString(), user.id.toString())
         model.setState("Выбрать клинику")
     }) {
         when (model.getState()) {
@@ -203,7 +203,7 @@ fun UsrItemsView(activity: Activity, user: User, model: Model) {
         Column(Modifier.clickable {
             user.idPat = ""
             model.setCurrentUser(user)
-            model.readLpus(user.iDistr.toString())
+            model.readLpus(user.iDistr.toString(), user.id.toString())
             model.setState("Выбрать клинику")
         }) {
             Text("${user.F} \n${user.I} ${user.O}")
@@ -280,7 +280,7 @@ fun UsrDataEdit(activity: Activity, user: User, model: Model) {
                 Button(onClick = {
                     fieldstouser(user)
                     model.updateUser(user)
-                    model.readLpus(user.iDistr.toString())
+                    model.readLpus(user.iDistr.toString(), user.id.toString())
                     model.setState("Выбрать клинику")
                 }) { Text("Записать") }
             }

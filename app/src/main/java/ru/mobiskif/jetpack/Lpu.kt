@@ -15,9 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.room.*
 
-@Entity(primaryKeys = ["did", "lid"])
+@Entity(primaryKeys = ["did", "uid", "lid"])
 data class Lpu(
     var did: String = "",
+    var uid: String = "",
     var lid: String = "",
     var name: String? = "",
     var description: String? = "",
@@ -35,8 +36,8 @@ interface LpuDao {
     @Query("SELECT * FROM lpu")
     fun read(): List<Lpu>
 
-    @Query("SELECT * FROM lpu WHERE lid = :lid")
-    fun readById(lid: String): Lpu
+    @Query("SELECT * FROM lpu WHERE uid = :uid AND lid = :lid")
+    fun readById(uid: String, lid: String): Lpu
 
     @Update
     fun update(lpu: Lpu)
@@ -44,15 +45,15 @@ interface LpuDao {
     @Delete
     fun delete(lpu: Lpu)
 
-    @Query("SELECT * FROM lpu WHERE did = :did")
-    fun readByDid(did: String): List<Lpu>
+    @Query("SELECT * FROM lpu WHERE did = :did AND uid = :uid")
+    fun readByDid(did: String, uid: String): List<Lpu>
 }
 
-fun fromLpuMap(did: String, map: MutableList<Map<String, String>>): List<Lpu> {
+fun fromLpuMap(did: String, uid: String, map: MutableList<Map<String, String>>): List<Lpu> {
     var result = listOf<Lpu>()
     map.forEach {
         if (!it["IdLPU"].isNullOrEmpty()) {
-            val element = Lpu(did, it["IdLPU"]!!, it["LPUShortName"], it["Description"], it["LPUFullName"])
+            val element = Lpu(did, uid, it["IdLPU"]!!, it["LPUShortName"], it["Description"], it["LPUFullName"])
             result = result.plusElement(element)
         }
     }
