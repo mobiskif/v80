@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
 @Composable
@@ -16,7 +17,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
     when (model.getState()) {
         "Выбрать клинику" -> {
             UsrItemsView2(activity, user, model)
-            Box(Modifier.padding(space)) {Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.", fontSize = small)}
+            Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.\n", fontSize = small)
         }
         "Выбрать специальность" -> {
             UsrItemsView2(activity, user, model)

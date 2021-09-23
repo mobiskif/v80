@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import androidx.room.*
 
 //@SuppressLint("NewApi")
@@ -75,7 +74,6 @@ interface UserDao {
 
 @Composable
 fun UsrImage(bitmap: Bitmap) {
-
     Image(
         bitmap = bitmap.asImageBitmap(),
         contentDescription = "",
@@ -84,15 +82,12 @@ fun UsrImage(bitmap: Bitmap) {
             .size(space * 6)
             .clip(RoundedCornerShape(space * 3))
     )
-
-    //Image(painter = painterResource(R.drawable.round_face), contentDescription = "")
 }
 
 @Composable
 fun UsrPhotoView(activity: Activity, user: User, model: Model) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-
         TextButton(onClick = {
             model.setCurrentUser(user)
             model.setState("Изменить пациента")
@@ -138,8 +133,7 @@ fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
         overlineText = { Text("${user.Distr} район") },
         text = { Text("${user.F} ${user.I} ${user.O}") },
-        modifier = Modifier.background(LightPalette.secondary)
-
+        modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
     )
 }
 
@@ -150,7 +144,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             text = { Text("Нажмите и заполните все данные пациента") },
-            modifier = Modifier.background(LightPalette.secondary).clickable {
+            modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space)).clickable {
                 model.setCurrentUser(user)
                 model.setState("Изменить пациента")
             }
@@ -169,7 +163,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
                         model.setState("Изменить пациента")
                     })
             },
-            modifier = Modifier.background(LightPalette.secondary)
+            modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
         )
     }
 }
@@ -177,7 +171,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
 @ExperimentalMaterialApi
 @Composable
 fun UsrItemsView2(activity: Activity, user: User, model: Model) {
-    Card(elevation = 4.dp,  modifier = Modifier.clickable {
+    Column(modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
         model.readLpus(user.iDistr.toString(), user.id.toString())
@@ -189,36 +183,6 @@ fun UsrItemsView2(activity: Activity, user: User, model: Model) {
         }
     }
     Spacer(Modifier.size(space))
-}
-
-@Composable
-fun UsrItemsView(activity: Activity, user: User, model: Model) {
-    Row(modFill) {
-        when (model.getState()) {
-            "Выбрать пациента", "Выбрать клинику" -> {
-                UsrPhotoView(activity, user, model)
-                Spacer(Modifier.width(space))
-            }
-        }
-        Column(Modifier.clickable {
-            user.idPat = ""
-            model.setCurrentUser(user)
-            model.readLpus(user.iDistr.toString(), user.id.toString())
-            model.setState("Выбрать клинику")
-        }) {
-            Text("${user.F} \n${user.I} ${user.O}")
-            when (model.getState()) {
-                "Выбрать пациента", "Выбрать клинику" -> {
-                    if (user.Distr?.length!! < 1) Text("Нажмите \"Изменить\" и заполните все данные пациента", fontSize = small)
-                    else {
-                        Text("\n${user.D}", fontSize = small)
-                        Text("${user.Distr} район", fontSize = small)
-                    }
-                }
-            }
-        }
-    }
-    Spacer(Modifier.height(space))
 }
 
 @Composable
