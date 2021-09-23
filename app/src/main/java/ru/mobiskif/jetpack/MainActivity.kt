@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -121,7 +120,7 @@ fun MainView(activity: Activity, model: Model) {
                     when (model.getState()) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
-                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView2(activity, users[it], model) } }
+                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView(activity, users[it], model) } }
                         "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
                         "Выбрать специальность" -> {
                             if (hists.isNotEmpty()) {

@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
 @Composable
@@ -16,11 +15,11 @@ fun CurrentInfo(activity: Activity, model: Model) {
     val user = model.cuser.value ?: User(0)
     when (model.getState()) {
         "Выбрать клинику" -> {
-            UsrItemsView2(activity, user, model)
+            UsrItemsView(activity, user, model)
             Text("Чтобы увидеть отложенные талоны, \"войдите\" в поликлинику.\n", fontSize = small)
         }
         "Выбрать специальность" -> {
-            UsrItemsView2(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -29,8 +28,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
             LpuItems(lpu = lpu, model = model)
         }
         "Выбрать врача" -> {
-            //UsrItemsView(activity, user, model)
-            UsrItemsView2(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -47,8 +45,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
 
         }
         "Выбрать талон" -> {
-            //UsrItemsView(activity, user, model)
-            UsrItemsView2(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -65,8 +62,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
         }
 
         "Взять талон", "Отменить талон" -> {
-            //UsrItemsView(activity, user, model)
-            UsrItemsView2(activity, user, model)
+            UsrItemsView(activity, user, model)
 
             val lpu = Lpu("0")
             lpu.name = user.Lpu
@@ -80,9 +76,7 @@ fun CurrentInfo(activity: Activity, model: Model) {
 
 @Composable
 fun Help() {
-    //Card(shape = shapes.small, elevation = 15.dp) {
-        Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.", modifier = modFill)
-    //}
+    Text("Добавляйте пациентов, используя кнопку \"Плюс\" внизу справа.", modifier = modFill)
     Spacer(Modifier.size(space))
     Text("Нажав на символ \"Карандаш\", отредактируйте персональные данные.", modifier = modBord)
     Spacer(Modifier.size(space))

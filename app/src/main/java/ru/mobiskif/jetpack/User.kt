@@ -155,7 +155,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             overlineText = { Text("${user.Distr} район") },
             text = { Text("${user.F} ${user.I} ${user.O}") },
-            secondaryText = { Text("${user.D}") },
+            secondaryText = { Text("${user.D}\n") },
             trailing = {
                 Icon(Icons.Filled.Edit, "",
                     Modifier.alpha(.33f).clickable {
@@ -170,7 +170,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
 
 @ExperimentalMaterialApi
 @Composable
-fun UsrItemsView2(activity: Activity, user: User, model: Model) {
+fun UsrItemsView(activity: Activity, user: User, model: Model) {
     Column(modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
