@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.room.*
 
 //@SuppressLint("NewApi")
@@ -133,7 +134,7 @@ fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
         overlineText = { Text("${user.Distr} район") },
         text = { Text("${user.F} ${user.I} ${user.O}") },
-        modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
+        modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space)).absolutePadding(0.dp,0.dp,0.dp,space)
     )
 }
 
