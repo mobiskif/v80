@@ -1,5 +1,6 @@
 package ru.mobiskif.jetpack
 
+import android.util.Log
 import androidx.room.*
 
 @Entity
@@ -33,6 +34,7 @@ fun fromDistrMap(map: MutableList<Map<String, String>>): List<Distr> {
         if (!it["IdDistrict"].isNullOrEmpty()) {
             val element = Distr(it["IdDistrict"]!!, it["DistrictName"])
             result=result.plusElement(element)
+            Log.d("jop","$it")
         }
     }
     return result

@@ -53,10 +53,11 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var dlist = db.distrDao().read()
-            if (dlist.isEmpty()) {
+            if (dlist.isNullOrEmpty()) {
                 dlist = fromDistrMap(Hub2().getDistrList("GetDistrictList"))
                 dlist.forEach { db.distrDao().create(it) }
             }
+            //Log.d("jop","$dlist")
             _distrs.postValue(dlist)
         }
         _wait.postValue(false)

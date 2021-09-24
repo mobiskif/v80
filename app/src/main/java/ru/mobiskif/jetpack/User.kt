@@ -1,7 +1,10 @@
 package ru.mobiskif.jetpack
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
+import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +24,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 
 //@SuppressLint("NewApi")
@@ -86,22 +90,21 @@ fun UsrImage(bitmap: Bitmap) {
 }
 
 @Composable
-fun UsrPhotoView(activity: Activity, user: User, model: Model) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-        TextButton(onClick = {
-            model.setCurrentUser(user)
-            model.setState("Изменить пациента")
-        })
-        { Text(text = "Изменить", fontSize = small) }
-    }
+fun UsrImage2(bitmap: Bitmap) {
+    Image(
+        bitmap = bitmap.asImageBitmap(),
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+        //modifier = Modifier.size(space * 6).clip(RoundedCornerShape(space * 3))
+    )
 }
+
 
 @Composable
 fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-/*
+
         TextButton(onClick = {
             //model.setCurrentUser(user)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
@@ -124,7 +127,7 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
             model.repaint()
         })
         { Text(text = "Сбросить", fontSize = small) }
-*/
+
     }
 }
 
@@ -132,9 +135,11 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
 @Composable
 fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
+        //icon = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
         overlineText = { Text("${user.Distr} район") },
-        text = { Text("${user.F} ${user.I} ${user.O}") },
-        modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space)).absolutePadding(0.dp,0.dp,0.dp,space)
+        text = { Text("${user.F} ${user.I} ${user.O}", modifier = Modifier.absolutePadding(0.dp, 0.dp, 0.dp, space)) },
+        //trailing = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
+        modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
     )
 }
 
@@ -145,13 +150,14 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             text = { Text("Нажмите и заполните все данные пациента") },
-            modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space)).clickable {
-                model.setCurrentUser(user)
-                model.setState("Изменить пациента")
-            }
+            modifier = Modifier
+                .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
+                .clickable {
+                    model.setCurrentUser(user)
+                    model.setState("Изменить пациента")
+                }
         )
-    }
-    else {
+    } else {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             overlineText = { Text("${user.Distr} район") },
@@ -159,10 +165,12 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
             secondaryText = { Text("${user.D}\n") },
             trailing = {
                 Icon(Icons.Filled.Edit, "",
-                    Modifier.alpha(.33f).clickable {
-                        model.setCurrentUser(user)
-                        model.setState("Изменить пациента")
-                    })
+                    Modifier
+                        .alpha(.33f)
+                        .clickable {
+                            model.setCurrentUser(user)
+                            model.setState("Изменить пациента")
+                        })
             },
             modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
         )

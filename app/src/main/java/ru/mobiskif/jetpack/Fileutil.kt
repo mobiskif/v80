@@ -79,12 +79,12 @@ fun checkPermissionForReadWrite(context: Context): Boolean {
             context,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
         )
-    Log.d("jop","=== check permission $result")
+    Log.d("jop","=== check permission write $result")
     return result == PackageManager.PERMISSION_GRANTED
 }
 
 fun requestPermissionForReadWrite(context: Context) {
-    Log.d("jop","--- request permission")
+    Log.d("jop","--- request permission write")
     ActivityCompat.requestPermissions(
         context as Activity,
         arrayOf(
@@ -101,12 +101,12 @@ fun checkPermissionForCamera(context: Context): Boolean {
             context,
             android.Manifest.permission.CAMERA
         )
-    Log.d("jop","=== check permission $result")
+    Log.d("jop","=== check permission camera $result")
     return result == PackageManager.PERMISSION_GRANTED
 }
 
 fun requestPermissionForCamera(context: Context) {
-    Log.d("jop","--- request permission")
+    Log.d("jop","--- request permission camera")
     ActivityCompat.requestPermissions(
         context as Activity,
         arrayOf(
