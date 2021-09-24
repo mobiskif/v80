@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 var LightPalette = lightColors()
 var modFill = Modifier.offset(0.dp, 0.dp)
 var modBord = Modifier.offset(0.dp, 0.dp)
+var mb = Modifier.offset(0.dp, 0.dp)
+var mf = Modifier.offset(0.dp, 0.dp)
 var mod09 = Modifier.offset(0.dp, 0.dp)
 var modFillVar = Modifier.offset(0.dp, 0.dp)
 
@@ -134,6 +136,7 @@ fun MainView(activity: Activity, model: Model) {
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
+                        "Поликлиника" -> LazyColumn { items(1) { mydialog(model) } }
                     }
                 }
             }

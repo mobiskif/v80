@@ -76,11 +76,20 @@ fun FixModes() {
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
         .padding(space)
+    mf = Modifier
+        //.fillMaxWidth()
+        .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
+        //.padding(space)
 
     modBord = Modifier
         .fillMaxWidth()
         .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(space))
         .padding(space)
+
+    mb = Modifier
+        //.fillMaxWidth()
+        .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(space))
+        //.padding(space)
 
     mod09 = Modifier.fillMaxWidth(.7f)
 

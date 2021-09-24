@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -134,6 +135,8 @@ fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
 @ExperimentalMaterialApi
 @Composable
 fun ShortUserList(activity: Activity, user: User, model: Model) {
+    //ListItem(text = { Text("${user.F} ${user.I} ${user.O}") })
+
     ListItem(
         //icon = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
         overlineText = { Text("${user.Distr} район") },
@@ -158,13 +161,15 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
                 }
         )
     } else {
+        //ListItem(text = { Text("${user.F} ${user.I} ${user.O}") })
+
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             overlineText = { Text("${user.Distr} район") },
             text = { Text("${user.F} ${user.I} ${user.O}") },
             secondaryText = { Text("${user.D}\n") },
             trailing = {
-                Icon(Icons.Filled.Edit, "",
+                Icon(Icons.Outlined.Edit, "",
                     Modifier
                         .alpha(.33f)
                         .clickable {
