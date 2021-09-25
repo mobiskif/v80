@@ -25,6 +25,7 @@
         <entry key="app/src/main/res/drawable/round_face.xml" value="0.20925925925925926" />
         <entry key="app/src/main/res/drawable/round_face_foreground.xml" value="0.20925925925925926" />
         <entry key="app/src/main/res/layout/camera_host.xml" value="0.19444444444444445" />
+        <entry key="app/src/main/res/layout/layout_map.xml" value="0.35572916666666665" />
         <entry key="app/src/main/res/layout/provider.xml" value="0.1828125" />
       </map>
     </option>

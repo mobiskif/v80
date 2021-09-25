@@ -14,6 +14,7 @@ class Repository {
     private lateinit var db: AppDatabase
     private val _wait = MutableLiveData(false); val wait: LiveData<Boolean> = _wait
     private val _cuser = MutableLiveData<User>(); val cuser: LiveData<User> = _cuser
+    private val _palette = MutableLiveData("Фиолетовая"); val palette: LiveData<String> = _palette
 
     private val _users = MutableLiveData<List<User>>(); val users: LiveData<List<User>> = _users
     private val _lpus = MutableLiveData<List<Lpu>>(); val lpus: LiveData<List<Lpu>> = _lpus
@@ -23,7 +24,7 @@ class Repository {
     private val _docs = MutableLiveData<List<Doc>>(); val docs: LiveData<List<Doc>> = _docs
     private val _talons = MutableLiveData<List<Talon>>(); val talons: LiveData<List<Talon>> = _talons
     private val _idtalon = MutableLiveData<String>(); val idtalon: LiveData<String> = _idtalon
-    private val _confs = MutableLiveData<List<Conf>>(); val conf: LiveData<List<Conf>> = _confs
+    private val _confs = MutableLiveData<List<Conf>>(); val confs: LiveData<List<Conf>> = _confs
 
     @Database(entities = [
         User::class,
@@ -262,7 +263,7 @@ class Repository {
         _wait.postValue(false)
     }
 
-    suspend fun readConf() {
+    suspend fun readConfs() {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var confs = db.confDao().read()
@@ -273,12 +274,25 @@ class Repository {
         _wait.postValue(false)
     }
 
-    suspend fun writeConf(conf: Conf) {
+    suspend fun writeConfs(confs: LiveData<List<Conf>>) {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
-            db.confDao().update(conf)
-            //val confs = db.confDao().read()
-            //_confs.postValue(confs)
+            confs.value?.forEach { db.confDao().update(it) }
+        }
+        _wait.postValue(false)
+    }
+
+    suspend fun setPalette(theme: String) {
+        _wait.postValue(true)
+        withContext(Dispatchers.IO) {
+
+            confs.value?.forEach {
+                when (it.name) {
+                    "palette" -> it.value = theme
+                }
+            }
+
+            _palette.postValue(theme)
         }
         _wait.postValue(false)
     }

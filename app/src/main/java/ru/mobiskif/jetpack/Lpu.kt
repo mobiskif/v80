@@ -1,5 +1,6 @@
 package ru.mobiskif.jetpack
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -59,7 +60,7 @@ fun fromLpuMap(did: String, uid: String, map: MutableList<Map<String, String>>):
 }
 
 @Composable
-fun mydialog(model: Model) {
+fun LpuInfoDialog(model: Model) {
     val lpu = model.clpu
     val openDialog = remember { mutableStateOf(true) }
 
@@ -72,9 +73,16 @@ fun mydialog(model: Model) {
             title = { Text(text = "${lpu.name}") },
             text = {
                 Column {
-                    if (!lpu.address.isNullOrEmpty()) Text("Адрес: ${lpu.address}\n")
-                    if (!lpu.phone.isNullOrEmpty()) Text("Телефон: ${lpu.phone}\n")
-                    if (!lpu.email.isNullOrEmpty()) Text("Почта: ${lpu.email}")
+                    Row {
+                        Log.d("jop","${lpu.address?.length}")
+                        val adr = lpu.address.toString()
+                        if (!lpu.address.isNullOrEmpty()) Text("Адрес: $adr")
+                        if (!lpu.phone.isNullOrBlank()) Text("Телефон: ${lpu.phone}\n")
+                        if (!lpu.email.isNullOrBlank()) Text("Почта: ${lpu.email}")
+                    }
+                    Row (Modifier.fillMaxHeight(.5f)) {
+                        mymap(lpu.address)
+                    }
                 }
             },
             confirmButton = {
@@ -99,10 +107,12 @@ fun LpuItems(lpu: Lpu, model: Model) {
             icon = {
                 Icon(
                     Icons.Outlined.Info, "",
-                    Modifier.alpha(.33f).clickable {
+                    Modifier
+                        .alpha(.33f)
+                        .clickable {
                             model.clpu = lpu
                             model.setState("Поликлиника")
-                    }
+                        }
                 )
             },
             text = { Text("${lpu.name}") },
@@ -111,7 +121,9 @@ fun LpuItems(lpu: Lpu, model: Model) {
                 if (model.getState() == "Выбрать клинику") {
                     Icon(
                         Icons.Outlined.Delete, "",
-                        Modifier.alpha(.33f).clickable { model.deleteLpu(lpu) }
+                        Modifier
+                            .alpha(.33f)
+                            .clickable { model.deleteLpu(lpu) }
                     )
                 }
             },

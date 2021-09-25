@@ -43,9 +43,6 @@ fun Menu(context: Context, model: Model) {
             onClick = { model.setPalette(context, "Красная"); expanded.value = false },
             content = { Text("Красная тема") }
         )
-        DropdownMenuItem(
-            onClick = { },
-            content = { Text("Версия ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }
-        )
+        Text("v ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}")
     }
 }

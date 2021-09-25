@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +16,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+
+//private lateinit var map: GoogleMap
 
 class MainActivity : ComponentActivity() {
     private val model: Model by viewModels()
@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
         actionBar?.hide()
 
         model.setDBContext(applicationContext)
-        model.readConf()
         model.readDistrs()
         model.readLpusFull()
         model.readUsers()
@@ -47,7 +46,6 @@ class MainActivity : ComponentActivity() {
         }
         model.lpus.observe(this) { setContent { MainView(this, model) } }
         model.specs.observe(this) { setContent { MainView(this, model) } }
-        model.wait.observe(this) { setContent { MainView(this, model) } }
         model.docs.observe(this) { setContent { MainView(this, model) } }
         model.talons.observe(this) { setContent { MainView(this, model) } }
         model.history.observe(this) { setContent { MainView(this, model) } }
@@ -60,6 +58,20 @@ class MainActivity : ComponentActivity() {
             }
             setContent { MainView(this, model) }
         }
+        model.wait.observe(this) { setContent { MainView(this, model) } }
+        model.palette.observe(this) { setContent { MainView(this, model) } }
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        model.writeConfs()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        model.readConfs()
     }
 
     override fun onBackPressed() {
@@ -89,7 +101,9 @@ class MainActivity : ComponentActivity() {
         }
         model.repaint()
     }
+
 }
+
 
 @ExperimentalMaterialApi
 @Composable
@@ -102,7 +116,7 @@ fun MainView(activity: Activity, model: Model) {
     val hists = model.history.value ?: listOf()
 
     Theme {
-        FixModes()
+        DefineModes()
         Scaffold(
             floatingActionButton = { Fab(model) },
             topBar = { Topbar(activity, model) },
@@ -128,12 +142,10 @@ fun MainView(activity: Activity, model: Model) {
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
-                        "Поликлиника" -> LazyColumn { items(1) { mydialog(model) } }
+                        "Поликлиника" -> LazyColumn { items(1) { LpuInfoDialog(model) } }
                     }
                 }
             }
         }
     }
 }
-
-

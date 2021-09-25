@@ -80,7 +80,7 @@ fun setLightPalette(context: Context, theme: String): Colors {
 }
 
 @Composable
-fun FixModes() {
+fun DefineModes() {
     mfp = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))

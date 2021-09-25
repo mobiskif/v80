@@ -19,6 +19,11 @@
         android:roundIcon="@drawable/main_icon"
         android:banner="@drawable/main_icon"
         android:icon="@drawable/main_icon">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCh8b61hoFM4ywSwiYmhhWcmNEob6krN8E" />
+
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"

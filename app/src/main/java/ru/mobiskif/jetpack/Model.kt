@@ -13,6 +13,7 @@ class Model : ViewModel() {
     private val repository = Repository()
     val wait = repository.wait
     var cuser = repository.cuser
+    val palette = repository.palette
 
     val users = repository.users
     val lpus = repository.lpus
@@ -22,7 +23,7 @@ class Model : ViewModel() {
     val docs = repository.docs
     val talons = repository.talons
     val idtalon = repository.idtalon
-    val confs = repository.conf
+    val confs = repository.confs
 
     fun repaint() {
         val old = getState()
@@ -39,25 +40,20 @@ class Model : ViewModel() {
     }
 
     fun setPalette(context: Context, theme: String) {
-        val st = getState()
-        setState("Инструкция")
         LightPalette = setLightPalette(context, theme)
-        val th = this.confs.value?.filter { it.name == "palette" }
-        th!![0].value = theme
-        writeConf(th[0])
-        setState(st)
+        viewModelScope.launch { repository.setPalette(theme) }
     }
 
     fun setDBContext(context: Context) {
         viewModelScope.launch { repository.setDBContext(context) }
     }
 
-    fun readConf() {
-        viewModelScope.launch { repository.readConf() }
+    fun readConfs() {
+        viewModelScope.launch { repository.readConfs() }
     }
 
-    private fun writeConf(conf: Conf) {
-        viewModelScope.launch { repository.writeConf(conf) }
+    fun writeConfs() {
+        viewModelScope.launch { repository.writeConfs(confs) }
     }
 
     fun createUser() {
