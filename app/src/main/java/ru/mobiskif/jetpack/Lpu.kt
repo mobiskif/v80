@@ -1,6 +1,5 @@
 package ru.mobiskif.jetpack
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -73,15 +72,11 @@ fun LpuInfoDialog(model: Model) {
             title = { Text(text = "${lpu.name}") },
             text = {
                 Column {
-                    Row {
-                        Log.d("jop","${lpu.address?.length}")
-                        val adr = lpu.address.toString()
-                        if (!lpu.address.isNullOrEmpty()) Text("Адрес: $adr")
-                        if (!lpu.phone.isNullOrBlank()) Text("Телефон: ${lpu.phone}\n")
-                        if (!lpu.email.isNullOrBlank()) Text("Почта: ${lpu.email}")
+                    Row (Modifier.fillMaxHeight(.2f)) {
+                        Text("${lpu.address} \n${lpu.phone} ${lpu.email}")
                     }
-                    Row (Modifier.fillMaxHeight(.5f)) {
-                        mymap(lpu.address)
+                    Row (Modifier.fillMaxHeight(.6f)) {
+                        mymap(lpu)
                     }
                 }
             },
