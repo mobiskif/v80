@@ -111,7 +111,7 @@ fun LpuItems(lpu: Lpu, model: Model) {
                 )
             },
             text = { Text("${lpu.name}") },
-            secondaryText = { if (model.getState() == "Выбрать клинику") Text("${lpu.fullname} ${lpu.description}\n") },
+            secondaryText = { if (model.getState() == "Выбрать клинику") Text("${lpu.address} ${lpu.description}\n") },
             trailing = {
                 if (model.getState() == "Выбрать клинику") {
                     Icon(

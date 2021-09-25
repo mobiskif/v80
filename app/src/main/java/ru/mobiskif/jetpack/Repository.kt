@@ -58,7 +58,6 @@ class Repository {
                 dlist = fromDistrMap(Hub2().getDistrList("GetDistrictList"))
                 dlist.forEach { db.distrDao().create(it) }
             }
-            //Log.d("jop","$dlist")
             _distrs.postValue(dlist)
         }
         _wait.postValue(false)
@@ -69,6 +68,7 @@ class Repository {
         withContext(Dispatchers.IO) {
             val args = arrayOf(did)
             var llist = db.lpuDao().readByDid(did, uid)
+            llist.forEach { db.lpuDao().delete(it) }
             if (llist.isEmpty()) {
                 llist = fromLpuMap(did, uid, Hub2().getLpuList("GetLPUList", args))
                 llist.forEach {
@@ -78,6 +78,8 @@ class Repository {
             }
             llist.forEach {
                 val lpu = db.lpufDao().readByIdf(it.lid)
+                //Log.d("jop", "--- $lpu")
+                //Log.d("jop", "=== $it")
                 if (lpu != null) {
                     it.address = lpu.address
                     it.phone = lpu.phone
@@ -94,10 +96,14 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var llist = db.lpufDao().readf()
+            llist.forEach { db.lpufDao().deletef(it) }
             if (llist.isNullOrEmpty()) {
                 val args = arrayOf("")
                 llist = fromLpuMapF(Hub2().getLpuList("GetLpuToRFSZIList", args))
-                llist.forEach { db.lpufDao().createf(it) }
+                llist.forEach {
+                    Log.d("jop","$it")
+                    db.lpufDao().createf(it)
+                }
             }
         }
         _wait.postValue(false)

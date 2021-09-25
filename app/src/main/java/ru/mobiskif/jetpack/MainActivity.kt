@@ -60,8 +60,6 @@ class MainActivity : ComponentActivity() {
         }
         model.wait.observe(this) { setContent { MainView(this, model) } }
         model.palette.observe(this) { setContent { MainView(this, model) } }
-
-
     }
 
     override fun onPause() {
