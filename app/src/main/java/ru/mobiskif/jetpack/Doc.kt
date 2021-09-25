@@ -36,7 +36,7 @@ fun fromDocMap(map: MutableList<Map<String, String>>): List<Doc> {
 @Composable
 fun DocItems(doc: Doc, model: Model) {
     val user = model.cuser.value!!
-    val mod = if (model.getState() == "Выбрать врача") modBord else modFill
+    val mod = if (model.getState() == "Выбрать врача") mbp else mfp
     Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             user.Doc=doc.name

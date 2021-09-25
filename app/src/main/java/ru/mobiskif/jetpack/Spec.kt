@@ -2,12 +2,8 @@ package ru.mobiskif.jetpack
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BadgeBox
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.room.*
@@ -38,7 +34,7 @@ fun fromSpecMap(map: MutableList<Map<String, String>>): List<Spec> {
 @Composable
 fun SpecItems(spec: Spec, model: Model) {
     val user = model.cuser.value!!
-    val mod = if (model.getState() == "Выбрать специальность") modBord else modFill
+    val mod = if (model.getState() == "Выбрать специальность") mbp else mfp
     Row(mod, horizontalArrangement = Arrangement.SpaceBetween) {
         Column(Modifier.clickable {
             user.Spec = spec.name

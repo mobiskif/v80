@@ -65,7 +65,7 @@ fun HistItems(hist: Hist, model: Model) {
     }
 
     val user = model.cuser.value!!
-    val mod = if (model.getState() == "Выбрать талон") modBord else modFill
+    val mod = if (model.getState() == "Выбрать талон") mbp else mfp
     Row(mod.clickable {
         user.iLpu = hist.idLpu
         user.idPat = hist.idPat

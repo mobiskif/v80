@@ -39,10 +39,13 @@ class Model : ViewModel() {
     }
 
     fun setPalette(context: Context, theme: String) {
+        val st = getState()
+        setState("Инструкция")
         LightPalette = setLightPalette(context, theme)
         val th = this.confs.value?.filter { it.name == "palette" }
         th!![0].value = theme
         writeConf(th[0])
+        setState(st)
     }
 
     fun setDBContext(context: Context) {

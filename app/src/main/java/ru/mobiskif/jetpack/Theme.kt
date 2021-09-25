@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -17,6 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 val space = 14.dp
 val small = 14.sp
+
+var LightPalette = lightColors()
+var mfp = Modifier.offset(0.dp, 0.dp)
+var mbp = Modifier.offset(0.dp, 0.dp)
+var mb = Modifier.offset(0.dp, 0.dp)
+var mf = Modifier.offset(0.dp, 0.dp)
+var m09 = Modifier.offset(0.dp, 0.dp)
+var mfp2 = Modifier.offset(0.dp, 0.dp)
 
 val shapes = Shapes(
     small = RoundedCornerShape(space/2),
@@ -72,7 +81,7 @@ fun setLightPalette(context: Context, theme: String): Colors {
 
 @Composable
 fun FixModes() {
-    modFill = Modifier
+    mfp = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
         .padding(space)
@@ -81,7 +90,7 @@ fun FixModes() {
         .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
         //.padding(space)
 
-    modBord = Modifier
+    mbp = Modifier
         .fillMaxWidth()
         .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(space))
         .padding(space)
@@ -91,9 +100,9 @@ fun FixModes() {
         .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(space))
         //.padding(space)
 
-    mod09 = Modifier.fillMaxWidth(.7f)
+    m09 = Modifier.fillMaxWidth(.7f)
 
-    modFillVar = Modifier
+    mfp2 = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.secondaryVariant, RoundedCornerShape(space))
         .padding(space)

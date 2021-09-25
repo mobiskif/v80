@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,15 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-var LightPalette = lightColors()
-var modFill = Modifier.offset(0.dp, 0.dp)
-var modBord = Modifier.offset(0.dp, 0.dp)
-var mb = Modifier.offset(0.dp, 0.dp)
-var mf = Modifier.offset(0.dp, 0.dp)
-var mod09 = Modifier.offset(0.dp, 0.dp)
-var modFillVar = Modifier.offset(0.dp, 0.dp)
-
 
 class MainActivity : ComponentActivity() {
     private val model: Model by viewModels()

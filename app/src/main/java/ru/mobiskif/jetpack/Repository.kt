@@ -277,6 +277,8 @@ class Repository {
         _wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.confDao().update(conf)
+            //val confs = db.confDao().read()
+            //_confs.postValue(confs)
         }
         _wait.postValue(false)
     }
