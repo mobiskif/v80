@@ -1,6 +1,7 @@
 package ru.mobiskif.jetpack
 
 import android.content.Context
+import android.location.Geocoder
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -15,12 +16,9 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import android.location.Geocoder
-import com.google.android.gms.maps.model.MapStyleOptions
 
 val mapcallback = OnMapReadyCallback { map->
     map.uiSettings.isZoomControlsEnabled = true

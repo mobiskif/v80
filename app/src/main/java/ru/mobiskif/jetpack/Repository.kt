@@ -11,29 +11,43 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class Repository {
-    private lateinit var db: AppDatabase
-    private val _wait = MutableLiveData(false); val wait: LiveData<Boolean> = _wait
-    private val _cuser = MutableLiveData<User>(); val cuser: LiveData<User> = _cuser
-    private val _palette = MutableLiveData("Фиолетовая"); val palette: LiveData<String> = _palette
+    lateinit var db: AppDatabase
+    private val _wait = MutableLiveData(false);
+    val wait: LiveData<Boolean> = _wait
+    private val _cuser = MutableLiveData<User>();
+    val cuser: LiveData<User> = _cuser
+    private val _palette = MutableLiveData("Фиолетовая");
+    val palette: LiveData<String> = _palette
 
-    private val _users = MutableLiveData<List<User>>(); val users: LiveData<List<User>> = _users
-    private val _lpus = MutableLiveData<List<Lpu>>(); val lpus: LiveData<List<Lpu>> = _lpus
-    private val _distrs = MutableLiveData<List<Distr>>(); val distrs: LiveData<List<Distr>> = _distrs
-    private val _history = MutableLiveData<List<Hist>>(); val history: LiveData<List<Hist>> = _history
-    private val _specs = MutableLiveData<List<Spec>>(); val specs: LiveData<List<Spec>> = _specs
-    private val _docs = MutableLiveData<List<Doc>>(); val docs: LiveData<List<Doc>> = _docs
-    private val _talons = MutableLiveData<List<Talon>>(); val talons: LiveData<List<Talon>> = _talons
-    private val _idtalon = MutableLiveData<String>(); val idtalon: LiveData<String> = _idtalon
-    private val _confs = MutableLiveData<List<Conf>>(); val confs: LiveData<List<Conf>> = _confs
+    private val _users = MutableLiveData<List<User>>();
+    val users: LiveData<List<User>> = _users
+    private val _lpus = MutableLiveData<List<Lpu>>();
+    val lpus: LiveData<List<Lpu>> = _lpus
+    private val _distrs = MutableLiveData<List<Distr>>();
+    val distrs: LiveData<List<Distr>> = _distrs
+    private val _history = MutableLiveData<List<Hist>>();
+    val history: LiveData<List<Hist>> = _history
+    private val _specs = MutableLiveData<List<Spec>>();
+    val specs: LiveData<List<Spec>> = _specs
+    private val _docs = MutableLiveData<List<Doc>>();
+    val docs: LiveData<List<Doc>> = _docs
+    private val _talons = MutableLiveData<List<Talon>>();
+    val talons: LiveData<List<Talon>> = _talons
+    private val _idtalon = MutableLiveData<String>();
+    val idtalon: LiveData<String> = _idtalon
+    private val _confs = MutableLiveData<List<Conf>>();
+    val confs: LiveData<List<Conf>> = _confs
 
-    @Database(entities = [
-        User::class,
-        Lpuf::class,
-        Lpu::class,
-        Distr::class,
-        Hist::class,
-        Conf::class,
-                         ], version = 1, exportSchema = false)
+    @Database(
+        entities = [
+            User::class,
+            Lpuf::class,
+            Lpu::class,
+            Distr::class,
+            Hist::class,
+            Conf::class,
+        ], version = 1, exportSchema = false
+    )
 
     abstract class AppDatabase : RoomDatabase() {
         abstract fun userDao(): UserDao
@@ -101,7 +115,7 @@ class Repository {
                 val args = arrayOf("")
                 llist = fromLpuMapF(Hub2().getLpuList("GetLpuToRFSZIList", args))
                 llist.forEach {
-                    Log.d("jop","$it")
+                    Log.d("jop", "$it")
                     db.lpufDao().createf(it)
                 }
             }
@@ -244,7 +258,7 @@ class Repository {
         withContext(Dispatchers.IO) {
             val args = arrayOf(idLpu, idAppointment, idPat)
             val res = Hub2().getTalon("SetAppointment", args)
-            Log.d("jop","$res")
+            Log.d("jop", "$res")
             if (res[0]["Success"] == "true") {
                 _idtalon.postValue("Талон $idAppointment отложен успешно!")
             } else {
@@ -259,7 +273,7 @@ class Repository {
         withContext(Dispatchers.IO) {
             val args = arrayOf(idLpu, idPat, idAppointment)
             val res = Hub2().deleteTalon("CreateClaimForRefusal", args)
-            Log.d("jop","$res")
+            Log.d("jop", "$res")
             if (res[0]["Success"] == "true") {
                 _idtalon.postValue("Талон $idAppointment отменен успешно!")
             } else {
@@ -301,5 +315,9 @@ class Repository {
             _palette.postValue(theme)
         }
         _wait.postValue(false)
+    }
+
+    fun setWait(w: Boolean) {
+        _wait.postValue(w)
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,8 +35,8 @@ class MainActivity : ComponentActivity() {
 
         model.setDBContext(applicationContext)
         model.readDistrs()
-        model.readLpusFull()
-        model.readUsers()
+        //model.readLpusFull()
+        //model.readUsers()
 
         model.state.observe(this) {
             title = it
@@ -63,7 +64,10 @@ class MainActivity : ComponentActivity() {
             }
             setContent { MainView(this, model) }
         }
-        model.wait.observe(this) { setContent { MainView(this, model) } }
+        model.wait.observe(this) {
+            Log.d("jop",it.toString())
+            setContent { MainView(this, model) }
+        }
         model.palette.observe(this) { setContent { MainView(this, model) } }
     }
 
@@ -145,6 +149,7 @@ fun MainView(activity: MainActivity, model: Model) {
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Поликлиника" -> LazyColumn { items(1) { LpuInfoDialog(model) } }
+                        "База" -> DBrowser(model)
                     }
                 }
             }
