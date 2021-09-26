@@ -1,27 +1,32 @@
 package ru.mobiskif.jetpack
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
-//private lateinit var map: GoogleMap
-
 class MainActivity : ComponentActivity() {
     private val model: Model by viewModels()
 
+    //@RequiresApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,13 +91,12 @@ class MainActivity : ComponentActivity() {
         model.setState(state)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == 1 && data != null) {
-            val bm = data.extras?.get("data") as Bitmap
-            //val fname = data.extras?.get("fname") as String - не работает
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val bm = data?.extras?.get("data") as Bitmap
+            //val fname2 = data.extras?.get("fname") as String - не работает
             val fname = "${model.cuser.value?.id}.png"
-
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
                 if (!checkPermissionForReadWrite(this)) requestPermissionForReadWrite(this)
             saveToInternalFolder(this, bm, fname)
@@ -105,7 +109,7 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun MainView(activity: Activity, model: Model) {
+fun MainView(activity: MainActivity, model: Model) {
     val users = model.users.value ?: listOf()
     val lpus = model.lpus.value ?: listOf()
     val specs = model.specs.value ?: listOf()

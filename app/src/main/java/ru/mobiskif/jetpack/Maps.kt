@@ -20,19 +20,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.location.Geocoder
-
+import com.google.android.gms.maps.model.MapStyleOptions
 
 val mapcallback = OnMapReadyCallback { map->
     map.uiSettings.isZoomControlsEnabled = true
-/*
-    map.addPolyline(
-        PolylineOptions().add( opera,
-            LatLng(-34.747, 145.592),
-            LatLng(-34.364, 147.891),
-            LatLng(-33.501, 150.217),
-            LatLng(-32.306, 149.248),
-            hubert))
-*/
 }
 
 fun getCoord(address: String, context: Context): LatLng {
@@ -41,7 +32,7 @@ fun getCoord(address: String, context: Context): LatLng {
 }
 
 @Composable
-fun mymap(lpu: Lpu) {
+fun Mymap(lpu: Lpu) {
     val context = LocalContext.current
     if (!lpu.address.isNullOrBlank()) {
         val v = rememberMapViewWithLifecycle()
@@ -65,19 +56,16 @@ fun mymap(lpu: Lpu) {
 fun rememberMapViewWithLifecycle(): MapView {
     val context = LocalContext.current
     val mapView = remember {
-        MapView(context).apply {
-            id = R.id.map
-        }
+        MapView(context)//.apply { id = R.id.map }
     }
-    // Makes MapView follow the lifecycle of this composable
+
     val lifecycleObserver = rememberMapLifecycleObserver(mapView)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle) {
         lifecycle.addObserver(lifecycleObserver)
-        onDispose {
-            lifecycle.removeObserver(lifecycleObserver)
-        }
+        onDispose { lifecycle.removeObserver(lifecycleObserver) }
     }
+
     mapView.getMapAsync(mapcallback)
     return mapView
 }

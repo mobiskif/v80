@@ -7,23 +7,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.ImageView
-import androidx.compose.ui.res.painterResource
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import android.graphics.drawable.VectorDrawable
-
-import android.graphics.drawable.BitmapDrawable
-
-import android.graphics.drawable.Drawable
-import android.provider.MediaStore.Images.Media.getBitmap
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.drawable.toBitmap
-import java.lang.IllegalArgumentException
 
 
 private const val PERMISSION_READ_EXTERNAL_STORAGE = 5

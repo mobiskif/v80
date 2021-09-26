@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 
-//@SuppressLint("NewApi")
 @Entity
 data class User(
     @PrimaryKey var id: Int,
@@ -91,52 +92,30 @@ fun UsrImage(bitmap: Bitmap) {
 }
 
 @Composable
-fun UsrImage2(bitmap: Bitmap) {
-    Image(
-        bitmap = bitmap.asImageBitmap(),
-        contentDescription = "",
-        contentScale = ContentScale.Crop,
-        //modifier = Modifier.size(space * 6).clip(RoundedCornerShape(space * 3))
-    )
-}
-
-
-@Composable
-fun UsrPhotoEdit(activity: Activity, user: User, model: Model) {
+fun UsrPhotoEdit(activity: MainActivity, user: User, model: Model) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         UsrImage(loadFromInternalFolder(activity, "${user.id}.png"))
-
         TextButton(onClick = {
-            //model.setCurrentUser(user)
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png")
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //intent.putExtra("fname", "${user.id}.png") - не работает! почему?
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                if (checkPermissionForCamera(activity)) {
-                    startActivityForResult(activity, intent, 1, null)
-                } else {
-                    requestPermissionForCamera(activity)
-                    //startActivityForResult(activity, intent, 1, null)
-                }
-            } else startActivityForResult(activity, intent, 1, null)
+                if (checkPermissionForCamera(activity)) activity.resultLauncher.launch(intent)
+                else requestPermissionForCamera(activity)
+            }
+            else activity.resultLauncher.launch(intent)
         })
         { Text(text = "Сделать фото", fontSize = small) }
 
         TextButton(onClick = {
-            val st = model.getState()
-            //model.setState("Инструкция")
             deleteFromInternalFolder(activity, "${user.id}.png")
-            //model.setState(st)
             model.repaint()
         })
         { Text(text = "Сбросить", fontSize = small) }
-
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
 fun ShortUserList(activity: Activity, user: User, model: Model) {
-    //ListItem(text = { Text("${user.F} ${user.I} ${user.O}") })
-
     ListItem(
         //icon = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
         overlineText = { Text("${user.Distr} район") },
@@ -160,9 +139,8 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
                     model.setState("Изменить пациента")
                 }
         )
-    } else {
-        //ListItem(text = { Text("${user.F} ${user.I} ${user.O}") })
-
+    }
+    else {
         ListItem(
             icon = { UsrImage(loadFromInternalFolder(activity, "${user.id}.png")) },
             overlineText = { Text("${user.Distr} район") },
@@ -200,7 +178,7 @@ fun UsrItemsView(activity: Activity, user: User, model: Model) {
 }
 
 @Composable
-fun UsrDataEdit(activity: Activity, user: User, model: Model) {
+fun UsrDataEdit(activity: MainActivity, user: User, model: Model) {
     val fF = remember { mutableStateOf(TextFieldValue("${user.F}")) }
     val iI = remember { mutableStateOf(TextFieldValue("${user.I}")) }
     val oO = remember { mutableStateOf(TextFieldValue("${user.O}")) }
