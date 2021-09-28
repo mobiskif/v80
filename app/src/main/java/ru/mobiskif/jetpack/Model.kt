@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class Model : ViewModel() {
     lateinit var clpu: Lpu
-    val state = MutableLiveData("База")
+    val state = MutableLiveData("Выбрать пациента")
     val repository = Repository()
     val wait = repository.wait
     var cuser = repository.cuser

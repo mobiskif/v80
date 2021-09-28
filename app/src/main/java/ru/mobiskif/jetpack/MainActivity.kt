@@ -35,8 +35,8 @@ class MainActivity : ComponentActivity() {
 
         model.setDBContext(applicationContext)
         model.readDistrs()
-        //model.readLpusFull()
-        //model.readUsers()
+        model.readLpusFull()
+        model.readUsers()
 
         model.state.observe(this) {
             title = it
