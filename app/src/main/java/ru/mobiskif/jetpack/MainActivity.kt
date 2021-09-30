@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 class MainActivity : ComponentActivity() {
     private val model: Model by viewModels()
 
-    //@RequiresApi
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -82,7 +82,7 @@ class Repository {
         withContext(Dispatchers.IO) {
             val args = arrayOf(did)
             var llist = db.lpuDao().readByDid(did, uid)
-            llist.forEach { db.lpuDao().delete(it) }
+            //llist.forEach { db.lpuDao().delete(it) }
             if (llist.isEmpty()) {
                 llist = fromLpuMap(did, uid, Hub2().getLpuList("GetLPUList", args))
                 llist.forEach {

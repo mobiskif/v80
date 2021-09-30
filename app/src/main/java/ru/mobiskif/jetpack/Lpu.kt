@@ -72,13 +72,13 @@ fun LpuInfoDialog(model: Model) {
             title = { Text(text = "${lpu.name}") },
             text = {
                 Column {
-                    Row (Modifier.fillMaxHeight(.3f)) { Text("${lpu.address} \n${lpu.phone} ${lpu.email}") }
-                    Row (Modifier.fillMaxHeight(.6f)) { Mymap(lpu) }
+                    Row(Modifier.fillMaxHeight(.3f)) { Text("${lpu.address} \n${lpu.phone} ${lpu.email}") }
+                    Row(Modifier.fillMaxHeight(.6f)) { Mymap(lpu) }
                 }
                 /*
                 val intent = Intent(Intent.ACTION_CALL);
-intent.data = Uri.parse("tel:$number")
-startActivity(intent)
+                intent.data = Uri.parse("tel:$number")
+                startActivity(intent)
                  */
             },
             confirmButton = {
