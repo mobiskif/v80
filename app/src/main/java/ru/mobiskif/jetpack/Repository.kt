@@ -12,11 +12,11 @@ import kotlinx.coroutines.withContext
 
 class Repository {
     lateinit var db: AppDatabase
-    private val _wait = MutableLiveData(false);
+    private val _wait = MutableLiveData<Boolean>();
     val wait: LiveData<Boolean> = _wait
     private val _cuser = MutableLiveData<User>();
     val cuser: LiveData<User> = _cuser
-    private val _palette = MutableLiveData("Фиолетовая");
+    private val _palette = MutableLiveData<String>();
     val palette: LiveData<String> = _palette
 
     private val _users = MutableLiveData<List<User>>();
@@ -65,26 +65,29 @@ class Repository {
     }
 
     suspend fun readDistrs() {
-        _wait.postValue(true)
+        Log.d("jop","readDistrs()")
         withContext(Dispatchers.IO) {
             var dlist = db.distrDao().read()
             if (dlist.isNullOrEmpty()) {
+                _wait.postValue(true)
                 dlist = fromDistrMap(Hub2().getDistrList("GetDistrictList"))
                 dlist.forEach { db.distrDao().create(it) }
+                _wait.postValue(false)
             }
             _distrs.postValue(dlist)
         }
-        _wait.postValue(false)
     }
 
     suspend fun readLpus(did: String, uid: String) {
-        _wait.postValue(true)
+        Log.d("jop","readLpus()")
         withContext(Dispatchers.IO) {
             val args = arrayOf(did)
             var llist = db.lpuDao().readByDid(did, uid)
             //llist.forEach { db.lpuDao().delete(it) }
             if (llist.isEmpty()) {
+                _wait.postValue(true)
                 llist = fromLpuMap(did, uid, Hub2().getLpuList("GetLPUList", args))
+                _wait.postValue(false)
                 llist.forEach {
                     //Log.d("jop", "$it")
                     db.lpuDao().create(it)
@@ -103,7 +106,6 @@ class Repository {
             }
             _lpus.postValue(llist)
         }
-        _wait.postValue(false)
     }
 
     suspend fun readLpusFull() {
@@ -170,9 +172,10 @@ class Repository {
             it.D.toString(),
             it.iLpu.toString(),
         )
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
+            _wait.postValue(true)
             val res = Hub2().checkPat("CheckPatient", args)
+            _wait.postValue(false)
             if (res.isNotEmpty()) {
                 if (res[0]["Success"] == "true") {
                     result["IdPat"] = res[0]["IdPat"].toString()
@@ -186,18 +189,17 @@ class Repository {
                 result["Success"] = "false"
             }
         }
-        _wait.postValue(false)
         it.idPat = result["IdPat"]
         it.Dat = result["Success"]
         _cuser.postValue(it)
     }
 
     suspend fun readUsers() {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             _users.postValue(db.userDao().read())
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun readSpecs(idLpu: String) {
@@ -284,14 +286,14 @@ class Repository {
     }
 
     suspend fun readConfs() {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             var confs = db.confDao().read()
             if (confs.isNullOrEmpty()) db.confDao().create(Conf())
             confs = db.confDao().read()
             _confs.postValue(confs)
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun writeConfs(confs: LiveData<List<Conf>>) {
@@ -303,21 +305,16 @@ class Repository {
     }
 
     suspend fun setPalette(theme: String) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
-
             confs.value?.forEach {
                 when (it.name) {
                     "palette" -> it.value = theme
                 }
             }
-
             _palette.postValue(theme)
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
-    fun setWait(w: Boolean) {
-        _wait.postValue(w)
-    }
 }

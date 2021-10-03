@@ -119,8 +119,18 @@ fun ShortUserList(activity: Activity, user: User, model: Model) {
     ListItem(
         //icon = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
         overlineText = { Text("${user.Distr} район") },
-        text = { Text("${user.F} ${user.I} ${user.O}", modifier = Modifier.absolutePadding(0.dp, 0.dp, 0.dp, space)) },
+        text = { Text("${user.F} ${user.I} ${user.O}") },
+        secondaryText = { Text("${user.D}\n") },
         //trailing = { UsrImage2(loadFromInternalFolder(activity, "${user.id}.png")) },
+        trailing = {
+            Icon(Icons.Outlined.Edit, "",
+                Modifier
+                    .alpha(.33f)
+                    .clickable {
+                        model.setCurrentUser(user)
+                        model.setState("Изменить пациента")
+                    })
+        },
         modifier = Modifier.background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
     )
 }
@@ -166,7 +176,7 @@ fun UsrItemsView(activity: Activity, user: User, model: Model) {
     Column(modifier = Modifier.clickable {
         user.idPat = ""
         model.setCurrentUser(user)
-        model.readLpus(user.iDistr.toString(), user.id.toString())
+        //model.readLpus(user.iDistr.toString(), user.id.toString())
         model.setState("Выбрать клинику")
     }) {
         when (model.getState()) {

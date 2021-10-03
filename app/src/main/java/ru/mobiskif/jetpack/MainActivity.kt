@@ -34,26 +34,28 @@ class MainActivity : ComponentActivity() {
 
         model.setDBContext(applicationContext)
         model.readDistrs()
-        model.readLpusFull()
+        //model.readLpusFull()
         model.readUsers()
+        model.setState("Выбрать пациента")
 
         model.state.observe(this) {
             title = it
-            setContent { MainView(this, model) }
+            setContent { MainView(this, model, "state.observe") }
         }
         model.users.observe(this) {
             if (it.isEmpty()) model.setState("Инструкция")
-            setContent { MainView(this, model) }
+            setContent { MainView(this, model, "users.observe") }
         }
         model.cuser.observe(this) {
+            model.readLpus(it.iDistr.toString(), it.id.toString())
             if (!it.idPat.isNullOrEmpty()) model.readHists(it)
-            setContent { MainView(this, model) }
+            //setContent { MainView(this, model, "cuser.observe") }
         }
-        model.lpus.observe(this) { setContent { MainView(this, model) } }
-        model.specs.observe(this) { setContent { MainView(this, model) } }
-        model.docs.observe(this) { setContent { MainView(this, model) } }
-        model.talons.observe(this) { setContent { MainView(this, model) } }
-        model.history.observe(this) { setContent { MainView(this, model) } }
+        model.lpus.observe(this) { setContent { MainView(this, model, "lpus.observe") } }
+        model.specs.observe(this) { setContent { MainView(this, model,"specs.observe") } }
+        model.docs.observe(this) { setContent { MainView(this, model,"docs.observe") } }
+        model.talons.observe(this) { setContent { MainView(this, model,"talons.observe") } }
+        model.history.observe(this) { setContent { MainView(this, model,"history.observe") } }
         model.idtalon.observe(this) { Toast.makeText(this, it, Toast.LENGTH_LONG).show() }
         model.confs.observe(this) { confs ->
             confs.forEach {
@@ -61,13 +63,15 @@ class MainActivity : ComponentActivity() {
                     "palette" -> model.setPalette(this, it.value)
                 }
             }
-            setContent { MainView(this, model) }
+            Log.d("jop","onResume.readConfs()")
+            //setContent { MainView(this, model, "confs.observe") }
         }
-        model.wait.observe(this) {
-            Log.d("jop",it.toString())
-            setContent { MainView(this, model) }
+        model.wait.observe(this) { setContent { MainView(this, model, "wait.observe.$it") } }
+        model.palette.observe(this) {
+            //Log.d("jop","palette.observe")
+            LightPalette = setLightPalette(this,it)
+            setContent { MainView(this, model, "palette.observe.$it") }
         }
-        model.palette.observe(this) { setContent { MainView(this, model) } }
     }
 
     override fun onPause() {
@@ -112,7 +116,8 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun MainView(activity: MainActivity, model: Model) {
+fun MainView(activity: MainActivity, model: Model, method: String? = null) {
+    Log.d("jop", "MainView()::$method")
     val users = model.users.value ?: listOf()
     val lpus = model.lpus.value ?: listOf()
     val specs = model.specs.value ?: listOf()
@@ -120,7 +125,7 @@ fun MainView(activity: MainActivity, model: Model) {
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
 
-    Theme {
+    Theme (LightPalette) {
         DefineModes()
         Scaffold(
             floatingActionButton = { Fab(model) },

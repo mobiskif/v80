@@ -109,9 +109,9 @@ fun DefineModes() {
 }
 
 @Composable
-fun Theme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun Theme(pal: Colors? =null, dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(
-        colors = if (dark) { DarkPalette } else { LightPalette },
+        colors = if (dark) { DarkPalette } else { if (pal==null) LightPalette else pal },
         typography = typography,
         shapes = shapes,
         content = content
