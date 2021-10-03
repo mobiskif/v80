@@ -34,21 +34,21 @@ class MainActivity : ComponentActivity() {
 
         model.setDBContext(applicationContext)
         model.readDistrs()
-        //model.readLpusFull()
+        model.readLpusFull()
         model.readUsers()
         model.setState("Выбрать пациента")
 
         model.state.observe(this) {
             title = it
-            setContent { MainView(this, model, "state.observe") }
+            setContent { MainView(this, model, "state.observe.$it") }
         }
         model.users.observe(this) {
             if (it.isEmpty()) model.setState("Инструкция")
             setContent { MainView(this, model, "users.observe") }
         }
         model.cuser.observe(this) {
-            model.readLpus(it.iDistr.toString(), it.id.toString())
-            if (!it.idPat.isNullOrEmpty()) model.readHists(it)
+            //model.readLpus(it.iDistr.toString(), it.id.toString())
+            //if (!model.cuser.value?.idPat.isNullOrEmpty()) model.readHists(model.cuser.value!!)
             //setContent { MainView(this, model, "cuser.observe") }
         }
         model.lpus.observe(this) { setContent { MainView(this, model, "lpus.observe") } }
@@ -64,14 +64,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
             Log.d("jop","onResume.readConfs()")
-            //setContent { MainView(this, model, "confs.observe") }
         }
         model.wait.observe(this) { setContent { MainView(this, model, "wait.observe.$it") } }
-        model.palette.observe(this) {
-            //Log.d("jop","palette.observe")
-            LightPalette = setLightPalette(this,it)
-            setContent { MainView(this, model, "palette.observe.$it") }
-        }
+        model.palette.observe(this) { setContent { MainView(this, model, "palette.observe.$it") } }
     }
 
     override fun onPause() {

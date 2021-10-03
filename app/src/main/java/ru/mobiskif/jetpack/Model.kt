@@ -12,12 +12,12 @@ class Model : ViewModel() {
     val state = MutableLiveData<String>()
     val repository = Repository()
     val wait = repository.wait
-    var cuser = repository.cuser
+    val cuser = repository.cuser
     val palette = repository.palette
 
     val users = repository.users
-    val lpus = repository.lpus
     val distrs = repository.distrs
+    val lpus = repository.lpus
     val history = repository.history
     val specs = repository.specs
     val docs = repository.docs
@@ -80,7 +80,7 @@ class Model : ViewModel() {
         viewModelScope.launch { repository.checkPatient(it) }
     }
 
-    fun setCurrentUser(it: User) {
+    fun setCurrentUserId(it: User) {
         viewModelScope.launch { repository.setCurrentUser(it) }
     }
 

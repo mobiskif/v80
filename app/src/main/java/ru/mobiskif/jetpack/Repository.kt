@@ -71,8 +71,8 @@ class Repository {
             if (dlist.isNullOrEmpty()) {
                 _wait.postValue(true)
                 dlist = fromDistrMap(Hub2().getDistrList("GetDistrictList"))
-                dlist.forEach { db.distrDao().create(it) }
                 _wait.postValue(false)
+                dlist.forEach { db.distrDao().create(it) }
             }
             _distrs.postValue(dlist)
         }
@@ -109,58 +109,58 @@ class Repository {
     }
 
     suspend fun readLpusFull() {
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var llist = db.lpufDao().readf()
-            llist.forEach { db.lpufDao().deletef(it) }
+            //llist.forEach { db.lpufDao().deletef(it) }
             if (llist.isNullOrEmpty()) {
                 val args = arrayOf("")
+                _wait.postValue(true)
                 llist = fromLpuMapF(Hub2().getLpuList("GetLpuToRFSZIList", args))
+                _wait.postValue(false)
                 llist.forEach {
-                    Log.d("jop", "$it")
+                    //Log.d("jop", "$it")
                     db.lpufDao().createf(it)
                 }
             }
         }
-        _wait.postValue(false)
     }
 
     suspend fun deleteLpu(it: Lpu) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.lpuDao().delete(it)
             val lp = db.lpuDao().readByDid(it.did, it.uid)
             _lpus.postValue(lp)
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun createUser() {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             val maxid = db.userDao().readMaxId()
             db.userDao().create(User(maxid + 1))
             _users.postValue(db.userDao().read())
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun updateUser(it: User) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.userDao().update(it)
             _users.postValue(db.userDao().read())
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun deleteUser(it: User) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             db.userDao().delete(it)
             _users.postValue(db.userDao().read())
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun checkPatient(it: User) {
@@ -203,63 +203,66 @@ class Repository {
     }
 
     suspend fun readSpecs(idLpu: String) {
+        Log.d("jop","readSpecs()")
         val args = arrayOf(idLpu)
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
+            _wait.postValue(true)
             val res = fromSpecMap(Hub2().getSpecList("GetSpesialityList", args))
+            _wait.postValue(false)
             _specs.postValue(res)
         }
-        _wait.postValue(false)
     }
 
     suspend fun readDoctors(idLpu: String, idSpec: String, idPat: String) {
+        Log.d("jop","readDocs()")
         val args = arrayOf(idLpu, idSpec, idPat)
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
+            _wait.postValue(true)
             val res = fromDocMap(Hub2().getDocList("GetDoctorList", args))
+            _wait.postValue(false)
             _docs.postValue(res)
         }
-        _wait.postValue(false)
     }
 
     suspend fun readTalons(idLpu: String, idDoc: String, idPat: String) {
         val args = arrayOf(idLpu, idDoc, idPat)
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
+            _wait.postValue(true)
             val res = fromTalonMap(Hub2().getTalonList("GetAvaibleAppointments", args))
+            _wait.postValue(false)
             _talons.postValue(res)
         }
-        _wait.postValue(false)
     }
 
     suspend fun setCurrentUser(it: User) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             _cuser.postValue(it)
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun readHists(user: User) {
         val args = arrayOf(user.iLpu.toString(), user.idPat.toString())
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
             var hlist = listOf<Hist>()//db.histDao().readByUidLid(uid, idLpu)
             if (hlist.isEmpty()) {
+                _wait.postValue(true)
                 hlist = fromHistMap(user, Hub2().getHistList("GetPatientHistory", args))
+                _wait.postValue(false)
+                _history.postValue(hlist)
                 //hlist.forEach { db.histDao().delete(it) }
                 //hlist.forEach { db.histDao().create(it) }
             }
-            _history.postValue(hlist)
         }
-        _wait.postValue(false)
     }
 
     suspend fun getTalon(idLpu: String, idAppointment: String, idPat: String) {
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
             val args = arrayOf(idLpu, idAppointment, idPat)
+            _wait.postValue(true)
             val res = Hub2().getTalon("SetAppointment", args)
+            _wait.postValue(false)
             Log.d("jop", "$res")
             if (res[0]["Success"] == "true") {
                 _idtalon.postValue("Талон $idAppointment отложен успешно!")
@@ -267,14 +270,14 @@ class Repository {
                 _idtalon.postValue("ВНИМАНИЕ: в записи отказано!")
             }
         }
-        _wait.postValue(false)
     }
 
     suspend fun delTalon(idLpu: String, idAppointment: String, idPat: String) {
-        _wait.postValue(true)
         withContext(Dispatchers.IO) {
             val args = arrayOf(idLpu, idPat, idAppointment)
+            _wait.postValue(true)
             val res = Hub2().deleteTalon("CreateClaimForRefusal", args)
+            _wait.postValue(false)
             Log.d("jop", "$res")
             if (res[0]["Success"] == "true") {
                 _idtalon.postValue("Талон $idAppointment отменен успешно!")
@@ -282,7 +285,6 @@ class Repository {
                 _idtalon.postValue("ВНИМАНИЕ: отмена НЕ удалась!")
             }
         }
-        _wait.postValue(false)
     }
 
     suspend fun readConfs() {
@@ -297,11 +299,11 @@ class Repository {
     }
 
     suspend fun writeConfs(confs: LiveData<List<Conf>>) {
-        _wait.postValue(true)
+        //_wait.postValue(true)
         withContext(Dispatchers.IO) {
             confs.value?.forEach { db.confDao().update(it) }
         }
-        _wait.postValue(false)
+        //_wait.postValue(false)
     }
 
     suspend fun setPalette(theme: String) {

@@ -42,7 +42,7 @@ fun loadFromInternalFolder(context: Context, fname: String): Bitmap {
         if (file.exists()) {
             val fileInputStream: FileInputStream = FileInputStream(file)
             bitmap = BitmapFactory.decodeStream(fileInputStream)
-            Log.d("jop", "Load from " + file.absolutePath)
+            //Log.d("jop", "Load from " + file.absolutePath)
         }
     } catch (e: Exception) {
         e.printStackTrace()

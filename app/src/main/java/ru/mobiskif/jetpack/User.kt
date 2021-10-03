@@ -5,8 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.room.*
 
 @Entity
@@ -127,7 +122,7 @@ fun ShortUserList(activity: Activity, user: User, model: Model) {
                 Modifier
                     .alpha(.33f)
                     .clickable {
-                        model.setCurrentUser(user)
+                        model.setCurrentUserId(user)
                         model.setState("Изменить пациента")
                     })
         },
@@ -145,7 +140,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
             modifier = Modifier
                 .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
                 .clickable {
-                    model.setCurrentUser(user)
+                    model.setCurrentUserId(user)
                     model.setState("Изменить пациента")
                 }
         )
@@ -161,7 +156,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
                     Modifier
                         .alpha(.33f)
                         .clickable {
-                            model.setCurrentUser(user)
+                            model.setCurrentUserId(user)
                             model.setState("Изменить пациента")
                         })
             },
@@ -175,8 +170,8 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
 fun UsrItemsView(activity: Activity, user: User, model: Model) {
     Column(modifier = Modifier.clickable {
         user.idPat = ""
-        model.setCurrentUser(user)
-        //model.readLpus(user.iDistr.toString(), user.id.toString())
+        model.setCurrentUserId(user)
+        model.readLpus(user.iDistr.toString(), user.id.toString())
         model.setState("Выбрать клинику")
     }) {
         when (model.getState()) {
