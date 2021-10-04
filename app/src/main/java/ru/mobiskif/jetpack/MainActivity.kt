@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         }
         model.cuser.observe(this) {
             //model.readLpus(it.iDistr.toString(), it.id.toString())
-            //if (!model.cuser.value?.idPat.isNullOrEmpty()) model.readHists(model.cuser.value!!)
+            if (!it.idPat.isNullOrEmpty()) model.readHists(it)
             //setContent { MainView(this, model, "cuser.observe") }
         }
         model.lpus.observe(this) { setContent { MainView(this, model, "lpus.observe") } }
