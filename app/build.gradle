@@ -11,8 +11,8 @@ android {
         applicationId "ru.healthy"
         minSdk 21
         targetSdk 30
-        versionCode 78
-        versionName "78.0"
+        versionCode 79
+        versionName "79.1"
 
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
