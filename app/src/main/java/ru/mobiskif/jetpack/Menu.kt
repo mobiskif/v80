@@ -44,13 +44,13 @@ fun Menu(context: Context, model: Model) {
             content = { Text("Красная тема") }
         )
         Divider()
-        /*
+
         DropdownMenuItem(
             onClick = { model.setState("База"); expanded.value = false },
             content = { Text("База") }
         )
 
-         */
+
         DropdownMenuItem(
             onClick = { },
             content = { Text("v ${context.packageManager.getPackageInfo(context.packageName, 0).versionName}") }

@@ -11,6 +11,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.room.*
 
 @Entity(primaryKeys = ["did", "uid", "lid"])
@@ -69,27 +72,48 @@ fun LpuInfoDialog(model: Model) {
                 openDialog.value = false
                 model.setState("Выбрать клинику")
             },
-            title = { Text(text = "${lpu.name}") },
+            title = { Text(text = "${lpu.fullname}") },
             text = {
                 Column {
-                    Row(Modifier.fillMaxHeight(.3f)) { Text("${lpu.address} \n${lpu.phone} ${lpu.email}") }
-                    Row(Modifier.fillMaxHeight(.6f)) { Mymap(lpu) }
+                    //Row(Modifier.fillMaxHeight(.4f)) {
+                    Row {
+                        Text("Тел.: ", fontWeight = FontWeight.Bold)
+                        Text("${lpu.phone}")
+                    }
+                    Row {
+                        Text("Адрес: ", fontWeight = FontWeight.Bold)
+                        Text("${lpu.address}")
+                    }
+                    Row {
+                        Text("Почта: ", fontWeight = FontWeight.Bold)
+                        Text("${lpu.email}")
+                    }
+                    Spacer(Modifier.size(space))
+                    //}
+                    Row(Modifier.fillMaxHeight(.7f)) {
+                        Mymap(lpu)
+                    }
                 }
+
                 /*
                 val intent = Intent(Intent.ACTION_CALL);
                 intent.data = Uri.parse("tel:$number")
                 startActivity(intent)
                  */
             },
+
             confirmButton = {
                 TextButton(
                     onClick = {
                         openDialog.value = false
                         model.setState("Выбрать клинику")
                     }
-                ) { Text("Назад") }
+                ) {
+                    Text("Назад")
+                }
             },
-        )
+
+            )
     }
 }
 

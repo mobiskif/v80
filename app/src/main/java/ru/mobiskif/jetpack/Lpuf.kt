@@ -40,7 +40,7 @@ fun fromLpuMapF(map: MutableList<Map<String, String>>): List<Lpuf> {
     var result = listOf<Lpuf>()
     map.forEach {
         if (!it["ExternalHubId"].isNullOrEmpty()) {
-            Log.d("jop","$it")
+            //Log.d("jop","$it")
             val element = Lpuf(it["IdDistrict"]!!, it["ExternalHubId"]!!, it["LpuName"], "", it["LpuName"], it["Address"], it["PhoneCallCentre"], it["email"])
             result = result.plusElement(element)
         }

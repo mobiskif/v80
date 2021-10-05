@@ -84,7 +84,7 @@ class Repository {
             val args = arrayOf(did)
             var llist = db.lpuDao().readByDid(did, uid)
             //llist.forEach { db.lpuDao().delete(it) }
-            if (llist.isEmpty()) {
+            if (llist.isNullOrEmpty()) {
                 _wait.postValue(true)
                 llist = fromLpuMap(did, uid, Hub2().getLpuList("GetLPUList", args))
                 _wait.postValue(false)
@@ -109,6 +109,7 @@ class Repository {
     }
 
     suspend fun readLpusFull() {
+        Log.d("jop","readLpusFull()")
         withContext(Dispatchers.IO) {
             var llist = db.lpufDao().readf()
             //llist.forEach { db.lpufDao().deletef(it) }
@@ -118,7 +119,6 @@ class Repository {
                 llist = fromLpuMapF(Hub2().getLpuList("GetLpuToRFSZIList", args))
                 _wait.postValue(false)
                 llist.forEach {
-                    //Log.d("jop", "$it")
                     db.lpufDao().createf(it)
                 }
             }

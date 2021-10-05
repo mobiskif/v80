@@ -36,7 +36,7 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         try {
             androidHttpTransport.debug = true
             androidHttpTransport.call(soapACTION, envelope)
-            //Log.d("jop", androidHttpTransport.requestDump)
+            Log.d("jop", androidHttpTransport.requestDump)
             Log.d("jop", androidHttpTransport.responseDump)
             //if (action.equals("CheckPatient")) Log.d("jop", androidHttpTransport.responseDump)
             val soapObj = envelope.response as SoapObject

@@ -63,7 +63,7 @@ fun TalonItems(talon: Talon, model: Model) {
                 Spacer(Modifier.size(space))
                 Button(onClick = {
                     model.getTalon(user.iLpu.toString(), user.idAppointment.toString(), user.idPat.toString())
-                    model.setState("Выбрать клинику")
+                    model.setState("Выбрать специальность")
                 }) { Text("Взять") }
             }
             else if (model.getState() == "Отменить талон") {
@@ -86,5 +86,5 @@ fun TalonTake(model: Model) {
     talon.id = user.idAppointment.toString()
     TalonItems(talon = talon, model = model)
 
-    TextButton(onClick = { model.setState("Выбрать клинику") }) { Text("Нет") }
+    TextButton(onClick = { model.setState("Выбрать специальность") }) { Text("Нет") }
 }

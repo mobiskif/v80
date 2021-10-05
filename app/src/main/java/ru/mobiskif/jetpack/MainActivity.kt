@@ -46,17 +46,17 @@ class MainActivity : ComponentActivity() {
             if (it.isEmpty()) model.setState("Инструкция")
             setContent { MainView(this, model, "users.observe") }
         }
-        model.cuser.observe(this) {
-            //model.readLpus(it.iDistr.toString(), it.id.toString())
-            if (!it.idPat.isNullOrEmpty()) model.readHists(it)
-            //setContent { MainView(this, model, "cuser.observe") }
-        }
+        model.cuser.observe(this) { if (it.idPat!!.isNotBlank()) model.readHists(it) }
         model.lpus.observe(this) { setContent { MainView(this, model, "lpus.observe") } }
         model.specs.observe(this) { setContent { MainView(this, model,"specs.observe") } }
         model.docs.observe(this) { setContent { MainView(this, model,"docs.observe") } }
         model.talons.observe(this) { setContent { MainView(this, model,"talons.observe") } }
         model.history.observe(this) { setContent { MainView(this, model,"history.observe") } }
-        model.idtalon.observe(this) { Toast.makeText(this, it, Toast.LENGTH_LONG).show() }
+        model.idtalon.observe(this) {
+            model.readHists(model.cuser.value!!)
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            //setContent { MainView(this, model,"idtalon.observe") }
+        }
         model.confs.observe(this) { confs ->
             confs.forEach {
                 when (it.name) {
