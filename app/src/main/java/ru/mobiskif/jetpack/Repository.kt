@@ -164,6 +164,7 @@ class Repository {
     }
 
     suspend fun checkPatient(it: User) {
+        Log.d("jop","checkPatient()")
         val result = mutableMapOf<String, String>()
         val args = arrayOf(
             it.F.toString(),
@@ -264,10 +265,12 @@ class Repository {
             val res = Hub2().getTalon("SetAppointment", args)
             _wait.postValue(false)
             Log.d("jop", "$res")
-            if (res[0]["Success"] == "true") {
-                _idtalon.postValue("Талон $idAppointment отложен успешно!")
-            } else {
-                _idtalon.postValue("ВНИМАНИЕ: в записи отказано!")
+            if (res.isNotEmpty()) {
+                if (res[0]["Success"] == "true") {
+                    _idtalon.postValue("Талон $idAppointment отложен успешно!")
+                } else {
+                    _idtalon.postValue("${res[0]["ErrorDescription"]}. В записи отказано!")
+                }
             }
         }
     }

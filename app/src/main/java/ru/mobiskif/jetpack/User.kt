@@ -122,7 +122,7 @@ fun ShortUserList(activity: Activity, user: User, model: Model) {
                 Modifier
                     .alpha(.33f)
                     .clickable {
-                        model.setCurrentUserId(user)
+                        model.setCurrentUser(user)
                         model.setState("Изменить пациента")
                     })
         },
@@ -140,7 +140,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
             modifier = Modifier
                 .background(MaterialTheme.colors.secondary, RoundedCornerShape(space))
                 .clickable {
-                    model.setCurrentUserId(user)
+                    model.setCurrentUser(user)
                     model.setState("Изменить пациента")
                 }
         )
@@ -156,7 +156,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
                     Modifier
                         .alpha(.33f)
                         .clickable {
-                            model.setCurrentUserId(user)
+                            model.setCurrentUser(user)
                             model.setState("Изменить пациента")
                         })
             },
@@ -170,7 +170,7 @@ fun WideUserList(activity: Activity, user: User, model: Model) {
 fun UsrItemsView(activity: Activity, user: User, model: Model) {
     Column(modifier = Modifier.clickable {
         user.idPat = ""
-        model.setCurrentUserId(user)
+        model.setCurrentUser(user)
         model.readLpus(user.iDistr.toString(), user.id.toString())
         model.setState("Выбрать клинику")
     }) {

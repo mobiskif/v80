@@ -36,9 +36,8 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         try {
             androidHttpTransport.debug = true
             androidHttpTransport.call(soapACTION, envelope)
-            Log.d("jop", androidHttpTransport.requestDump)
+            //Log.d("jop", androidHttpTransport.requestDump)
             Log.d("jop", androidHttpTransport.responseDump)
-            //if (action.equals("CheckPatient")) Log.d("jop", androidHttpTransport.responseDump)
             val soapObj = envelope.response as SoapObject
             processObj(soapObj, PropertyInfo(), 0, list)
         } catch (e: Exception) {
@@ -165,7 +164,7 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         try {
             soap.debug = true
             soap.call(soapACTION, envelope)
-            Log.d("jop", soap.requestDump)
+            //Log.d("jop", soap.requestDump)
             Log.d("jop", soap.responseDump)
             val resultobj = envelope.bodyIn as SoapObject
             val rootobj = resultobj.getProperty(0) as SoapObject

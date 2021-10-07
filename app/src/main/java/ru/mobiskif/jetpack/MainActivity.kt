@@ -43,15 +43,20 @@ class MainActivity : ComponentActivity() {
             setContent { MainView(this, model, "state.observe.$it") }
         }
         model.users.observe(this) {
-            if (it.isEmpty()) model.setState("Инструкция")
-            setContent { MainView(this, model, "users.observe") }
+            //if (it.isEmpty()) model.setState("Инструкция")
+            //setContent { MainView(this, model, "users.observe") }
         }
-        model.cuser.observe(this) { if (it.idPat!!.isNotBlank()) model.readHists(it) }
-        model.lpus.observe(this) { setContent { MainView(this, model, "lpus.observe") } }
-        model.specs.observe(this) { setContent { MainView(this, model,"specs.observe") } }
-        model.docs.observe(this) { setContent { MainView(this, model,"docs.observe") } }
-        model.talons.observe(this) { setContent { MainView(this, model,"talons.observe") } }
-        model.history.observe(this) { setContent { MainView(this, model,"history.observe") } }
+        model.cuser.observe(this) {
+            Log.d("jop", "cuser.observe = $it")
+            if (it.idPat!!.isNotBlank()) model.readHists(it)
+        }
+        model.lpus.observe(this) {
+            setContent { MainView(this, model, "lpus.observe") }
+        }
+        model.specs.observe(this) { setContent { MainView(this, model, "specs.observe") } }
+        model.docs.observe(this) { setContent { MainView(this, model, "docs.observe") } }
+        model.talons.observe(this) { setContent { MainView(this, model, "talons.observe") } }
+        model.history.observe(this) { setContent { MainView(this, model, "history.observe") } }
         model.idtalon.observe(this) {
             model.readHists(model.cuser.value!!)
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
@@ -63,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     "palette" -> model.setPalette(this, it.value)
                 }
             }
-            Log.d("jop","onResume.readConfs()")
+            Log.d("jop", "onResume.readConfs()")
         }
         model.wait.observe(this) { setContent { MainView(this, model, "wait.observe.$it") } }
         model.palette.observe(this) { setContent { MainView(this, model, "palette.observe.$it") } }
@@ -120,7 +125,7 @@ fun MainView(activity: MainActivity, model: Model, method: String? = null) {
     val talons = model.talons.value ?: listOf()
     val hists = model.history.value ?: listOf()
 
-    Theme (LightPalette) {
+    Theme(LightPalette) {
         DefineModes()
         Scaffold(
             floatingActionButton = { Fab(model) },

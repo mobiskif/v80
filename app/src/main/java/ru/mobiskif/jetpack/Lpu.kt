@@ -152,6 +152,7 @@ fun LpuItems(lpu: Lpu, model: Model) {
                 user.Lpu = lpu.name
                 model.checkPatient(user)
                 model.readSpecs(lpu.lid)
+                //model.readHists(user)
                 model.setState("Выбрать специальность")
             }
         )

@@ -80,8 +80,9 @@ class Model : ViewModel() {
         viewModelScope.launch { repository.checkPatient(it) }
     }
 
-    fun setCurrentUserId(it: User) {
+    fun setCurrentUser(it: User) {
         viewModelScope.launch { repository.setCurrentUser(it) }
+        //cuser.postValue(it)
     }
 
     fun readDistrs() {
