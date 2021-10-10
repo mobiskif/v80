@@ -23,29 +23,6 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
     private val _xHUB = "http://schemas.datacontract.org/2004/07/HubService2"
     private val _gUID = "039E2126-0FCA-4E13-8AD6-AF303F7F0FC1"
 
-    private fun getSoap(action: String, request: SoapObject): MutableList<Map<String, String>> {
-        val list: MutableList<Map<String, String>> = mutableListOf()
-        request.addProperty("guid", _gUID)
-        val soapACTION = "http://tempuri.org/IHubService/$action"
-        val envelope = SoapSerializationEnvelope(SoapEnvelope.VER10)
-        envelope.bodyOut = request
-        envelope.implicitTypes = true
-        envelope.dotNet = true
-        envelope.setOutputSoapObject(request)
-        val androidHttpTransport = HttpTransportSE(_soapPURL)
-        try {
-            androidHttpTransport.debug = true
-            androidHttpTransport.call(soapACTION, envelope)
-            //Log.d("jop", androidHttpTransport.requestDump)
-            Log.d("jop", androidHttpTransport.responseDump)
-            val soapObj = envelope.response as SoapObject
-            processObj(soapObj, PropertyInfo(), 0, list)
-        } catch (e: Exception) {
-            Log.d("jop",e.toString())
-        }
-        return list
-    }
-
     private fun processObj(
         obj: Any,
         info: PropertyInfo,
@@ -149,6 +126,30 @@ gorzdrav 039E2126-0FCA-4E13-8AD6-AF303F7F0FC1
         request.addProperty("idLpu", args[0])
         request.addProperty("idPat", args[2])
         return getSoap(action, request)
+    }
+
+    private fun getSoap(action: String, request: SoapObject): MutableList<Map<String, String>> {
+        val list: MutableList<Map<String, String>> = mutableListOf()
+        request.addProperty("guid", _gUID)
+        val soapACTION = "http://tempuri.org/IHubService/$action"
+        val envelope = SoapSerializationEnvelope(SoapEnvelope.VER10)
+        envelope.bodyOut = request
+        envelope.implicitTypes = true
+        envelope.dotNet = true
+        envelope.setOutputSoapObject(request)
+        val soap = HttpTransportSE(_soapPURL)
+        try {
+            soap.debug = true
+            soap.call(soapACTION, envelope)
+            //Log.d("jop", androidHttpTransport.requestDump)
+            Log.d("jop", soap.responseDump)
+            //val soapObj = envelope.response as SoapObject
+            val soapObj = envelope.bodyIn as SoapObject
+            processObj(soapObj, PropertyInfo(), 0, list)
+        } catch (e: Exception) {
+            Log.d("jop",e.toString())
+        }
+        return list
     }
 
     private fun getSoap2(action: String, request: SoapObject): MutableList<Map<String, String>> {

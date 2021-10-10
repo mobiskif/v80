@@ -1,18 +1,21 @@
 package ru.mobiskif.jetpack
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.room.*
 
@@ -62,7 +65,7 @@ fun fromLpuMap(did: String, uid: String, map: MutableList<Map<String, String>>):
 }
 
 @Composable
-fun LpuInfoDialog(model: Model) {
+fun LpuInfoDialog(activity: MainActivity, model: Model) {
     val lpu = model.clpu
     val openDialog = remember { mutableStateOf(true) }
 
@@ -78,7 +81,16 @@ fun LpuInfoDialog(model: Model) {
                     //Row(Modifier.fillMaxHeight(.4f)) {
                     Row {
                         Text("Тел.: ", fontWeight = FontWeight.Bold)
-                        Text("${lpu.phone}")
+                        Text("${lpu.phone}", modifier = Modifier.clickable {
+                            val intent = Intent(Intent.ACTION_CALL)
+                            intent.data = Uri.parse("tel:${lpu.phone}")
+                            //activity.startActivity(intent)
+                            //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                                if (checkPermissionForCall(activity)) activity.startActivity(intent)
+                                else requestPermissionForCall(activity)
+                            //} else activity.startActivity(intent) //activity.callLauncher.launch(intent)
+
+                        })
                     }
                     Row {
                         Text("Адрес: ", fontWeight = FontWeight.Bold)
@@ -126,7 +138,7 @@ fun LpuItems(lpu: Lpu, model: Model) {
         ListItem(
             icon = {
                 Icon(
-                    Icons.Outlined.Info, "",
+                    Icons.Outlined.LocationOn, "",
                     Modifier
                         .alpha(.33f)
                         .clickable {

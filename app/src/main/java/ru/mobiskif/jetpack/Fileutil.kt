@@ -16,7 +16,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
-private const val PERMISSION_READ_EXTERNAL_STORAGE = 5
+//private const val PERMISSION_READ_EXTERNAL_STORAGE = 5
 
 fun saveToInternalFolder(context: Context, bitmap: Bitmap, fname: String) {
     try {
@@ -80,7 +80,7 @@ fun requestPermissionForReadWrite(context: Context) {
         arrayOf(
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ), PERMISSION_READ_EXTERNAL_STORAGE
+        ), 66
     )
 }
 
@@ -101,7 +101,26 @@ fun requestPermissionForCamera(context: Context) {
         context as Activity,
         arrayOf(
             android.Manifest.permission.CAMERA
-        ), PERMISSION_READ_EXTERNAL_STORAGE
+        ), 66
     )
 }
 
+fun checkPermissionForCall(context: Context): Boolean {
+    val result: Int =
+        ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.CALL_PHONE
+        )
+    Log.d("jop","=== check permission CALL $result")
+    return result == PackageManager.PERMISSION_GRANTED
+}
+
+fun requestPermissionForCall(context: Context) {
+    Log.d("jop","--- request permission CALL")
+    ActivityCompat.requestPermissions(
+        context as Activity,
+        arrayOf(
+            android.Manifest.permission.CALL_PHONE
+        ), 66
+    )
+}

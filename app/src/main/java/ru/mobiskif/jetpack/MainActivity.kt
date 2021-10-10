@@ -111,6 +111,13 @@ class MainActivity : ComponentActivity() {
         model.repaint()
     }
 
+    var callLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            //startActivity()
+        }
+    }
+
 }
 
 
@@ -152,7 +159,7 @@ fun MainView(activity: MainActivity, model: Model, method: String? = null) {
                         "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
-                        "Поликлиника" -> LazyColumn { items(1) { LpuInfoDialog(model) } }
+                        "Поликлиника" -> LazyColumn { items(1) { LpuInfoDialog(activity, model) } }
                         "База" -> DBrowser(model)
                     }
                 }
