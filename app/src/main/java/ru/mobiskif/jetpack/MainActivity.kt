@@ -42,10 +42,6 @@ class MainActivity : ComponentActivity() {
             title = it
             setContent { MainView(this, model, "state.observe.$it") }
         }
-        model.users.observe(this) {
-            //if (it.isEmpty()) model.setState("Инструкция")
-            //setContent { MainView(this, model, "users.observe") }
-        }
         model.cuser.observe(this) {
             Log.d("jop", "cuser.observe = $it")
             if (it.idPat!!.isNotBlank()) model.readHists(it)
@@ -60,7 +56,6 @@ class MainActivity : ComponentActivity() {
         model.idtalon.observe(this) {
             model.readHists(model.cuser.value!!)
             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            //setContent { MainView(this, model,"idtalon.observe") }
         }
         model.confs.observe(this) { confs ->
             confs.forEach {
@@ -125,13 +120,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainView(activity: MainActivity, model: Model, method: String? = null) {
     Log.d("jop", "MainView()::$method")
-    val users = model.users.value ?: listOf()
-    val lpus = model.lpus.value ?: listOf()
-    val specs = model.specs.value ?: listOf()
-    val docs = model.docs.value ?: listOf()
-    val talons = model.talons.value ?: listOf()
-    val hists = model.history.value ?: listOf()
-
     Theme(LightPalette) {
         DefineModes()
         Scaffold(
@@ -145,18 +133,33 @@ fun MainView(activity: MainActivity, model: Model, method: String? = null) {
                     when (model.getState()) {
                         "Инструкция" -> LazyColumn { items(1) { Help() } }
                         "Изменить пациента" -> LazyColumn { items(1) { UsrDataEdit(activity, model.cuser.value!!, model) } }
-                        "Выбрать пациента" -> LazyColumn { items(users.size) { UsrItemsView(activity, users[it], model) } }
-                        "Выбрать клинику" -> LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
+                        "Выбрать пациента" -> {
+                            val users = model.users.value ?: listOf()
+                            if (users.isNotEmpty()) LazyColumn { items(users.size) { UsrItemsView(activity, users[it], model) } }
+                            else model.setState("Инструкция")
+                        }
+                        "Выбрать клинику" -> {
+                            val lpus = model.lpus.value ?: listOf()
+                            LazyColumn { items(lpus.size) { LpuItems(lpus[it], model) } }
+                        }
                         "Выбрать специальность" -> {
+                            val hists = model.history.value ?: listOf()
                             if (hists.isNotEmpty()) {
                                 Text("Отложено:")
                                 LazyRow { items(hists.size) { HistItems(hists[it], model) } }
                                 Spacer(Modifier.size(space))
                             }
+                            val specs = model.specs.value ?: listOf()
                             LazyColumn { items(specs.size) { SpecItems(specs[it], model) } }
                         }
-                        "Выбрать врача" -> LazyColumn { items(docs.size) { DocItems(docs[it], model) } }
-                        "Выбрать талон" -> LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
+                        "Выбрать врача" -> {
+                            val docs = model.docs.value ?: listOf()
+                            LazyColumn { items(docs.size) { DocItems(docs[it], model) } }
+                        }
+                        "Выбрать талон" -> {
+                            val talons = model.talons.value ?: listOf()
+                            LazyColumn { items(talons.size) { TalonItems(talons[it], model) } }
+                        }
                         "Взять талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Отменить талон" -> LazyColumn { items(1) { TalonTake(model) } }
                         "Поликлиника" -> LazyColumn { items(1) { LpuInfoDialog(activity, model) } }
